@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
@@ -13,8 +14,10 @@ const authController = require('../controllers/authController');
  * @swagger
  * /auth/register:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new user (Admin only)
  *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -42,8 +45,8 @@ const authController = require('../controllers/authController');
  *               role:
  *                 type: string
  *                 description: The user's role (e.g., user, admin)
- *                 enum: [employee, admin]
- *                 default: employee
+ *                 enum: [user, admin]
+ *                 default: user
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -67,6 +70,15 @@ const authController = require('../controllers/authController');
  *                       type: string
  *       400:
  *         description: Bad request, e.g., email already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       403:
+ *         description: Forbidden, admin access only
  *         content:
  *           application/json:
  *             schema:
@@ -119,7 +131,7 @@ const authController = require('../controllers/authController');
  *                   type: string
  */
 
-router.post('/register', authController.register);
+router.post('/register', authenticate, adminOnly, authController.register);
 router.post('/login', authController.login);
 
 module.exports = router;
