@@ -3,14 +3,14 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-const registerUser = async ({ name, surname, email, password, role }) => {
+const registerUser = async ({ firstName, lastName, email, password, role }) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
         throw new Error('Email already exists');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ name, surname, email, password: hashedPassword, role });
+    const user = new User({ firstName, lastName, email, password: hashedPassword, role });
     return user.save(); // Saves the user to the `users` collection
 };
 

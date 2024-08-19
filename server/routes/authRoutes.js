@@ -25,15 +25,15 @@ const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - surname
+ *               - firstName
+ *               - lastName
  *               - email
  *               - password
  *             properties:
- *               name:
+ *               firstName:
  *                 type: string
  *                 description: The user's first name
- *               surname:
+ *               lastName:
  *                 type: string
  *                 description: The user's last name
  *               email:
@@ -45,8 +45,8 @@ const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
  *               role:
  *                 type: string
  *                 description: The user's role (e.g., user, admin)
- *                 enum: [user, admin]
- *                 default: user
+ *                 enum: [employee, admin]
+ *                 default: employee
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -60,9 +60,9 @@ const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
  *                 user:
  *                   type: object
  *                   properties:
- *                     name:
+ *                     firstName:
  *                       type: string
- *                     surname:
+ *                     lastName:
  *                       type: string
  *                     email:
  *                       type: string
