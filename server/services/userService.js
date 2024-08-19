@@ -29,4 +29,31 @@ const authenticateUser = async ({ email, password }) => {
     return token;
 };
 
-module.exports = { registerUser, authenticateUser };
+const getAllUsers = async () => {
+    return User.find();
+}
+
+const getUserById = async (id) => {
+    return User.findById(id);
+}
+
+const deleteUserById = async (id) => {
+    return User.findByIdAndDelete(id);
+}
+
+const updateUserById = async (id, { firstName, lastName, email, password, role }) => {
+    const user = await User.findById(id);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    user.firstName = firstName? firstName : user.firstName;
+    user.lastName = lastName? lastName : user.lastName;
+    user.role = role? role : user.role;
+    user.email = email? email : user.email;
+    user.password = password? await bcrypt.hash(password, 10) : user.password;
+
+    return user.save();
+}
+
+module.exports = { registerUser, authenticateUser, getAllUsers, getUserById, deleteUserById, updateUserById};
