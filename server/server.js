@@ -15,7 +15,7 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
-app.use('/api/auth', authRoutes);
+app.use('/api/users/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 // Connect to MongoDB

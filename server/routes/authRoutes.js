@@ -5,14 +5,7 @@ const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: Authentication and user management
- */
-
-/**
- * @swagger
- * /auth/register:
+ * /users/auth/register:
  *   post:
  *     summary: Register a new user (Admin only)
  *     tags: [Auth]
@@ -90,7 +83,7 @@ const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * /auth/login:
+ * /users/auth/login:
  *   post:
  *     summary: Login a user
  *     tags: [Auth]
