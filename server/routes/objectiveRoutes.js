@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const objectiveController = require('../controllers/objectiveController');
-
+const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
+const { restrictDeadlineUpdate, verifyUpdateAccessForObjectives, verifyAuthenticityOfEmployee } = require('../middlewares/objectiveMiddleware');
 /**
  * @swagger
  * tags:
@@ -216,9 +217,6 @@ const objectiveController = require('../controllers/objectiveController');
  *                     title:
  *                       type: string
  *                       description: The title of the sub-objective
- *                     description:
- *                       type: string
- *                       description: The detailed description of the sub-objective
  *                     gradeAdmin:
  *                       type: number
  *                       description: The grade given by an admin for this sub-objective
@@ -267,9 +265,6 @@ const objectiveController = require('../controllers/objectiveController');
  *                       title:
  *                         type: string
  *                         description: The title of the sub-objective
- *                       description:
- *                         type: string
- *                         description: The detailed description of the sub-objective
  *                       gradeAdmin:
  *                         type: number
  *                         description: The grade given by an admin for this sub-objective
@@ -341,9 +336,6 @@ const objectiveController = require('../controllers/objectiveController');
  *                     title:
  *                       type: string
  *                       description: The title of the sub-objective
- *                     description:
- *                       type: string
- *                       description: The detailed description of the sub-objective
  *                     gradeAdmin:
  *                       type: number
  *                       description: The grade given by an admin for this sub-objective
@@ -392,9 +384,6 @@ const objectiveController = require('../controllers/objectiveController');
  *                       title:
  *                         type: string
  *                         description: The title of the sub-objective
- *                       description:
- *                         type: string
- *                         description: The detailed description of the sub-objective
  *                       gradeAdmin:
  *                         type: number
  *                         description: The grade given by an admin for this sub-objective
@@ -481,10 +470,10 @@ const objectiveController = require('../controllers/objectiveController');
  *                   description: Error message
  */
 
-router.get('', objectiveController.getAllObjectives);
-router.get('/:id', objectiveController.getObjectiveById);
-router.post('', objectiveController.createObjective);
-router.put('/:id', objectiveController.updateObjectiveById);
-router.delete('/:id', objectiveController.deleteObjectiveById);
+router.get('', authenticate, adminOnly, objectiveController.getAllObjectives);
+router.get('/:id', authenticate, verifyAuthenticityOfEmployee, objectiveController.getObjectiveById);
+router.post('', authenticate, adminOnly, verifyUpdateAccessForObjectives, objectiveController.createObjective);
+router.put('/:id', authenticate, restrictDeadlineUpdate, verifyUpdateAccessForObjectives, objectiveController.updateObjectiveById);
+router.delete('/:id', authenticate, adminOnly, objectiveController.deleteObjectiveById);
 
 module.exports = router;

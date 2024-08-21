@@ -24,8 +24,31 @@ const createObjective = async (objectiveData) => {
 };
 
 const updateObjectiveById = async (id, updateData) => {
-    return await Objective.findByIdAndUpdate(id, updateData);
+    // If there are subObjectives in the update data, calculate the mean grades
+    if (updateData.subObjectives && Array.isArray(updateData.subObjectives) && updateData.subObjectives.length > 0) {
+        let totalGradeEmployee = 0;
+        let totalGradeAdmin = 0;
+        let subObjectiveCount = updateData.subObjectives.length;
+
+        // Calculate the total grades for subObjectives
+        for (let subObjective of updateData.subObjectives) {
+            if (subObjective.gradeEmployee !== undefined) {
+                totalGradeEmployee += subObjective.gradeEmployee;
+            }
+            if (subObjective.gradeAdmin !== undefined) {
+                totalGradeAdmin += subObjective.gradeAdmin;
+            }
+        }
+
+        // Calculate the mean grades
+        updateData.gradeEmployee = subObjectiveCount > 0 ? totalGradeEmployee / subObjectiveCount : 0;
+        updateData.gradeAdmin = subObjectiveCount > 0 ? totalGradeAdmin / subObjectiveCount : 0;
+    }
+
+    // Update the objective with the calculated mean grades
+    return await Objective.findByIdAndUpdate(id, updateData, { new: true });
 };
+
 
 const deleteObjectiveById = async (id) => {
     userId = (await Objective.findById(id)).assignedTo;
