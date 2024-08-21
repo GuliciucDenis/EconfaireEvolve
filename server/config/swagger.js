@@ -4,9 +4,9 @@ const swaggerOptions = {
     swaggerDefinition: {
       openapi: '3.0.0',
       info: {
-        title: 'User Management API',
+        title: 'eVolve API',
         version: '1.0.0',
-        description: 'API for managing users and authentication',
+        description: 'API for eVolve application',
       },
       components: {
         securitySchemes: {
