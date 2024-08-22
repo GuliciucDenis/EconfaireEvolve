@@ -4,6 +4,9 @@ const User = require('../models/userModel');
 
 // Middleware to authenticate and check if the user is an admin
 const authenticate = (req, res, next) => {
+    if (!req.header('Authorization')) {
+        return res.status(401).json({ error: 'Access denied, no authorization header provided' });
+    }
     const token = req.header('Authorization').replace('Bearer ', '');
     if (!token) {
         return res.status(401).json({ error: 'Access denied, no token provided' });
@@ -26,4 +29,4 @@ const adminOnly = (req, res, next) => {
     next();
 };
 
-module.exports = { authenticate, adminOnly };
+module.exports = { authenticate, adminOnly};
