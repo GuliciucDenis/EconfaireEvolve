@@ -1,0 +1,157 @@
+.login-background {
+  width: 100%;
+  height: 100vh;
+  background: url('../../images/LogInBackground.jpg') no-repeat center center/cover;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.login-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+                              rgba(174, 217, 72, 0.8) 0%,    
+                              rgba(174, 217, 72, 0.8) 20%,  
+                              rgba(96, 147, 207, 0.8) 80%,   
+                              rgba(96, 147, 207, 0.8) 100%); 
+  pointer-events: none;
+}
+
+.login-content {
+  z-index: 2;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.dots-up {
+  width: 100px;
+  height: 100px;
+  padding: 40px;
+}
+
+footer {
+display: flex;
+justify-content: flex-end;
+}
+
+.dots-down {
+margin-right: 40px;
+width: 100px;
+height: 100px;
+rotate: 180deg;
+margin-top: 100px;
+}
+
+.evolve-logo {
+width: 300px;
+height: 150px;
+margin-right: 20%;
+margin-top: 6%;
+z-index: 3; 
+position: relative; 
+}
+
+header {
+display: flex;
+justify-content: space-between;
+}
+
+.first-blob {
+width: 500px;
+height: 200px;
+background-color: #aed948; 
+border-radius: 46% 14% 38% 62% / 58% 17% 68% 42%;
+background: linear-gradient(100deg,
+                        rgba(0, 0, 0, 0.8) 10%,    
+                          rgba(0, 0, 0, 0.8) 70%,     
+                          rgba(96, 147, 207, 0.8) 95%,
+                          rgba(96, 147, 207, 0) 100%); 
+z-index: 2; 
+position: absolute; 
+right: 13%; 
+top: 10%; 
+}
+
+.second-blob {
+width: 550px;
+height: 700px;
+border-radius: 91% 80% 98% 83% / 80% 100% 72% 78%;
+background: linear-gradient(100deg, 
+                          rgba(174, 217, 72, 0.8) 0%,   
+                          rgba(174, 217, 72, 0.8) 40%,   
+                          rgba(135, 182, 139, 0.8) 55%,  
+                          rgba(96, 147, 207, 0.8) 85%,   
+                          rgba(96, 148, 207, 0.345) 90%,   
+                          rgba(96, 147, 207, 0) 100%);   
+z-index: 1; 
+position: absolute; 
+right: 10%;
+top: 10px;  
+}
+
+.man-ladder {
+width: 800px;
+height: 800px;
+position: absolute;
+margin-top: -250px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 22%; 
+  top: 60%; 
+  transform: translateY(-50%); 
+  z-index: 2; 
+  width: 250px; 
+  height: auto; 
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 10px; 
+}
+
+.input-box p {
+  font-size: 16px; 
+  margin-left: 0; 
+  color: white;
+  margin-bottom: 5px; 
+}
+
+.input-box input {
+  width: 100%; 
+  height: 35px; 
+  border-radius: 20px; 
+  border: 1px solid #ccc;
+  font-size: 14px; 
+  padding-left: 15px; 
+  box-sizing: border-box; 
+}
+
+.input-box input::placeholder {
+  color: grey; 
+  opacity: 0.5;   
+}
+
+.login-button {
+  width: 100px;
+  height: 50px;
+  border-radius: 20px;
+}
