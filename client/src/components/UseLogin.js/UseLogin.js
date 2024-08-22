@@ -9,7 +9,6 @@ const useLogin = () => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      
       const response = await fetch('http://localhost:8082/api/users/auth/login', {
         method: 'POST',
         headers: {
