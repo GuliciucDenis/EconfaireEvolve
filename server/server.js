@@ -5,12 +5,16 @@ const userRoutes = require('./routes/userRoutes');
 const objectiveRoutes = require('./routes/objectiveRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./config/swagger');
+const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
+
+// Allow app to accept requests from any origin
+app.use(cors());
 
 // Swagger documentation route
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
