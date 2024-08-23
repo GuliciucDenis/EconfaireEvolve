@@ -1,20 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
+const { authenticate, adminOnly } = require('../middlewares/authMiddleware');
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: Authentication and user management
- */
-
-/**
- * @swagger
- * /auth/register:
+ * /users/auth/register:
  *   post:
- *     summary: Register a new user
+ *     summary: Register a new user (Admin only)
  *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -22,15 +18,15 @@ const authController = require('../controllers/authController');
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - surname
+ *               - firstName
+ *               - lastName
  *               - email
  *               - password
  *             properties:
- *               name:
+ *               firstName:
  *                 type: string
  *                 description: The user's first name
- *               surname:
+ *               lastName:
  *                 type: string
  *                 description: The user's last name
  *               email:
@@ -57,9 +53,9 @@ const authController = require('../controllers/authController');
  *                 user:
  *                   type: object
  *                   properties:
- *                     name:
+ *                     firstName:
  *                       type: string
- *                     surname:
+ *                     lastName:
  *                       type: string
  *                     email:
  *                       type: string
@@ -74,11 +70,20 @@ const authController = require('../controllers/authController');
  *               properties:
  *                 error:
  *                   type: string
+ *       403:
+ *         description: Forbidden, admin access only
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
  */
 
 /**
  * @swagger
- * /auth/login:
+ * /users/auth/login:
  *   post:
  *     summary: Login a user
  *     tags: [Auth]
@@ -119,7 +124,7 @@ const authController = require('../controllers/authController');
  *                   type: string
  */
 
-router.post('/register', authController.register);
+router.post('/register', authenticate, adminOnly, authController.register);
 router.post('/login', authController.login);
 
 module.exports = router;
