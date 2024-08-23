@@ -1,0 +1,77 @@
+.navbar {
+    background-color: #6093cf;
+    height: 80%;
+    width: 80px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    margin-left: 2%;
+    margin-top: 5%;
+  }
+  
+  .navbar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .home-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  .icon-container {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease;
+    border: 5px solid #aed948;
+  }
+  
+  .icon-container:hover {
+    background-color: #aed948;
+  }
+  
+  .icon-container.active {
+    background-color: #aed948;; /* Use the full green hex code (#008000) */
+  }
+  
+  .home-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .search-icon {
+    width: 40px;
+    height: 30px;
+  }
+  
+  .target-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .history-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .help-icon {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .logout-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
