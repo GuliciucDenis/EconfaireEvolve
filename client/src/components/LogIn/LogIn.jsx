@@ -17,50 +17,50 @@ const LogIn = () => {
 
   return (
     <div className="login-page-container">
-    <div className="login-background">
-      <div className="login-content">
-        <header>
-          <img src={Dots} className='dots-upwards' alt="Decorative Dots" />
-          <img src={EvolveLogo} className='evolve-logo' alt="Evolve Logo" />
-          <div className='first-blob'></div>
-        </header>
-        <main>
-          <img src={LogInImage} className='man-ladder' alt="Man on ladder" />
-          <div className='second-blob'></div>
-          <div className='wrapper'>
-            <form className='login-form' onSubmit={handleSubmit}>
-              <div className='input-box'>
-                <p>Email:</p>
-                <input 
-                  type='email' 
-                  placeholder='Email' 
-                  required
-                  onChange={(e) => setEmail(e.target.value)}
-                  value={email}
-                />
-              </div>
-              <div className='input-box'>
-                <p>Password:</p>
-                <input 
-                  type='password' 
-                  placeholder='Password' 
-                  required
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                />
-              </div>
-              <button type="submit" className='login-button' disabled={loading}>
-                {loading ? 'Logging in...' : 'Log In'}
-              </button>
-              {error && <p className="error-message">{error}</p>}
-            </form>
-          </div>
-        </main>
-        <footer>
-          <img src={Dots} className='dots-down' alt="Decorative Dots" />
-        </footer>
+      <div className="login-background">
+        <div className="login-content">
+          <header>
+            <img src={Dots} className='dots-upwards' alt="Decorative Dots" />
+            <img src={EvolveLogo} className='evolve-logo' alt="Evolve Logo" />
+            <div className='first-blob'></div>
+          </header>
+          <main>
+            <img src={LogInImage} className='man-ladder' alt="Man on ladder" />
+            <div className='second-blob'></div>
+            <div className='wrapper'>
+              <form className='login-form' onSubmit={handleSubmit}>
+                <div className='input-box'>
+                  <p>Email:</p>
+                  <input 
+                    type='email' 
+                    placeholder='Email' 
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                    value={email}
+                  />
+                </div>
+                <div className='input-box'>
+                  <p>Password:</p>
+                  <input 
+                    type='password' 
+                    placeholder='Password' 
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                  />
+                </div>
+                <button type="submit" className='login-button' disabled={loading}>
+                  {loading ? 'Logging in...' : 'Log In'}
+                </button>
+                {error && <p className="error-message">{error}</p>}
+              </form>
+            </div>
+          </main>
+          <footer>
+            <img src={Dots} className='dots-down' alt="Decorative Dots" />
+          </footer>
+        </div>
       </div>
-    </div>
     </div>
   );
 }

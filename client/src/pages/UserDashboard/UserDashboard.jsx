@@ -1,12 +1,18 @@
 import React from 'react';
 import UserTable from '../../components/users/UserTable';
 import './UserDashboard.css';
+import Navbar from '../../components/common/navbar/Navbar';
 
 const UserDashboard = () => {
   return (
-    <div className="container mx-auto px-4 py-8">
-        <h1 className="text-2xl font-bold mb-4">User Management</h1>
-      <UserTable />
+    <div className="user-dashboard">
+      <Navbar />
+      <div className="content">
+        <div className="title-container">
+          <h1 className="title">User Management</h1>
+        </div>
+        <UserTable />
+      </div>
     </div>
   );
 };
