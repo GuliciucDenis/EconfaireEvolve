@@ -3,8 +3,6 @@ import getJwt from './jwtService';
 
 export const getUsers = async () => {
     const token = getJwt();
-    console.log('API URL:', process.env.REACT_APP_API_URL); // Add this line for debugging
-    console.log(token);
     try {
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/users`, {
             headers: {

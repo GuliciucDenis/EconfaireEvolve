@@ -5,7 +5,7 @@ import target from '../../../images/target.png';
 import history from '../../../images/icons8-history-90.png';
 import help from '../../../images/icons8-help-100.png';
 import logout from '../../../images/logout 1.png';
-import searchUser from '../../../images/searchUser.png';
+import searchUser from '../../../images/userDashboard.png';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
@@ -23,9 +23,9 @@ const Navbar = () => {
             <img src={home} className="home-icon" alt="Home" />
           </div>
         </Link>
-        <Link to="/searchUser" className="home-link">
-          <div className={getIconClass('/searchUser')}>
-            <img src={searchUser} className="search-icon" alt="Search User" />
+        <Link to="/userDashboard" className="home-link">
+          <div className={getIconClass('/userDashboard')}>
+            <img src={searchUser} className="search-icon" alt="User Dashboard" />
           </div>
         </Link>
         <Link to="/objectives" className="home-link">
