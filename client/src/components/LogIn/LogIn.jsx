@@ -16,10 +16,11 @@ const LogIn = () => {
   }
 
   return (
+    <div className="login-page-container">
     <div className="login-background">
       <div className="login-content">
         <header>
-          <img src={Dots} className='dots-up' alt="Decorative Dots" />
+          <img src={Dots} className='dots-upwards' alt="Decorative Dots" />
           <img src={EvolveLogo} className='evolve-logo' alt="Evolve Logo" />
           <div className='first-blob'></div>
         </header>
@@ -59,6 +60,7 @@ const LogIn = () => {
           <img src={Dots} className='dots-down' alt="Decorative Dots" />
         </footer>
       </div>
+    </div>
     </div>
   );
 }
