@@ -9,7 +9,11 @@ export const getUsers = async () => {
                 'Authorization': `Bearer ${token}`
             }
         });
-        return response.data.users;
+        return response.data.users.map(user => ({
+            ...user,
+            id: user._id,
+            _id: undefined
+        }));
     } catch (error) {
         console.error('Error fetching users:', error);
         throw error;

@@ -1,35 +1,13 @@
 .user-table-container {
-    margin-left: 80px; /* Adjust this value based on the width of your navbar */
-    padding: 20px;
-    height: 100vh;
-    /* background: linear-gradient(90deg, 
-      rgba(174, 217, 72, 0.8) 0%,    
-      rgba(174, 217, 72, 0.8) 20%,  
-      rgba(96, 147, 207, 0.8) 80%,   
-      rgba(96, 147, 207, 0.8) 100%); */
-  }
-  
-  .user-table {
-    /* background-color: rgba(255, 255, 255, 0.9); */
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .user-table th {
-    background-color: #aed948;
-    color: white;
-    font-size: 1.2rem; /* Increase font size for table headers */
-  }
-  
-  .user-table td {
-    color: #333;
-    font-size: 1.1rem; /* Increase font size for table cells */
-  }
-  
-  .user-table tr:nth-child(even) {
-    background-color: rgba(174, 217, 72, 0.1);
-  }
-  
-  .user-table tr:nth-child(odd) {
-    background-color: rgba(96, 147, 207, 0.1);
-  }
+  padding: 20px;
+  width: 1200px;
+  position: relative;
+  left: 120px;
+  top: 110px;
+}
+
+.user-table-container *{
+  font-size: 15px;
+  outline: none;
+}
+
