@@ -2,11 +2,14 @@ import React from "react";
 import ProfilePic from '../../images/ProfilePic.png';
 import Background from '../../components/background/Background.jsx';
 import './Profile.css';
+import Navbar from "../../components/common/navbar/Navbar";
 
 const Profile = () => {
   return (
     <div className="profile-page">
       <Background />
+      <Navbar/>
+      <h1 className="profile-title">Profile</h1>
       <div className="profile-content">
         <div className="image-and-modify-container">
           <div className="profile-container">

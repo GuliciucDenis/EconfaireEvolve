@@ -13,32 +13,38 @@
   z-index: 10;
   padding: 20px;
   overflow-y: auto;
+  padding-top: 2px;
 }
 
 .image-and-modify-container {
-  display: flex;
+  display: inline-block;
   flex-direction: column;
   align-items: center;
-  margin-right: 50px;
+  margin-left: 300px;
+  margin-top: 80px;
 }
 
 .profile-container {
-  margin-top: 100px;
+  margin-top: 80px;
+  margin-left: 100px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  height: 80%;
 }
 
 .profile-image {
-  width: 150px;
-  height: 150px;
+  width: 200px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 60px;
+  margin-top: 10px;
 }
 
 .modify-password-container {
   margin-top: 0;
+  margin-left: 0;
 }
+
 .modify-password-button {
   background-color: #6296CD;
   color: white;
@@ -46,16 +52,27 @@
   border-radius: 80px;
   cursor: pointer;
   padding: 8px 20px;
-  font-size: 14px;
+  font-size: 16px;
   font-family: 'Krona One';
-  width: 180px;
+  width: 200px;
   height: 30px;
-  margin: 0;
+  margin:0;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  padding: 0;
+  margin-left: 100px;
+  margin-bottom: 10px;
 }
 
 .profile-table-container {
-  display: flex;
+  display: inline-block;
   align-items: center;
+  margin-left: 150px;
+  margin-top: 250px;
+  position: relative;
 }
 .profile-table {
     display: inline-block;
@@ -87,38 +104,14 @@
   .profile-table td:last-child {
     text-align: right;
   }
-
-/*
-.profile-image  {
-    width: 200px;
-    display: inline-block;
-    padding-left: 6px;
-  }
-  .profile-container {
-    margin-top: 200px;
-    margin-bottom: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-  }
-  .modify-password-container {
-    position: top;
-  }
-  .modify-password-button {
-    background-color: #6296CD;
+  .profile-title {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 32px;
+    font-weight: bold;
     color: white;
-    border: none;
-    border-radius: 80px;
-    cursor: pointer;
-    padding: 8px 50px;
-    font-size: 16px;
-    font-family: 'Krona One';
+    z-index: 20;
+    margin-left: 400px;
+    margin-top: 50px;
   }
-  .image-and-modify-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 70px;
-  }
-   
-    */
