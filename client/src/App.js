@@ -2,8 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import LogIn from './components/LogIn/LogIn';
 import Home from './pages/Home/Home';
-import Profile from '../src/components/profileimage/ProfileImage';
-import Background from './components/background/Background';
+import Profile from './pages/profile/Profile.jsx';
 
 function App() {
   return (
