@@ -1,9 +1,6 @@
 .user-table-container {
   padding: 20px;
   width: 1200px;
-  position: relative;
-  left: 120px;
-  top: 110px;
 }
 
 .user-table-container *{
