@@ -72,7 +72,7 @@ const UserTable = () => {
         <div>
           <Button auto shadow color="primary" onClick={() => {
             navigate('/create-user');
-          }}>Create User</Button>
+          }}>Add New User</Button>
         </div>
       </div>
       <Table 

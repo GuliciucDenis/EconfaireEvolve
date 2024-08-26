@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CreateUserForm.css";
 
 const CreateUserForm = () => {
@@ -7,6 +8,8 @@ const CreateUserForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,9 +84,12 @@ const CreateUserForm = () => {
           />
         </div>
         <div className="form-row button-row">
-          <button type="submit">Creeaza</button>
+        <button type="button" onClick={() => navigate("/user-dashboard")}>
+            Go back
+          </button>
+          <button type="submit">Add</button>
           <button type="button" onClick={resetForm}>
-            Renunta
+            Clear
           </button>
         </div>
       </form>
