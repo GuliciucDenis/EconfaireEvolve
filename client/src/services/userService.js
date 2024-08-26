@@ -1,5 +1,6 @@
 import axios from 'axios';
 import getJwt from './jwtService';
+import {jwtDecode} from 'jwt-decode';
 
 export const getUsers = async () => {
     const token = getJwt();
@@ -16,6 +17,36 @@ export const getUsers = async () => {
         }));
     } catch (error) {
         console.error('Error fetching users:', error);
+        throw error;
+    }
+};
+
+export const getUserById = async () => {
+    const token = getJwt(); // Assumed function to get the JWT token
+
+    try {
+        if (!token) {
+            throw new Error('No token found');
+        }
+
+        // Decode the JWT token to extract the user ID
+        const decodedToken = jwtDecode(token); // Decode the JWT
+        const userId = decodedToken.id; // Extract the ID from the decoded token
+
+        if (!userId) {
+            throw new Error('User ID not found in token');
+        }
+
+        // Make the API call to fetch the user data by ID
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        return response.data.user;
+    } catch (error) {
+        console.error('Error fetching user by ID:', error);
         throw error;
     }
 };
