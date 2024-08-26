@@ -1,0 +1,115 @@
+.create-user-form-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 20px auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  font-family: "Arial", sans-serif;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.role-select {
+  position: relative;
+}
+
+.role-select select {
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 10px 35px 10px 15px;
+  border-radius: 6px;
+  font-size: 1rem;
+  appearance: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.role-select select:hover {
+  background-color: #e0e0e0;
+}
+
+.role-select::after {
+  content: "▼";
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #666;
+}
+
+.create-user-form .form-row {
+  margin-bottom: 20px;
+}
+
+.create-user-form input {
+  width: 100%;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.create-user-form input:focus {
+  background-color: #ffffff;
+  box-shadow: 0 0 0 2px #6093cf;
+  outline: none;
+}
+
+.create-user-form input::placeholder {
+  color: #999;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.create-user-form button {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.create-user-form button:hover {
+  transform: translateY(-2px);
+}
+
+.create-user-form button[type="submit"] {
+  background-color: #6093cf;
+}
+
+.create-user-form button[type="submit"]:hover {
+  background-color: #4a7ab3;
+}
+
+.create-user-form button[type="button"] {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.create-user-form button[type="button"]:hover {
+  background-color: #d0d0d0;
+}
