@@ -1,5 +1,5 @@
 .faq-card {
-    background-color: #6195CF;
+    background: linear-gradient(90deg, rgba(85,123,167,0.9) 0%, rgba(71,95,123,0.9) 5%, rgba(71,95,123,0.9) 95%, rgba(85,123,167,0.9) 100%);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
     border-radius: 16px;
     padding: 0px;
@@ -11,12 +11,16 @@
   }
   
   .faq-card-title {
-    color: #AED948;
+    color: #D7E5A3;
     font-size: 1.4rem;
     font-weight: bold;
   }
   
   .faq-card-description {
-    color: white;
+    color: #C3DC7C;
     font-size: 1rem;
+  }
+
+  .divider {
+    background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
   }

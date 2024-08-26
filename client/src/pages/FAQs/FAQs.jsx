@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Searchbar from '../../components/common/searchbar/Searchbar';
 import Navbar from '../../components/common/navbar/Navbar';
 import Background from '../../components/background/Background';
@@ -6,9 +6,46 @@ import FAQCard from '../../components/common/faqcard/faqcard';
 import './FAQs.css';
 
 function FAQs() {
-    const handleSearch = (searchTerm) => {
-        console.log('Searching for:', searchTerm);
+    const [searchTerm, setSearchTerm] = useState('');
+
+    const handleSearch = (term) => {
+        setSearchTerm(term.toLowerCase());
     };
+
+    const faqList = [
+        {
+            question: "Ce este Econfaire eVolve™?",
+            answer: "Econfaire eVolve™ este o aplicație care ajută angajații Econfaire să își dezvolte abilitățile."
+        },
+        {
+            question: "Cum îmi creez un cont?",
+            answer: "Pentru a crea un cont, contactați un Admin."
+        },
+        {
+            question: "Econfaire eVolve™ este gratuit?",
+            answer: "Da! Econfaire eVolve™ oferă atât funcții de bază cât și funcții avansate in mod gratuit."
+        },
+        {
+            question: "Există o aplicație mobilă disponibilă?",
+            answer: "Momentan nu, dar Econfaire eVolve™ promite aplicații mobile pentru iOS și Android, permițându-vă să vă gestionați obiectivele din mers."
+        },
+        {
+            question: "Cum pot contacta asistența tehnică?",
+            answer: "Puteți contacta unul dintre Admini. Totuși, incurajăm căutarea soluției in pagina de FAQs inainte de a contacta un Admin. Timpul este prețios! :)"
+        },
+        {
+            question: "Cine a creat Econfaire eVolve™?",
+            answer: "Econfaire eVolve™ a fost creat de catre ..."
+        },
+    ];
+
+    const sortedFAQs = faqList.sort((a, b) => {
+        const aMatch = a.question.toLowerCase().includes(searchTerm) || a.answer.toLowerCase().includes(searchTerm);
+        const bMatch = b.question.toLowerCase().includes(searchTerm) || b.answer.toLowerCase().includes(searchTerm);
+        if (aMatch && !bMatch) return -1;
+        if (!aMatch && bMatch) return 1;
+        return 0;
+    });
   
     return (
         <div className="faqs-page">
@@ -20,11 +57,9 @@ function FAQs() {
                         <Searchbar onSearch={handleSearch} />
                     </div>
                     <div className="faq-cards-container" style={{ overflowY: 'auto', maxHeight: 'calc(100vh - 100px)'}}>
-                        <FAQCard question="What is Econfaire Evolve?" answer="Econfaire Evolve is a platform that allows you to create and manage your own events." />
-                        <FAQCard question="How do I create an event?" answer="To create an event, log in to your account and click on the 'Create Event' button. Follow the prompts to enter event details." />
-                        <FAQCard question="Is Econfaire Evolve free to use?" answer="Econfaire Evolve offers both free and premium plans. The basic features are free, while advanced features may require a subscription." />
-                        <FAQCard question="Can I customize my event page? E o intrebare mai lunga ca sa testez daca isi da bine resize xoxo" answer="Yes, Econfaire Evolve provides various customization options for your event page, including themes, colors, and layout choices." />
-                        <FAQCard question="How do I manage ticket sales?" answer="Econfaire Evolve has built-in ticket management features. You can set up different ticket types, prices, and track sales through your event dashboard. Econfaire Evolve has built-in ticket management features. You can set up different ticket types, prices, and track sales through your event dashboard." />
+                        {sortedFAQs.map((faq, index) => (
+                            <FAQCard key={index} question={faq.question} answer={faq.answer} />
+                        ))}
                     </div>
                 </div>
             </div>

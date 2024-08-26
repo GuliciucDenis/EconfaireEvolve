@@ -10,7 +10,7 @@ const FAQCard = ({ question, answer }) => {
           <p className="faq-card-title">{question}</p>
         </div>
       </CardHeader>
-      <Divider/>
+      <Divider className="divider"/>
       <CardBody>
         <p className="faq-card-description">{answer}</p>
       </CardBody>
