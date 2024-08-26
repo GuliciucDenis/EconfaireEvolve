@@ -23,8 +23,7 @@ function App() {
         <Route path='/help' element={<Help/>}/>
         <Route path='/history' element={<History/>}/>
         <Route path='/logout' element={<LogOut/>}/>
-        <Route path='/searchUser' element={<SearchUser/>}/>
-      </Routes>
+        </Routes>
     </Router>
     </NextUIProvider>
   );
