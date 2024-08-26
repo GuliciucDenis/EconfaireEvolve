@@ -9,8 +9,8 @@ const Profile = () => {
   return (
     <div className="profile-page">
       <Background />
-      <Navbar/>
       <img src={ProfilePicHeader} alt="Profile Pic Header" className="profile-pic-header" />
+      <Navbar className="navbar"/>
       <h3 className="profile-username">Username</h3>
       <h1 className="profile-title">Profile</h1>
       <div className="profile-content">
