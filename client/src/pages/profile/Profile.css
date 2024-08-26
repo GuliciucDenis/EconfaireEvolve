@@ -115,3 +115,20 @@
     margin-left: 400px;
     margin-top: 50px;
   }
+  .profile-pic-header {
+    position: absolute;
+    width: 50px;
+    z-index: 10;
+    object-fit: cover;
+    margin-left: 30px;
+    margin-top: 10px;
+  }
+  .profile-username {
+    position: absolute;
+    margin-left: 90px;
+    margin-top: 20px;
+    z-index: 20;
+    color: white;
+    font-size: 20px;
+    font-family: 'Krona One'; 
+  }
