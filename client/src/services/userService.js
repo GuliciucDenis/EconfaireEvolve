@@ -22,7 +22,7 @@ export const getUsers = async () => {
 
 export const createUser = async (user) => {
     const token = getJwt();
-    const response = await axios.post(`${process.env.API_URL}/users`, user, {
+    const response = await axios.post(`${process.env.REACT_APP_API_URL}/users/auth/register`, user, {
         headers: {
             'Authorization': `Bearer ${token}`
         }

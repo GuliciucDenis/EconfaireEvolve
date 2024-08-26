@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createUser } from "../../services/userService";
 import "./CreateUserForm.css";
 
 const CreateUserForm = () => {
@@ -7,16 +8,27 @@ const CreateUserForm = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user");
+  const [role, setRole] = useState("employee");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Here you would typically call an API to create the user
-    console.log({ firstName, lastName, email, password, role });
-    // Reset form after submission
-    resetForm();
+    try {
+        const newUser = {
+          firstName,
+          lastName,
+          email,
+          password,
+          role
+        };
+        console.log(newUser);
+        const response = await createUser(newUser);
+        console.log("User created:", response);
+        resetForm();
+      } catch (error) {
+        console.error("Error creating user:", error);
+      }
   };
 
   const resetForm = () => {
@@ -37,7 +49,7 @@ const CreateUserForm = () => {
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="user">Employee</option>
+            <option value="employee">Employee</option>
             <option value="admin">Administrator</option>
           </select>
         </div>
