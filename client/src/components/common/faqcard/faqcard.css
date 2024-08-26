@@ -1,0 +1,22 @@
+.faq-card {
+    background-color: #6195CF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 16px;
+    padding: 0px;
+    margin: 10px;
+    max-width: 800px;
+    min-width: 400px;
+    max-height: 200px;
+    min-height: 100px;
+  }
+  
+  .faq-card-title {
+    color: #AED948;
+    font-size: 1.4rem;
+    font-weight: bold;
+  }
+  
+  .faq-card-description {
+    color: white;
+    font-size: 1rem;
+  }

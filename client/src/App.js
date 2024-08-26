@@ -9,6 +9,7 @@ import Help from './pages/help/Help';
 import History from './pages/history/History';
 import LogOut from './pages/logout/logout';
 import SearchUser from './pages/searchUser/SearchUser';
+import FAQs from './pages/FAQs/FAQs';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path='/history' element={<History/>}/>
         <Route path='/logout' element={<LogOut/>}/>
         <Route path='/searchUser' element={<SearchUser/>}/>
+        <Route path='/faqs' element={<FAQs/>}/>
       </Routes>
     </Router>
     </NextUIProvider>
