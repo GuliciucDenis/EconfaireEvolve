@@ -1,4 +1,4 @@
-.user-dashboard {
+.create-user-page {
   display: flex;
   height: 100vh;
 }
@@ -7,4 +7,3 @@
   flex: 1;
   padding: 20px;
 }
-

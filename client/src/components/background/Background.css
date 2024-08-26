@@ -4,6 +4,7 @@
   background: white;
   position: absolute;
   overflow: hidden;
+  z-index: -1;
 }
 
 svg.rectangle-up {

@@ -13,9 +13,11 @@ import Objectives from "./pages/objectives/Objectives";
 import Help from "./pages/help/Help";
 import History from "./pages/history/History";
 import LogOut from "./pages/logout/logout";
-import SearchUser from "./pages/searchUser/SearchUser";
 import Profile from "./pages/profile/Profile";
-import CreateUserForm from "./pages/CreateUserForm/CreateUserForm";
+import CreateUser from "./pages/CreateUser/CreateUser";
+
+
+
 function App() {
   return (
     <NextUIProvider>
@@ -24,13 +26,13 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/userDashboard" element={<UserDashboard />} />
+          <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/objectives" element={<Objectives />} />
           <Route path="/help" element={<Help />} />
           <Route path="/history" element={<History />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/createUserF" element={<CreateUserForm />} />
+          <Route path="/create-user" element={<CreateUser />} />
         </Routes>
       </Router>
     </NextUIProvider>

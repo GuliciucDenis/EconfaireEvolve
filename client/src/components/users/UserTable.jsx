@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, Spacer } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button} from "@nextui-org/react";
 import { getUsers } from '../../services/userService';
 import './UserTable.css';
+import { useNavigate } from "react-router-dom"
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchName, setSearchName] = useState('');
   const [searchObjective, setSearchObjective] = useState('');
+
+  const navigate = useNavigate()
 
   useEffect(() => { 
     const fetchUsers = async () => {
@@ -67,7 +70,9 @@ const UserTable = () => {
           <Button auto shadow>Filter</Button>
         </div>
         <div>
-          <Button auto shadow color="primary">Create User</Button>
+          <Button auto shadow color="primary" onClick={() => {
+            navigate('/create-user');
+          }}>Create User</Button>
         </div>
       </div>
       <Table 

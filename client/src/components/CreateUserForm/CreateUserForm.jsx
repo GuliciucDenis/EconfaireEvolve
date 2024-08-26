@@ -27,14 +27,14 @@ const CreateUserForm = () => {
   return (
     <div className="create-user-form-container">
       <div className="form-header">
-        <h2>Tip utilizator</h2>
+        <h2>User Role</h2>
         <div className="role-select">
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="user">User</option>
+            <option value="user">Employee</option>
             <option value="admin">Administrator</option>
           </select>
         </div>
@@ -47,7 +47,7 @@ const CreateUserForm = () => {
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
-            placeholder="Nume"
+            placeholder="First Name"
           />
         </div>
         <div className="form-row">
@@ -57,7 +57,7 @@ const CreateUserForm = () => {
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
-            placeholder="Prenume"
+            placeholder="Last Name"
           />
         </div>
         <div className="form-row">
@@ -77,7 +77,7 @@ const CreateUserForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            placeholder="Parola"
+            placeholder="Password"
           />
         </div>
         <div className="form-row button-row">

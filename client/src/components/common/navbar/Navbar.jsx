@@ -23,8 +23,8 @@ const Navbar = () => {
             <img src={home} className="home-icon" alt="Home" />
           </div>
         </Link>
-        <Link to="/userDashboard" className="home-link">
-          <div className={getIconClass('/userDashboard')}>
+        <Link to="/user-dashboard" className="home-link">
+          <div className={getIconClass('/user-dashboard')}>
             <img src={searchUser} className="search-icon" alt="User Dashboard" />
           </div>
         </Link>
