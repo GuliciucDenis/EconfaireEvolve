@@ -1,20 +1,19 @@
 import React from 'react';
-import UserTable from '../../components/users/UserTable';
 import './UserDashboard.css';
 import Navbar from '../../components/common/navbar/Navbar';
+import Background from '../../components/background/Background';
+import UserTable from '../../components/users/UserTable';
 
-const UserDashboard = () => {
+function UserDashboard() {
   return (
     <div className="user-dashboard">
-      <Navbar />
+      <Background />
       <div className="content">
-        <div className="title-container">
-          <h1 className="title">User Management</h1>
-        </div>
+        <Navbar />
         <UserTable />
       </div>
     </div>
   );
-};
+}
 
 export default UserDashboard;

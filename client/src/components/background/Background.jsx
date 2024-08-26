@@ -8,7 +8,7 @@ const Background = () => {
   return (
     <div className="styled-container">
       <CustomShape />
-      <img src={eVolveLogo} alt="eVolve Logo" className="evolve-logo" />
+      <img src={eVolveLogo} alt="eVolve Logo" className="bg-evolve-logo" />
       <WaveShape />
     </div>
   );
