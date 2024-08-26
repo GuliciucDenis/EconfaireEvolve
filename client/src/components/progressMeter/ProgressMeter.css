@@ -1,0 +1,11 @@
+.progress-meter-container {
+    position: fixed;
+    right: 120px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+  }
+  
+  .progress-meter-card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  } 
