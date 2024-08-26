@@ -1,0 +1,36 @@
+.search-container{
+    background: #fff;
+    height: 30px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: text;
+    transition: 0.8s;
+}
+
+.search-input{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 0px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: 0.8s;
+}
+  
+.search-icon {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1b6aba;
+    cursor: pointer;
+}
+  
+@media (max-width: 768px) {
+    .searchbar-container {
+      max-width: 90%;
+      max-height: 50px;
+    }
+}
