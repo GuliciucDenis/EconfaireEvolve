@@ -38,8 +38,8 @@ const Navbar = () => {
             <img src={history} className="history-icon" alt="History" />
           </div>
         </Link>
-        <Link to="/help" className="home-link">
-          <div className={getIconClass('/help')}>
+        <Link to="/faqs" className="home-link">
+          <div className={getIconClass('/faqs')}>
             <img src={help} className="help-icon" alt="Help" />
           </div>
         </Link>

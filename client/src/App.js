@@ -15,6 +15,8 @@ import History from "./pages/history/History";
 import LogOut from "./pages/logout/logout";
 import Profile from "./pages/profile/Profile";
 import CreateUser from "./pages/CreateUser/CreateUser";
+import FAQs from "./pages/FAQs/FAQs";
+
 
 
 
@@ -33,6 +35,7 @@ function App() {
           <Route path="/logout" element={<LogOut />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-user" element={<CreateUser />} />
+          <Route path="/faq" element={<FAQs />} />
         </Routes>
       </Router>
     </NextUIProvider>

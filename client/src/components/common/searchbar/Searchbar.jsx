@@ -8,11 +8,13 @@ function Searchbar({ onSearch }) {
   };
 
   return (
+    <div className="search-container">
     <Input
       type="search"
       placeholder="Search FAQs..."
       onChange={handleSearch}
     />
+    </div>
   );
 }
 
