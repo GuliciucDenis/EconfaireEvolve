@@ -1,0 +1,124 @@
+.profile-page {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.profile-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.image-and-modify-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 50px;
+}
+
+.profile-container {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.modify-password-container {
+  margin-top: 0;
+}
+.modify-password-button {
+  background-color: #6296CD;
+  color: white;
+  border: none;
+  border-radius: 80px;
+  cursor: pointer;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-family: 'Krona One';
+  width: 180px;
+  height: 30px;
+  margin: 0;
+}
+
+.profile-table-container {
+  display: flex;
+  align-items: center;
+}
+.profile-table {
+    display: inline-block;
+    background-color: #6296CD;
+    border-radius: 10px;
+    color: white; 
+    padding: 20px;  
+    margin-left: 0;
+    width: 500px;
+  }
+  
+  .profile-table table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .profile-table tr {
+    border-bottom: 1px solid white;
+  }
+  
+  .profile-table tr:last-child {
+    border-bottom: none;
+  }
+  
+  .profile-table td {
+    padding: 10px 0;
+  }
+  
+  .profile-table td:last-child {
+    text-align: right;
+  }
+
+/*
+.profile-image  {
+    width: 200px;
+    display: inline-block;
+    padding-left: 6px;
+  }
+  .profile-container {
+    margin-top: 200px;
+    margin-bottom: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .modify-password-container {
+    position: top;
+  }
+  .modify-password-button {
+    background-color: #6296CD;
+    color: white;
+    border: none;
+    border-radius: 80px;
+    cursor: pointer;
+    padding: 8px 50px;
+    font-size: 16px;
+    font-family: 'Krona One';
+  }
+  .image-and-modify-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 70px;
+  }
+   
+    */
