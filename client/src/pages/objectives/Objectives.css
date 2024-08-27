@@ -1,31 +1,49 @@
-.card-one {
-    width: 350px;
-    height: 500px;
-    background: #6093cf;
-    border-radius: 40px 0 40px 0;
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.603);
-   }
-   .card-two{
-    width: 350px;
-    height: 500px;
-    background: #6093cf;
-    border-radius: 40px 0 40px 0;
-    box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.603);
-   }
-   .card-three{
-    width: 350px;
-    height: 500px;
-    background: #6093cf;
-    border-radius: 40px 0 40px 0;
-    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.603);
-   }
-
-   .cardboard-container {
+.objectives-container {
+    position: relative;
+    min-height: 100vh;
+  }
+  
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 100px;
+  }
+  
+  .user-info {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .cardboard-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    flex-direction: row;
-    height: 110vh;
-    width: 100%;
-    gap: 80px;
-   }
+    gap: 20px;
+  }
+
+  .card h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    text-align: center;
+
+  }
+  
+  .card p {
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .objective-item,
+  .subobjective-item {
+    cursor: pointer;
+    padding: 5px;
+    color: white;
+  }
+  
+  .objective-item.selected,
+  .subobjective-item.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
