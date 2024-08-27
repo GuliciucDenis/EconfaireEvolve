@@ -26,7 +26,7 @@
   border-radius: 50%;
 }
 
-.modify-password-button-modifypasswordpage {
+.modify-password-button{
   background-color: #6296cd;
   color: white;
   border: none;
@@ -89,4 +89,7 @@
 
 .navbar {
   margin-top: 150px;
+}
+.profile-table-container {
+  margin-top: 35px;
 }

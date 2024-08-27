@@ -19,7 +19,9 @@ const Profile = () => {
             <img className="profile-image" src={ProfilePic} alt="Profile Image" />
             <button className="modify-password-button" onClick={() => {window.location.href = '/modifypassword';}}>Modify password</button>
         </div>
-        <ProfileTable/>
+        <div className="profile-table-container"> 
+          <ProfileTable/>
+        </div>
     </div>
     </div>
   );
