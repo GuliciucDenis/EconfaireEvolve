@@ -17,7 +17,7 @@
   margin-right: 150px;
 }
 
-.image-and-modify-container *{
+.image-and-modify-container * {
   padding: 20px;
 }
 
@@ -26,7 +26,7 @@
   border-radius: 50%;
 }
 
-.modify-password-button {
+.modify-password-button-modifypasswordpage {
   background-color: #6296cd;
   color: white;
   border: none;
