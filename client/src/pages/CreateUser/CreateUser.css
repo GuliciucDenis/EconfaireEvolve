@@ -1,12 +1,11 @@
-.user-dashboard {
+.create-user-page {
   display: flex;
   height: 100vh;
 }
 
-.user-dashboard .content {
+.create-user-page .content {
   flex: 1;
   padding: 20px;
   position: relative;
-  top: 150px;
+  top: 115px;
 }
-

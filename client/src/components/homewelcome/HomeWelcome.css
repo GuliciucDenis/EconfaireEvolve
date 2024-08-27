@@ -1,0 +1,33 @@
+.home-welcome-container {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 15%; 
+    margin-left: calc(1% + 280px); 
+    width: calc(90% - (20% + 10px));
+    max-width: 500px; 
+}
+
+.home-welcome-title {
+    font-size: 30px;
+    max-width: 30ch;
+    margin-left: 15%;
+    
+}
+
+  .decoratie-colt-verdeStanga {
+    width: 60px;
+    height: 60px;
+    margin-left: -80%;
+  }
+  .decoratie-colt-verdeDreapta {
+    width: 60px;
+    height: 60px;
+    rotate: 180deg;
+    margin-left: 80%;
+  }

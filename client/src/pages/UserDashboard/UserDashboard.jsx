@@ -1,8 +1,7 @@
-import React from 'react';
-import './UserDashboard.css';
-import Navbar from '../../components/common/navbar/Navbar';
-import Background from '../../components/background/Background';
-import UserTable from '../../components/users/UserTable';
+import "./UserDashboard.css";
+import Navbar from "../../components/common/navbar/Navbar";
+import Background from "../../components/background/Background";
+import UserTable from "../../components/users/UserTable";
 
 function UserDashboard() {
   return (

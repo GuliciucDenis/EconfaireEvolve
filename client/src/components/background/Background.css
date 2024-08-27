@@ -4,6 +4,7 @@
   background: white;
   position: absolute;
   overflow: hidden;
+  z-index: -1;
 }
 
 svg.rectangle-up {
@@ -16,7 +17,7 @@ svg.wave-shape {
   max-width: 100%;
   height: auto;
   position: absolute;
-  bottom: 0;
+  bottom: -50px;
 }
 
 .bg-evolve-logo {

@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button} from "@nextui-org/react";
 import { getUsers } from '../../services/userService';
 import './UserTable.css';
+import { useNavigate } from "react-router-dom"
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchName, setSearchName] = useState('');
+  const [searchObjective, setSearchObjective] = useState('');
+
+  const navigate = useNavigate()
 
   useEffect(() => { 
     const fetchUsers = async () => {
@@ -23,17 +28,58 @@ const UserTable = () => {
   }, []);
 
   const columns = [
+    { key: "id", label: "Id" },
     { key: "firstName", label: "First Name" },
     { key: "lastName", label: "Last Name" },
     { key: "email", label: "Email" },
-    { key: "role", label: "Role" },
+    { key: "actions", label: "Actions" },
   ];
+
+  const handleSearchNameChange = (e) => {
+    setSearchName(e.target.value);
+  };
+
+  const handleSearchObjectiveChange = (e) => {
+    setSearchObjective(e.target.value);
+  };
 
   return (
     <div className="user-table-container">
+      <div className="flex justify-around items-center mb-5">
+        <div>
+          <Input 
+            clearable 
+            underlined 
+            labelPlaceholder="Search name" 
+            value={searchName} 
+            onChange={handleSearchNameChange}
+            placeholder="Search name"
+          />
+        </div>
+        <div>
+          <Input 
+            clearable 
+            underlined 
+            labelPlaceholder="Search Objective" 
+            value={searchObjective} 
+            onChange={handleSearchObjectiveChange} 
+            placeholder="Search Objective"
+          />
+        </div>
+        <div>
+          <Button auto shadow>Filter</Button>
+        </div>
+        <div>
+          <Button auto shadow color="primary" onClick={() => {
+            navigate('/create-user');
+          }}>Add New User</Button>
+        </div>
+      </div>
       <Table 
         aria-label="User table"
-        className="user-table"
+        selectionMode="multiple"
+        selectionBehavior="toggle"
+        className="user-table shadow-lg"
       >
         <TableHeader columns={columns}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -46,7 +92,19 @@ const UserTable = () => {
         >
           {(user) => (
             <TableRow key={user.email}>
-              {(columnKey) => <TableCell>{user[columnKey]}</TableCell>}
+              {(columnKey) => (
+                <TableCell>
+                  {columnKey === 'actions' ? (
+                    <div className="flex gap-2">
+                      <Button auto shadow color="primary">Add Objectives</Button>
+                      <Button auto shadow color="danger">Delete Objectives</Button>
+                      <Button auto shadow color="success">See Objectives</Button>
+                    </div>
+                  ) : (
+                    user[columnKey]
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           )}
         </TableBody>

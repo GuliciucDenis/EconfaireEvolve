@@ -10,7 +10,8 @@
   align-items: center;
   border-radius: 50px;
   margin-left: 2%;
-  margin-top: 5%;
+  margin-top: 8%;
+  z-index: 10;
 }
 
 .navbar-container {
