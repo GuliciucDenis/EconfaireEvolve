@@ -86,8 +86,8 @@ const UserTable = () => {
         selectionMode="multiple"
         selectionBehavior="toggle"
         classNames={{
-          base: "max-h-[380px] overflow-hidden",
-          table: "min-h-[400px] overflow-scroll",
+          base: "max-h-[380px] overflow-hidden",  
+          table: "overflow-scroll min-w-[1000px]",
         }}
       >
         <TableHeader columns={columns}>
@@ -102,7 +102,7 @@ const UserTable = () => {
           {(user) => (
             <TableRow key={user.email}>
               {(columnKey) => (
-                <TableCell>
+                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'}>
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
                       <Button auto shadow color="primary">Add Objectives</Button>
