@@ -71,6 +71,7 @@ export const updateUser = async (user) => {
     return response.data;
 };
 
+
 export const deleteUser = async (id) => {
     const token = getJwt();
     const response = await axios.delete(`${process.env.API_URL}/users/${id}`, {
