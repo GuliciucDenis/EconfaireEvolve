@@ -33,7 +33,7 @@ const ProfileTable = () => {
   return (
     <Table 
         aria-label="User profile information"
-      className="max-w-md bg-white shadow-lg rounded-lg overflow-hidden"
+      className="max-w-md bg-white overflow-hidden"
     >
       <TableHeader>
         <TableColumn className="bg-[#6296CD] text-white">Personal information</TableColumn>
