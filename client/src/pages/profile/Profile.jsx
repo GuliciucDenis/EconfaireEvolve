@@ -9,9 +9,9 @@ const Profile = () => {
   return (
     <div className="profile-page">
       <Background />
-      <img src={ProfilePicHeader} alt="Profile Pic Header" className="profile-pic-header" />
+      <img src={ProfilePicHeader} alt="Profile Pic Header" className="profile-pic-header" onClick={() => {window.location.href = '/profile';}}/>
       <Navbar className="navbar"/>
-      <h3 className="profile-username">Username</h3>
+      <h3 className="profile-username" onClick={() => {window.location.href = '/profile';}}>Username</h3>
       <h1 className="profile-title">Profile</h1>
       <div className="profile-content">
         <div className="image-and-modify-container">
@@ -19,7 +19,7 @@ const Profile = () => {
             <img className="profile-image" src={ProfilePic} alt="Profile Image" />
           </div>
           <div className="modify-password-container">
-            <button className="modify-password-button">Modify password</button>
+            <button className="modify-password-button" onClick={() => {window.location.href = '/modify-password';}}>Modify password</button>
           </div>
         </div>
         <div className="profile-table-container">

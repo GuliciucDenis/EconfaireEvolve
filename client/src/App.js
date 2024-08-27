@@ -10,6 +10,7 @@ import History from './pages/history/History';
 import LogOut from './pages/logout/logout';
 import SearchUser from './pages/searchUser/SearchUser';
 import Profile from './pages/profile/Profile';
+import ModifyPassword from './pages/modifypassword/ModifyPassword';
 function App() {
   return (
     <NextUIProvider>
@@ -24,6 +25,7 @@ function App() {
         <Route path='/history' element={<History/>}/>
         <Route path='/logout' element={<LogOut/>}/>
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/modify-password' element={<ModifyPassword/>}/>
         </Routes>
     </Router>
     </NextUIProvider>

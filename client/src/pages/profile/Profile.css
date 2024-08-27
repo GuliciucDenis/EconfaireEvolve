@@ -70,6 +70,20 @@
   margin-bottom: 10px;
 }
 
+.modify-password-button:hover {
+  background-color: #6296CD; 
+  border: none;
+  filter: brightness(1.2);
+  transition: filter 0.3s ease;
+}
+.modify-password-button:active {
+  background-color: #2a9d8f;
+  border: none;
+  transform: scale(0.95);
+  box-shadow: none;
+  outline: none;
+}
+
 .profile-table-container {
   display: inline-block;
   align-items: center;
@@ -125,6 +139,7 @@
     object-fit: cover;
     margin-left: 30px;
     margin-top: 10px;
+    cursor: pointer;
   }
   .profile-username {
     position: absolute;
@@ -134,6 +149,7 @@
     color: white;
     font-size: 20px;
     font-family: 'Krona One'; 
+    cursor: pointer;
   }
 
 .navbar {
