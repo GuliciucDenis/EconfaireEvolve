@@ -16,9 +16,7 @@ import LogOut from "./pages/logout/logout";
 import Profile from "./pages/profile/Profile";
 import CreateUser from "./pages/CreateUser/CreateUser";
 import FAQs from "./pages/FAQs/FAQs";
-
-
-
+import LogoutPopup from "./components/common/logout/LogoutPopup";
 
 function App() {
   return (
@@ -36,6 +34,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-user" element={<CreateUser />} />
           <Route path="/faq" element={<FAQs />} />
+          <Route path="/logout-popup" element={<LogoutPopup />} />
         </Routes>
       </Router>
     </NextUIProvider>
