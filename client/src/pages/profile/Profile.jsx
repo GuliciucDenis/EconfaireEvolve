@@ -1,13 +1,10 @@
 import React from "react";
 import ProfilePic from "../../images/ProfilePic.png";
 import Background from "../../components/background/Background.jsx";
-import "./Profile.css";
 import Navbar from "../../components/common/navbar/Navbar";
 import ProfilePicHeader from "../../images/ProfilePicHeader.png";
 import ProfileTable from "../../components/profile/ProfileTable";
-import User from "../../components/common/user/User";
-import ChangePasswordPopup from "../../components/common/ChangePassword/ChangePasswordPopup";
-import { useState } from "react";
+import "./Profile.css";
 
 const Profile = () => {
   const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] =

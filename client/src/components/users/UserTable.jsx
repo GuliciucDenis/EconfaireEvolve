@@ -80,11 +80,15 @@ const UserTable = () => {
           }}>Add New User</Button>
         </div>
       </div>
-      <Table 
+      <Table
+        isHeaderSticky
         aria-label="User table"
         selectionMode="multiple"
         selectionBehavior="toggle"
-        className="user-table shadow-lg"
+        classNames={{
+          base: "max-h-[380px] overflow-hidden",  
+          table: "overflow-scroll min-w-[1000px]",
+        }}
       >
         <TableHeader columns={columns}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
@@ -98,12 +102,12 @@ const UserTable = () => {
           {(user) => (
             <TableRow key={user.email}>
               {(columnKey) => (
-                <TableCell>
+                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'}>
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
                       <Button auto shadow color="primary">Add Objectives</Button>
                       <Button auto shadow color="danger">Delete Objectives</Button>
-                      <Button auto shadow color="success">See Objectives</Button>
+                      <Button auto shadow color="success" style={{color: 'white'}}>See Objectives</Button>
                     </div>
                   ) : (
                     user[columnKey]
