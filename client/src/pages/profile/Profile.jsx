@@ -2,8 +2,8 @@ import React from "react";
 import ProfilePic from '../../images/ProfilePic.png';
 import Background from '../../components/background/Background.jsx';
 import Navbar from "../../components/common/navbar/Navbar";
-import ProfilePicHeader from '../../images/ProfilePicHeader.png';
 import ProfileTable from '../../components/profile/ProfileTable';
+import User from '../../components/common/user/User';
 import './Profile.css';
 
 
@@ -11,9 +11,8 @@ const Profile = () => {
   return (
     <div className="profile-page">
       <Background />
-      <img src={ProfilePicHeader} alt="Profile Pic Header" className="profile-pic-header" onClick={() => {window.location.href = '/profile';}}/>
-      <Navbar className="navbar"/>
-      <h3 className="profile-username" onClick={() => {window.location.href = '/profile';}}>Username</h3>
+      <User />
+      <Navbar />
       <h1 className="profile-title">Profile</h1>
       <div className="profile-content">
         <div className="image-and-modify-container">

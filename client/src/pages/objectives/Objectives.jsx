@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from '../../components/common/navbar/Navbar'
 import Background from '../../components/background/Background';
 import Cardboard from '../../components/cardboard/Cardboard';
+import User from '../../components/common/user/User';
 
 import './Objectives.css';
 
@@ -112,6 +113,7 @@ const Objectives = () => {
   return (
     <div className="objectives-container">
       <Background/>
+      <User />
       <div className="content-wrapper">
         <div className="user-info">User/Users selected: User 1, User 2, User 3</div>
         <div className="cardboard-container">
