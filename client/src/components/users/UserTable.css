@@ -3,8 +3,11 @@
   width: 1200px;
 }
 
-.user-table-container *{
+.user-table-container * {
   font-size: 15px;
   outline: none;
 }
 
+.p-4 {
+  padding: 0;
+}
