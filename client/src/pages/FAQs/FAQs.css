@@ -1,44 +1,44 @@
 .faqs-page {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    scrollbar-width: none;  /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
 
-.faqs-page::-webkit-scrollbar {
-    display: none;  /* For Chrome, Safari, and Opera */
+.faq-cards-container::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
 }
 
 .content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .faqs-container {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .searchbar-container {
-    position: relative;
-    z-index: 3;
-    width: 100%;
-    max-width: 600px;
-    margin-bottom: 20px;
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 20px;
 }
