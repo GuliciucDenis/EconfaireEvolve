@@ -22,8 +22,7 @@ const ModifyPassword = () => {
 
         try {
             const updatedUser = {
-                oldPassword,
-                newPassword
+                password: newPassword
             };
             const response = await updateUser(updatedUser);
             console.log("Password updated:", response);
