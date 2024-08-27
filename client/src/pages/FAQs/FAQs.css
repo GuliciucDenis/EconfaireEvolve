@@ -3,12 +3,12 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    scrollbar-width: none;  /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
-.faqs-page::-webkit-scrollbar {
-    display: none;  /* For Chrome, Safari, and Opera */
+.faq-cards-container::-webkit-scrollbar {
+    display: none;
 }
 
 .content {
