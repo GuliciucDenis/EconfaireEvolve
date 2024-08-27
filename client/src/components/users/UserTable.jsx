@@ -50,7 +50,7 @@ const UserTable = () => {
 
   return (
     <div className="user-table-container">
-      <div className="flex justify-around items-center mb-5">
+      <div className="flex justify-around items-center mb-5 user-table">
         <div>
           <Input 
             clearable 
