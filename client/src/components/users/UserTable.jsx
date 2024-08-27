@@ -43,6 +43,11 @@ const UserTable = () => {
     setSearchObjective(e.target.value);
   };
 
+  const filteredUsers = users.filter(user => 
+    user.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
+    user.lastName.toLowerCase().includes(searchName.toLowerCase())
+  );
+
   return (
     <div className="user-table-container">
       <div className="flex justify-around items-center mb-5">
@@ -85,7 +90,7 @@ const UserTable = () => {
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
         </TableHeader>
         <TableBody 
-          items={users} 
+          items={filteredUsers} 
           loadingContent={<div className="text-center py-4">Loading users...</div>}
           emptyContent={<div className="text-center py-4">No users found</div>}
           isLoading={loading}

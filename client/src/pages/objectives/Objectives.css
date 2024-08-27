@@ -1,0 +1,31 @@
+.card-one {
+    width: 350px;
+    height: 500px;
+    background: #6093cf;
+    border-radius: 40px 0 40px 0;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.603);
+   }
+   .card-two{
+    width: 350px;
+    height: 500px;
+    background: #6093cf;
+    border-radius: 40px 0 40px 0;
+    box-shadow: 0 0px 30px 0 rgba(0, 0, 0, 0.603);
+   }
+   .card-three{
+    width: 350px;
+    height: 500px;
+    background: #6093cf;
+    border-radius: 40px 0 40px 0;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.603);
+   }
+
+   .cardboard-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    height: 110vh;
+    width: 100%;
+    gap: 80px;
+   }
