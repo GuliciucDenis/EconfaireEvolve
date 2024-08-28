@@ -92,7 +92,6 @@ const Objectives = () => {
   
     return (
       <>
-        
         <p>Admin grade: {objectiveStatus.adminGrade}/10</p>
         <p>User grade: {objectiveStatus.userGrade}/10</p>
         <p>Deadline: {objectiveStatus.deadline}</p>
