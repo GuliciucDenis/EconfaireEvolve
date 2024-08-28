@@ -71,7 +71,7 @@ const CreateUserForm = () => {
         <div className="success-message">{successMessage}</div>
       )}
       <div className="form-header">
-        <h2>User Role</h2>
+        <h2 className="title">User Role</h2>
         <div className="role-select">
           <select
             value={role}

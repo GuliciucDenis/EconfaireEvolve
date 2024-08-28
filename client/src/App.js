@@ -18,6 +18,7 @@ import CreateUser from "./pages/CreateUser/CreateUser";
 import FAQs from "./pages/FAQs/FAQs";
 import LogoutPopup from "./components/common/logout/LogoutPopup";
 import ModifyPassword from "./pages/modifypassword/ModifyPassword";
+import AddObjectives from "./pages/AddObjectives/AddObjectives";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/faq" element={<FAQs />} />
           <Route path="/logout-popup" element={<LogoutPopup />} />
           <Route path="/modifypassword" element={<ModifyPassword />} />
+          <Route path="/add-objectives" element={<AddObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>

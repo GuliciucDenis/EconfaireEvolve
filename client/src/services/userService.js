@@ -21,7 +21,12 @@ export const getUsers = async () => {
   }
 };
 
-export const getUserById = async () => {
+export const getUser = async () => {
+  const id = getUserIdFromToken();
+  return await getUserById(id);
+};
+
+export const getUserById = async (id) => {
   const token = getJwt(); // Assumed function to get the JWT token
 
   try {
@@ -47,7 +52,11 @@ export const getUserById = async () => {
       }
     );
 
-    return response.data.user;
+    return {
+      ...response.data.user,
+      id: response.data.user._id,
+      _id: undefined,
+    };
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     throw error;
@@ -110,3 +119,12 @@ export const deleteUser = async (id) => {
   });
   return response.data;
 };
+
+export const getUserIdFromToken = async () => {
+  const token = getJwt();
+  const decodedToken = jwtDecode(token);
+  return decodedToken.id;
+};
+
+
+

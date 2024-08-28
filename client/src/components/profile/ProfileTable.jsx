@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell } from "@nextui-org/react";
-import { getUserById } from '../../services/userService';
+import { getUser } from '../../services/userService';
 
 const ProfileTable = () => {
   const [userData, setUserData] = useState(null);
@@ -9,7 +9,7 @@ const ProfileTable = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = await getUserById();
+        const user = await getUser();
         console.log(user);
         setUserData(user);
       } catch (error) {
