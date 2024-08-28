@@ -123,12 +123,6 @@ const AddObjectives = () => {
 
             <div className="create-objective-container">
               <h2>Add a new objective</h2>
-              <input 
-                type="text" 
-                placeholder="Objective Name" 
-                value={newObjectiveName}
-                onChange={handleNewObjectiveNameChange}
-              />
               <button onClick={handleCreateObjective}>Create Objective</button>
             </div>
           </div>
