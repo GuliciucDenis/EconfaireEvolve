@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfilePic from "../../images/ProfilePic.png";
 import Background from "../../components/background/Background.jsx";
 import Navbar from "../../components/common/navbar/Navbar";
@@ -42,14 +42,14 @@ const Profile = () => {
           </button>
         </div>
         <ProfileTable />
-        <ChangePasswordPopup
+        {/* <ChangePasswordPopup
           isOpen={isChangePasswordPopupOpen}
           onClose={() => setIsChangePasswordPopupOpen(false)}
           onChangePassword={(oldPassword, newPassword) => {
             // Implement the password change logic here
             console.log("Changing password", oldPassword, newPassword);
           }}
-        />
+        /> */}
       </div>
     </div>
   );
