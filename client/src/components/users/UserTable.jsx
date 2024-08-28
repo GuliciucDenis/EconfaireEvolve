@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
 import { getUsers } from '../../services/userService';
 import './UserTable.css';
 import { useNavigate } from "react-router-dom"
@@ -12,7 +12,7 @@ const UserTable = () => {
 
   const navigate = useNavigate()
 
-  useEffect(() => { 
+  useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await getUsers();
@@ -43,7 +43,7 @@ const UserTable = () => {
     setSearchObjective(e.target.value);
   };
 
-  const filteredUsers = users.filter(user => 
+  const filteredUsers = users.filter(user =>
     user.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
     user.lastName.toLowerCase().includes(searchName.toLowerCase())
   );
@@ -52,22 +52,22 @@ const UserTable = () => {
     <div className="user-table-container">
       <div className="flex justify-around items-center mb-5 user-table">
         <div>
-          <Input 
-            clearable 
-            underlined 
-            labelPlaceholder="Search name" 
-            value={searchName} 
+          <Input
+            clearable
+            underlined
+            labelPlaceholder="Search name"
+            value={searchName}
             onChange={handleSearchNameChange}
             placeholder="Search name"
           />
         </div>
         <div>
-          <Input 
-            clearable 
-            underlined 
-            labelPlaceholder="Search Objective" 
-            value={searchObjective} 
-            onChange={handleSearchObjectiveChange} 
+          <Input
+            clearable
+            underlined
+            labelPlaceholder="Search Objective"
+            value={searchObjective}
+            onChange={handleSearchObjectiveChange}
             placeholder="Search Objective"
           />
         </div>
@@ -86,15 +86,15 @@ const UserTable = () => {
         selectionMode="multiple"
         selectionBehavior="toggle"
         classNames={{
-          base: "max-h-[380px] overflow-hidden",  
+          base: "max-h-[380px] overflow-hidden",
           table: "overflow-scroll min-w-[1000px]",
         }}
       >
         <TableHeader columns={columns}>
           {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
         </TableHeader>
-        <TableBody 
-          items={filteredUsers} 
+        <TableBody
+          items={filteredUsers}
           loadingContent={<div className="text-center py-4">Loading users...</div>}
           emptyContent={<div className="text-center py-4">No users found</div>}
           isLoading={loading}
@@ -107,7 +107,15 @@ const UserTable = () => {
                     <div className="flex gap-2">
                       <Button auto shadow color="primary">Add Objectives</Button>
                       <Button auto shadow color="danger">Delete Objectives</Button>
-                      <Button auto shadow color="success" style={{color: 'white'}}>See Objectives</Button>
+                      <Button
+                        auto
+                        shadow
+                        color="success"
+                        style={{ color: 'white' }}
+                        onClick={() => navigate('/objectives')}
+                      >
+                        See Objectives
+                      </Button>
                     </div>
                   ) : (
                     user[columnKey]

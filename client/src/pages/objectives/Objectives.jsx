@@ -14,8 +14,8 @@ const Objectives = () => {
   };
 
   const objectivesData = [
-    { 
-      title: "Current Objectives", 
+    {
+      title: "Current Objectives",
       content: [
         "1. Objective Name 1",
         "2. Objective Name 2",
@@ -78,25 +78,23 @@ const Objectives = () => {
 
   const getStatusContent = (objectiveIndex, subobjectiveIndex) => {
     if (objectiveIndex === null) return "Select an objective to view status";
-    
+
     const objectiveStatus = objectiveStatuses[objectiveIndex];
     const subobjectiveStatus = subobjectiveIndex !== null ? subobjectiveStatuses[objectiveIndex][subobjectiveIndex] : null;
-  
+
     const headerStyle = {
       color: 'white',
       fontSize: '24px',
       fontWeight: 'bold',
       marginBottom: '15px'
     };
-  
     return (
       <>
-        
         <p>Admin grade: {objectiveStatus.adminGrade}/10</p>
         <p>User grade: {objectiveStatus.userGrade}/10</p>
         <p>Deadline: {objectiveStatus.deadline}</p>
         <p>Description: {objectiveStatus.description}</p>
-  
+
         {subobjectiveStatus && (
           <>
             <h2 style={headerStyle}>Subobjective Status</h2>
@@ -111,41 +109,41 @@ const Objectives = () => {
 
   return (
     <div className="objectives-container">
-      <Background/>
+      <Background />
       <div className="content-wrapper">
-        <div className="user-info">User/Users selected: User 1, User 2, User 3</div>
+        <div className="user-info">Selected User: User Name</div>
         <div className="cardboard-container">
-          <Cardboard 
-            title={objectivesData[0].title} 
+          <Cardboard
+            title={objectivesData[0].title}
             content={objectivesData[0].content.map((objective, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 onClick={() => handleObjectiveClick(index)}
                 className={`objective-item ${index === selectedObjective ? 'selected' : ''}`}
               >
                 {objective}
               </div>
-            ))} 
+            ))}
           />
-          <Cardboard 
-            title={objectivesData[1].title} 
+          <Cardboard
+            title={objectivesData[1].title}
             content={selectedObjective !== null ? subobjectives[selectedObjective].map((subobjective, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 onClick={() => handleSubobjectiveClick(index)}
                 className={`subobjective-item ${index === selectedSubobjective ? 'selected' : ''}`}
               >
                 {subobjective}
               </div>
-            )) : objectivesData[1].content} 
+            )) : objectivesData[1].content}
           />
-          <Cardboard 
-            title="Objective and Subobjective Details"
-            content={getStatusContent(selectedObjective, selectedSubobjective)} 
+          <Cardboard
+            title="Objective Status"
+            content={getStatusContent(selectedObjective, selectedSubobjective)}
           />
         </div>
       </div>
-      <Navbar/>
+      <Navbar />
     </div>
   );
 };
