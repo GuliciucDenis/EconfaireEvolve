@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Background from '../../components/background/Background.jsx';
 import Navbar from "../../components/common/navbar/Navbar";
-import ProfilePicHeader from '../../images/ProfilePicHeader.png';
 import { updateUser } from "../../services/userService";
+import User from '../../components/common/user/User';
 import './ModifyPassword.css';
 
 const ModifyPassword = () => {
@@ -37,9 +37,8 @@ const ModifyPassword = () => {
     return (
         <div className="modify-password-page">
             <Background />
-            <img src={ProfilePicHeader} alt="Profile Pic Header" className="profile-pic-header" onClick={() => {window.location.href = '/profile';}}/>
-            <Navbar className="navbar"/>
-            <h3 className="profile-username" onClick={() => {window.location.href = '/profile';}}>Username</h3>
+            <User />
+            <Navbar />
             <p className="modify-title">Modify Password</p>
             <div className="modify-password-form-container">
                 <form className="modify-password-form" onSubmit={handleSubmit}>
