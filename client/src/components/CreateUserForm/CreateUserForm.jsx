@@ -24,7 +24,7 @@ const CreateUserForm = () => {
     e.preventDefault();
     if (!validatePassword(password)) {
       setPasswordError(
-        "Password must be at least 6 characters long and contain both a capital letter and a number."
+        "Password must be at least 6 characters long, include an uppercase letter and a digit"
       );
       return;
     }
@@ -40,10 +40,12 @@ const CreateUserForm = () => {
       const response = await createUser(newUser);
       console.log("User created:", response);
       setSuccessMessage("User successfully created!");
+      setPasswordError(""); // Clear any existing error messages
       resetForm();
     } catch (error) {
       console.error("Error creating user:", error);
       setSuccessMessage("");
+      setPasswordError("Failed to create user. Please try again.");
     }
   };
 
@@ -68,8 +70,9 @@ const CreateUserForm = () => {
   return (
     <div className="create-user-form-container">
       {successMessage && (
-        <div className="success-message">{successMessage}</div>
+        <div className="message success">{successMessage}</div>
       )}
+      {passwordError && <div className="message error">{passwordError}</div>}
       <div className="form-header">
         <h2 className="title">User Role</h2>
         <div className="role-select">
@@ -129,7 +132,6 @@ const CreateUserForm = () => {
             placeholder="Password"
           />
           <button
-            style={{ textDecoration: "none" }}
             type="button"
             className="toggle-password"
             onClick={() => setShowPassword(!showPassword)}
@@ -137,7 +139,6 @@ const CreateUserForm = () => {
             {showPassword ? "Hide" : "Show"}
           </button>
         </div>
-        {passwordError && <div className="error-message">{passwordError}</div>}
         <div className="form-row button-row">
           <button type="button" onClick={() => navigate("/user-dashboard")}>
             Go back
