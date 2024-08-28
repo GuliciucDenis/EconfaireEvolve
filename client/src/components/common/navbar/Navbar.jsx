@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import home from "../../../images/home (3).png";
 import target from "../../../images/target.png";
@@ -6,62 +7,74 @@ import history from "../../../images/icons8-history-90.png";
 import help from "../../../images/icons8-help-100.png";
 import logout from "../../../images/logout 1.png";
 import searchUser from "../../../images/userDashboard.png";
-import { Link, useLocation } from "react-router-dom";
 import LogoutPopup from "../logout/LogoutPopup";
+import { getUserRoleFromToken } from "../../../services/authService";
 
 const Navbar = () => {
   const location = useLocation();
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
-  const getIconClass = (path) => {
+  useEffect(() => {
+    const checkUserRole = () => {
+      const role = getUserRoleFromToken();
+      setUserRole(role);
+    };
+
+    checkUserRole();
+  }, []);
+
+  const getIconClass = useCallback((path) => {
     return location.pathname === path
       ? "icon-container active"
       : "icon-container";
-  };
+  }, [location.pathname]);
+
+  const handleLogoutClick = useCallback(() => {
+    setIsLogoutPopupOpen(true);
+  }, []);
+
+  const navbarContent = useMemo(() => (
+    <div className="navbar-container">
+      <Link to="/home" className="home-link">
+        <div className={getIconClass("/home")}>
+          <img src={home} className="home-icon" alt="Home" />
+        </div>
+      </Link>
+      {userRole === 'admin' && (
+  <Link to="/user-dashboard" className="home-link">
+    <div className={getIconClass("/user-dashboard")}>
+      <img src={searchUser} className="search-icon" alt="User Dashboard" />
+    </div>
+  </Link>
+)}
+      <Link to="/objectives" className="home-link">
+        <div className={getIconClass("/objectives")}>
+          <img src={target} className="target-icon" alt="Objectives" />
+        </div>
+      </Link>
+      <Link to="/history" className="home-link">
+        <div className={getIconClass("/history")}>
+          <img src={history} className="history-icon" alt="History" />
+        </div>
+      </Link>
+      <Link to="/faq" className="home-link">
+        <div className={getIconClass("/faq")}>
+          <img src={help} className="help-icon" alt="Help" />
+        </div>
+      </Link>
+      <Link to="#" className="home-link" onClick={handleLogoutClick}>
+        <div className={getIconClass("/logout")}>
+          <img src={logout} className="logout-icon" alt="Logout" />
+        </div>
+      </Link>
+    </div>
+  ), [userRole, getIconClass, handleLogoutClick]);
 
   return (
     <>
       <nav className="navbar">
-        <div className="navbar-container">
-          <Link to="/home" className="home-link">
-            <div className={getIconClass("/home")}>
-              <img src={home} className="home-icon" alt="Home" />
-            </div>
-          </Link>
-          <Link to="/user-dashboard" className="home-link">
-            <div className={getIconClass("/user-dashboard")}>
-              <img
-                src={searchUser}
-                className="search-icon"
-                alt="User Dashboard"
-              />
-            </div>
-          </Link>
-          <Link to="/objectives" className="home-link">
-            <div className={getIconClass("/objectives")}>
-              <img src={target} className="target-icon" alt="Objectives" />
-            </div>
-          </Link>
-          <Link to="/history" className="home-link">
-            <div className={getIconClass("/history")}>
-              <img src={history} className="history-icon" alt="History" />
-            </div>
-          </Link>
-          <Link to="/faq" className="home-link">
-            <div className={getIconClass("/faq")}>
-              <img src={help} className="help-icon" alt="Help" />
-            </div>
-          </Link>
-          <Link
-            to="#"
-            className="home-link"
-            onClick={() => setIsLogoutPopupOpen(true)}
-          >
-            <div className={getIconClass("/logout")}>
-              <img src={logout} className="logout-icon" alt="Logout" />
-            </div>
-          </Link>
-        </div>
+        {navbarContent}
       </nav>
       <LogoutPopup
         isOpen={isLogoutPopupOpen}
@@ -71,4 +84,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default React.memo(Navbar);

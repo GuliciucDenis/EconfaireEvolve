@@ -110,12 +110,8 @@ const Objectives = () => {
 
   return (
     <div className="objectives-container">
-<<<<<<< HEAD
-      <Background />
-=======
       <Background/>
       <User />
->>>>>>> 711efa46b2dc201eb74f3e4398ea11c562e7ed56
       <div className="content-wrapper">
         <div className="user-info">Selected User: User Name</div>
         <div className="cardboard-container">
