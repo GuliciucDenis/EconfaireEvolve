@@ -1,5 +1,5 @@
 import axios from "axios";
-import getJwt from "./jwtService";
+import { getJwt } from "./jwtService";
 import { jwtDecode } from "jwt-decode";
 
 export const getUsers = async () => {
