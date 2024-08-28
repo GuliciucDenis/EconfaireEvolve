@@ -42,7 +42,8 @@ const deleteUserById = async (id) => {
 }
 
 const updateUserById = async (id, { firstName, lastName, email, password, role }) => {
-    return await User.findByIdAndUpdate(id, { firstName, lastName, email, password, role }, { new: true });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return await User.findByIdAndUpdate(id, { firstName, lastName, email, password: hashedPassword, role }, { new: true });
 }
 
 module.exports = { registerUser, authenticateUser, getAllUsers, getUserById, deleteUserById, updateUserById};

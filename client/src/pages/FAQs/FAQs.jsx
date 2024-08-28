@@ -3,6 +3,7 @@ import Searchbar from '../../components/common/searchbar/Searchbar';
 import Navbar from '../../components/common/navbar/Navbar';
 import Background from '../../components/background/Background';
 import FAQCard from '../../components/common/faqcard/faqcard';
+import User from '../../components/common/user/User';
 import './FAQs.css';
 
 function FAQs() {
@@ -50,6 +51,7 @@ function FAQs() {
     return (
         <div className="faqs-page">
             <Background />
+            <User />
             <div className="content">
                 <Navbar />
                 <div className="faqs-container">
