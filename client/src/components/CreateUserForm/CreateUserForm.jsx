@@ -142,10 +142,10 @@ const CreateUserForm = () => {
           <button type="button" onClick={() => navigate("/user-dashboard")}>
             Go back
           </button>
-          <button type="submit">Add</button>
           <button type="button" onClick={resetForm}>
             Clear
           </button>
+          <button type="submit">Add</button>
         </div>
       </form>
     </div>
