@@ -11,6 +11,13 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const validatePassword = (password) => {
+    const minLength = password.length >= 6;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasDigit = /\d/.test(password);
+    return minLength && hasUpperCase && hasDigit;
+  };
+
   useEffect(() => {
     if (!isOpen) {
       // Clear inputs when closing the popup
@@ -30,8 +37,10 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
     setError("");
     setSuccess("");
 
-    if (newPassword.length < 6) {
-      setError("New password must be at least 6 characters long");
+    if (!validatePassword(newPassword)) {
+      setError(
+        "Password must be at least 6 characters long, include an uppercase letter and a digit"
+      );
       return;
     }
 
@@ -68,7 +77,7 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
             />
             <button
               type="button"
-              className="toggle-password"
+              className="toggle-password-profile"
               onClick={() => setShowOldPassword(!showOldPassword)}
             >
               {showOldPassword ? "Hide" : "Show"}
@@ -85,7 +94,7 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
             />
             <button
               type="button"
-              className="toggle-password"
+              className="toggle-password-profile"
               onClick={() => setShowNewPassword(!showNewPassword)}
             >
               {showNewPassword ? "Hide" : "Show"}
@@ -101,14 +110,14 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
             />
             <button
               type="button"
-              className="toggle-password"
+              className="toggle-password-profile"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
               {showConfirmPassword ? "Hide" : "Show"}
             </button>
           </div>
-          {error && <p className="change-password-error">{error}</p>}
-          {success && <p className="change-password-success">{success}</p>}
+          {error && <p className="message error">{error}</p>}
+          {success && <p className="message success">{success}</p>}
           <div className="change-password-popup-buttons">
             <button
               type="button"
