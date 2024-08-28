@@ -4,9 +4,11 @@ import Background from '../../components/background/Background';
 import Cardboard from '../../components/cardboard/Cardboard';
 import User from '../../components/common/user/User';
 
+
 import './Objectives.css';
 
 const Objectives = () => {
+
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
 
