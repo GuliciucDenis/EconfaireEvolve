@@ -18,6 +18,7 @@ import CreateUser from "./pages/CreateUser/CreateUser";
 import FAQs from "./pages/FAQs/FAQs";
 import LogoutPopup from "./components/common/logout/LogoutPopup";
 import ModifyPassword from "./pages/modifypassword/ModifyPassword";
+import ChangePasswordPopup from "./components/common/ChangePassword/ChangePasswordPopup";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
           <Route path="/faq" element={<FAQs />} />
           <Route path="/logout-popup" element={<LogoutPopup />} />
           <Route path="/modifypassword" element={<ModifyPassword />} />
+          <Route
+            path="/change-password-popup"
+            element={<ChangePasswordPopup />}
+          />
         </Routes>
       </Router>
     </NextUIProvider>

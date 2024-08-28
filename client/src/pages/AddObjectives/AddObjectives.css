@@ -1,0 +1,117 @@
+.main-content * {
+    outline: none;
+}
+
+.add-objectives-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.user-info {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.cards-container {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.actions-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 20px;
+}
+
+.action-button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    width: 100%;
+}
+
+.action-button:hover {
+    background-color: #0056b3;
+}
+
+.create-objective-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.create-objective-container input {
+    padding: 10px;
+    width: 100%;
+}
+
+.create-objective-container button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.create-objective-container button:hover {
+    background-color: #218838;
+}
+
+.objective-item {
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.objective-item.selected {
+    background-color: #f0f0f0;
+    color: #0056b3;
+}
+
+.objective-item:hover {
+    background-color: #e9ecef;
+    color: #0056b3;
+}
+
+.decision-container {
+    margin-left: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 20px;
+}
+
+.delete-button {
+    background-color: #dc3545;
+}
