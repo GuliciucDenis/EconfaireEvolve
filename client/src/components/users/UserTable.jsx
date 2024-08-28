@@ -106,7 +106,7 @@ const UserTable = () => {
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
                       <Button auto shadow color="primary" onClick={() => {
-                        navigate('/add-objectives');
+                        navigate(`/add-objectives/${user.id}`);
                       }}>Add Objectives</Button>
                       <Button auto shadow color="danger">Delete Objectives</Button>
                       <Button

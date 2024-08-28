@@ -43,7 +43,7 @@ function App() {
             path="/change-password-popup"
             element={<ChangePasswordPopup />}
           />
-          <Route path="/add-objectives" element={<AddObjectives />} />
+          <Route path="/add-objectives/:id" element={<AddObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>
