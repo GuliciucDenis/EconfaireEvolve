@@ -15,28 +15,28 @@ function FAQs() {
 
     const faqList = [
         {
-            question: "Ce este Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ este o aplicație care ajută angajații Econfaire să își dezvolte abilitățile."
+            question: "What is Econfaire eVolve™?",
+            answer: "Econfaire eVolve™ is an application that helps Econfaire employees develop their skills."
         },
         {
-            question: "Cum îmi creez un cont?",
-            answer: "Pentru a crea un cont, contactați un Admin."
+            question: "How do I create an account?",
+            answer: "To create an account, contact an Admin."
         },
         {
-            question: "Econfaire eVolve™ este gratuit?",
-            answer: "Da! Econfaire eVolve™ oferă atât funcții de bază cât și funcții avansate in mod gratuit."
+            question: "Is Econfaire eVolve™ free?",
+            answer: "Yes! Econfaire eVolve™ offers both basic and advanced features for free."
         },
         {
-            question: "Există o aplicație mobilă disponibilă?",
-            answer: "Momentan nu, dar Econfaire eVolve™ promite aplicații mobile pentru iOS și Android, permițându-vă să vă gestionați obiectivele din mers."
+            question: "Is there a mobile app available?",
+            answer: "Not at the moment, but Econfaire eVolve™ promises mobile apps for iOS and Android, allowing you to manage your goals on the go."
         },
         {
-            question: "Cum pot contacta asistența tehnică?",
-            answer: "Puteți contacta unul dintre Admini. Totuși, incurajăm căutarea soluției in pagina de FAQs inainte de a contacta un Admin. Timpul este prețios! :)"
+            question: "How can I contact technical support?",
+            answer: "You can contact one of the Admins. However, we encourage you to check the FAQs page before contacting an Admin. Time is precious! :)"
         },
         {
-            question: "Cine a creat Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ a fost creat de catre ..."
+            question: "Who created Econfaire eVolve™?",
+            answer: "Econfaire eVolve™ was created by..."
         },
     ];
 

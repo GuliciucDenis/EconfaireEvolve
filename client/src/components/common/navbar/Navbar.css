@@ -78,3 +78,12 @@
   width: 30px;
   height: 30px;
 }
+
+.navbar-placeholder {
+  width: 80px;
+  height: 500px;
+  position: fixed;
+  left: 2%;
+  top: 8%;
+  z-index: 10;
+}

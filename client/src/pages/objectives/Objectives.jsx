@@ -4,9 +4,11 @@ import Background from '../../components/background/Background';
 import Cardboard from '../../components/cardboard/Cardboard';
 import User from '../../components/common/user/User';
 
+
 import './Objectives.css';
 
 const Objectives = () => {
+
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
 
@@ -110,12 +112,8 @@ const Objectives = () => {
 
   return (
     <div className="objectives-container">
-<<<<<<< HEAD
-      <Background />
-=======
       <Background/>
       <User />
->>>>>>> 711efa46b2dc201eb74f3e4398ea11c562e7ed56
       <div className="content-wrapper">
         <div className="user-info">Selected User: User Name</div>
         <div className="cardboard-container">

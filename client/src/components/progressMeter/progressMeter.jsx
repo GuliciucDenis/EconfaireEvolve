@@ -2,7 +2,7 @@ import React from 'react';
 import {CircularProgress, Card, CardBody, CardFooter, Chip} from "@nextui-org/react";
 import './ProgressMeter.css';
 
-const ProgressMeter = ({ value = 70, label = "2800 Data points" }) => {
+const ProgressMeter = ({ value = 99, label = "2800 Data points" }) => {
   return (
     <div className="progress-meter-container">
       <Card className="progress-meter-card w-[240px] h-[240px] border-none bg-gradient-to-br from-[#6093cf] to-[#aed948]">
