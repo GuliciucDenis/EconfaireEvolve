@@ -105,7 +105,9 @@ const UserTable = () => {
                 <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'}>
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
-                      <Button auto shadow color="primary">Add Objectives</Button>
+                      <Button auto shadow color="primary" onClick={() => {
+                        navigate('/add-objectives');
+                      }}>Add Objectives</Button>
                       <Button auto shadow color="danger">Delete Objectives</Button>
                       <Button
                         auto
