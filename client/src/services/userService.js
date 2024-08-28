@@ -85,7 +85,7 @@ export const updateUser = async (user) => {
 
     // Make the API call to fetch the user data by ID
     const response = await axios.put(
-      `${process.env.REACT_APP_API_URL}/users/${userId}`, 
+      `${process.env.REACT_APP_API_URL}/users/${userId}`,
       user,
       {
         headers: {

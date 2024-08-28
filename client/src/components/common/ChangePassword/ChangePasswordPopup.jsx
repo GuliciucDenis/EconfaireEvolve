@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from "react";
 import "./ChangePasswordPopup.css";
+import { updateUser } from "../../../services/userService";
 
-const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
+const ChangePasswordPopup = ({ isOpen, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [message, setMessage] = useState({ type: "", text: "" });
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) {
+      resetForm();
+    }
+  }, [isOpen]);
+
+  const resetForm = () => {
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+    setMessage({ type: "", text: "" });
+    setShowOldPassword(false);
+    setShowNewPassword(false);
+    setShowConfirmPassword(false);
+  };
 
   const validatePassword = (password) => {
     const minLength = password.length >= 6;
@@ -18,45 +34,42 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
     return minLength && hasUpperCase && hasDigit;
   };
 
-  useEffect(() => {
-    if (!isOpen) {
-      // Clear inputs when closing the popup
-      setOldPassword("");
-      setNewPassword("");
-      setConfirmPassword("");
-      setError("");
-      setSuccess("");
-      setShowOldPassword(false);
-      setShowNewPassword(false);
-      setShowConfirmPassword(false);
-    }
-  }, [isOpen]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
+    setMessage({ type: "", text: "" });
 
     if (!validatePassword(newPassword)) {
-      setError(
-        "Password must be at least 6 characters long, include an uppercase letter and a digit"
-      );
+      setMessage({
+        type: "error",
+        text: "Password must be at least 6 characters long, include an uppercase letter and a digit.",
+      });
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setError("New passwords do not match");
+      setMessage({ type: "error", text: "New passwords do not match." });
       return;
     }
 
     try {
-      await onChangePassword(oldPassword, newPassword);
-      setSuccess("Password changed successfully!");
+      const updatedUser = {
+        oldPassword: oldPassword,
+        password: newPassword,
+      };
+      await updateUser(updatedUser);
+      setMessage({ type: "success", text: "Password changed successfully!" });
       setTimeout(() => {
         onClose();
-      }, 2000); // Close the popup after 2 seconds
+        resetForm();
+      }, 2000);
     } catch (err) {
-      setError(err.message || "Failed to change password");
+      console.error("Error updating password:", err);
+      setMessage({
+        type: "error",
+        text:
+          err.response?.data?.message ||
+          "Failed to change password. Please try again.",
+      });
     }
   };
 
@@ -67,6 +80,9 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
       <div className="change-password-popup-container">
         <h2 className="change-password-popup-title">Change Password</h2>
         <form onSubmit={handleSubmit}>
+          {message.text && (
+            <div className={`message ${message.type}`}>{message.text}</div>
+          )}
           <div className="password-input-container">
             <input
               type={showOldPassword ? "text" : "password"}
@@ -116,8 +132,6 @@ const ChangePasswordPopup = ({ isOpen, onClose, onChangePassword }) => {
               {showConfirmPassword ? "Hide" : "Show"}
             </button>
           </div>
-          {error && <p className="message error">{error}</p>}
-          {success && <p className="message success">{success}</p>}
           <div className="change-password-popup-buttons">
             <button
               type="button"
