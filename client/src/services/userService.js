@@ -35,11 +35,14 @@ export const getUserById = async (id) => {
     }
 
     // Make the API call to fetch the user data by ID
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/users/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return {
       ...response.data.user,
@@ -105,12 +108,33 @@ export const updateUser = async (user) => {
 
 export const deleteUser = async (id) => {
   const token = getJwt();
-  const response = await axios.delete(`${process.env.API_URL}/users/${id}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return response.data;
+  try {
+    const response = await axios.delete(
+      `${process.env.REACT_APP_API_URL}/users/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+      console.error("Response headers:", error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error("No response received:", error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error("Error setting up request:", error.message);
+    }
+    throw error;
+  }
 };
 
 export const getUserIdFromToken = async () => {
@@ -121,14 +145,12 @@ export const getUserIdFromToken = async () => {
 
 export const getUserObjectives = async (userId) => {
   try {
-    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}/objectives`);
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/users/${userId}/objectives`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching user objectives:", error);
     throw error;
   }
 };
-
-
-
-
