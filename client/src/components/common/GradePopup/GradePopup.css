@@ -1,0 +1,80 @@
+.grade-subobjective-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .grade-subobjective-popup-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 90%;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .grade-subobjective-popup-title {
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+  }
+  
+  .grade-subobjective-popup-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .grade-subobjective-popup-container input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
+  
+  .grade-subobjective-popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .grade-subobjective-popup-button {
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+  }
+  
+  .grade-subobjective-popup-button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .grade-subobjective-popup-button.cancel {
+    background-color: #e0e0e0;
+    color: #333;
+  }
+  
+  .grade-subobjective-popup-button.cancel:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .grade-subobjective-popup-button.confirm {
+    background-color: #6093cf;
+    color: white;
+  }
+  
+  .grade-subobjective-popup-button.confirm:hover {
+    background-color: #4a7ab3;
+  }

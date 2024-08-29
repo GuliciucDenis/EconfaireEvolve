@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from '../../components/common/navbar/Navbar'
 import Background from '../../components/background/Background';
 import Cardboard from '../../components/cardboard/Cardboard';
 import User from '../../components/common/user/User';
-
-
+import GradePopup from '../../components/common/GradePopup/GradePopup'; 
 import './Objectives.css';
 
 const Objectives = () => {
-
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
+  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
 
   const highlightStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -77,6 +76,26 @@ const Objectives = () => {
 
   const handleSubobjectiveClick = (index) => {
     setSelectedSubobjective(index);
+  };
+
+  const handleGradeSubobjective = () => {
+    if (selectedObjective !== null && selectedSubobjective !== null) {
+      setIsGradePopupOpen(true);
+    }
+  };
+
+  const handleGradeSubmit = (subobjectiveId, grade) => {
+    // Here you would typically call an API to update the grade
+    console.log(`Grading subobjective ${subobjectiveId} with grade ${grade}`);
+    // Update the local state to reflect the new grade
+    const updatedSubobjectives = [...subobjectiveStatuses[selectedObjective]];
+    updatedSubobjectives[selectedSubobjective] = {
+      ...updatedSubobjectives[selectedSubobjective],
+      gradeAdmin: grade
+    };
+    const newSubobjectiveStatuses = [...subobjectiveStatuses];
+    newSubobjectiveStatuses[selectedObjective] = updatedSubobjectives;
+    // setSubobjectiveStatuses(newSubobjectiveStatuses);
   };
 
   const getStatusContent = (objectiveIndex, subobjectiveIndex) => {
@@ -146,8 +165,19 @@ const Objectives = () => {
             content={getStatusContent(selectedObjective, selectedSubobjective)}
           />
         </div>
+        {selectedObjective !== null && selectedSubobjective !== null && (
+          <button onClick={handleGradeSubobjective} className="grade-button">
+            Grade Subobjective
+          </button>
+        )}
       </div>
       <Navbar />
+      <GradePopup
+        isOpen={isGradePopupOpen}
+        onClose={() => setIsGradePopupOpen(false)}
+        subobjective={selectedSubobjective !== null ? subobjectives[selectedObjective][selectedSubobjective] : null}
+        onSubmit={handleGradeSubmit}
+      />
     </div>
   );
 };
