@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import ProfilePicHeader from '../../../images/ProfilePicHeader.png';
 import ProfilePictureHeader from '../../../images/ProfilePictureHeader.png';
 import './User.css';
-import { getUserById } from '../../../services/userService';
+import { getUser} from '../../../services/userService';
 
 const User = () => {
     const [isClicked, setIsClicked] = useState(false);
@@ -21,7 +21,7 @@ const User = () => {
 
         const fetchUserData = async () => {
             try {
-                const user = await getUserById();
+                const user = await getUser();
                 if (JSON.stringify(user) !== cachedUserData) {
                     setUserData(user);
                     localStorage.setItem('userData', JSON.stringify(user));
