@@ -57,7 +57,7 @@ const UserTable = () => {
 
   return (
     <div className="user-table-container">
-      <div className="flex justify-around items-center mb-5 user-table">
+      <div className="flex justify-between items-center mb-5 user-table">
         <div>
           <Input
             clearable
@@ -66,24 +66,13 @@ const UserTable = () => {
             value={searchName}
             onChange={handleSearchNameChange}
             placeholder="Search name"
+            className="w-[330px]" 
           />
         </div>
-        <div>
-          <Input
-            clearable
-            underlined
-            labelPlaceholder="Search Objective"
-            value={searchObjective}
-            onChange={handleSearchObjectiveChange}
-            placeholder="Search Objective"
-          />
-        </div>
-        <div>
+        <div className="flex gap-2">
           <Button auto shadow>
             Filter
           </Button>
-        </div>
-        <div>
           <Button
             auto
             shadow
@@ -94,8 +83,6 @@ const UserTable = () => {
           >
             Add New User
           </Button>
-        </div>
-        <div>
           <Button
             auto
             shadow
