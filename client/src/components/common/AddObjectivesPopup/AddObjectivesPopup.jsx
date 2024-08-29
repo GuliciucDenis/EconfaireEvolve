@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AddObjectivesPopup.css";
+import { createObjective } from "../../../services/objectiveService";
 
-const AddObjectivesPopup = ({ isOpen, onClose, onSubmit }) => {
+const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -30,7 +31,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit }) => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage({ type: "", text: "" });
 
@@ -39,7 +40,19 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit }) => {
     }
 
     try {
-      onSubmit({ title, deadline });
+      const newObjective = {
+        title : title,
+        description : "Brief description of the objective",
+        deadline : deadline,
+        assignedTo: userId,
+        gradeAdmin: 1,
+        status: "new",
+        subObjectives: []
+      };
+
+      const response = await createObjective(newObjective);
+      onSubmit(response);
+
       setMessage({ type: "success", text: "Objective created successfully!" });
       setTimeout(() => {
         onClose();
