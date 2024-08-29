@@ -21,8 +21,12 @@ const Navbar = () => {
     const checkUserRole = () => {
       const role = getUserRoleFromToken();
       setUserRole(role);
-      const userId = getUserIdFromToken();
-      setUserId(userId);
+      const fetchUserId = async () => {
+        const userId = await getUserIdFromToken();
+        console.log("User ID:", userId);
+        setUserId(userId);
+      };
+      fetchUserId();
     };
 
     checkUserRole();
@@ -52,7 +56,7 @@ const Navbar = () => {
     </div>
   </Link>
 )}
-      <Link to={`/objectives/${userId}`} className="home-link">
+      <Link to={`/objectives/${userId ? userId : ''}`} className="home-link">
         <div className={getIconClass("/objectives")}>
           <img src={target} className="target-icon" alt="Objectives" />
         </div>
