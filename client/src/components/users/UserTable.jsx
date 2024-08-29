@@ -79,6 +79,11 @@ const UserTable = () => {
             navigate('/create-user');
           }}>Add New User</Button>
         </div>
+        <div>
+          <Button auto shadow color="danger" onClick={() => {
+            navigate(''); //RAZVAN
+          }}>Delete User</Button>
+        </div>
       </div>
       <Table
         isHeaderSticky

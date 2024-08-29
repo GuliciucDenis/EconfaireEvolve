@@ -36,7 +36,7 @@ function FAQs() {
         },
         {
             question: "Who created Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ was created by..."
+            answer: "Econfaire eVolve™ was created by Bold Iustina, Burca Flavian, Brebenel Leonard-Cristian, Guliciuc Denis, Hertanu Razvan and Postolache Stefan-Darius."
         },
     ];
 
