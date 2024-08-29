@@ -2,18 +2,22 @@ import axios from "axios";
 import { getUserIdFromToken } from "./userService";
 import { getJwt } from "./jwtService";
 
-export const getObjectivesByUserToken = async () => {
-  const userId = await getUserIdFromToken();
+export const getObjectivesByUserToken = async (userId) => {
   const token = getJwt();
-  const response = await axios.get(
-    `${process.env.REACT_APP_API_URL}/users/${userId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  return response.data.user.objectiveList;
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/users/${userId}/objectives`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.objectives;
+  } catch (error) {
+    console.error("Error fetching objectives:", error);
+    throw error;
+  }
 };
 
 export const getObjectiveById = async (id) => {

@@ -102,19 +102,18 @@ const UserTable = () => {
           {(user) => (
             <TableRow key={user.email}>
               {(columnKey) => (
-                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'}>
+                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'} >
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
                       <Button auto shadow color="primary" onClick={() => {
-                        navigate('/add-objectives');
-                      }}>Add Objectives</Button>
-                      <Button auto shadow color="danger">Delete Objectives</Button>
+                        navigate(`/edit-objectives/${user.id}`);
+                      }}>Edit Objectives</Button>
                       <Button
                         auto
                         shadow
                         color="success"
                         style={{ color: 'white' }}
-                        onClick={() => navigate('/objectives')}
+                        onClick={() => navigate(`/objectives/${user.id}`)}
                       >
                         See Objectives
                       </Button>

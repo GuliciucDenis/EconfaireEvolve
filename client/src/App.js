@@ -20,6 +20,8 @@ import LogoutPopup from "./components/common/logout/LogoutPopup";
 import ModifyPassword from "./pages/modifypassword/ModifyPassword";
 import ChangePasswordPopup from "./components/common/ChangePassword/ChangePasswordPopup";
 import AddObjectives from "./pages/AddObjectives/AddObjectives";
+import EditObjectives from "./components/EditObjectives/EditObjectives";
+import ViewObjectives from './components/ViewObjectives/ViewObjectives';
 
 function App() {
   return (
@@ -43,7 +45,11 @@ function App() {
             path="/change-password-popup"
             element={<ChangePasswordPopup />}
           />
-          <Route path="/add-objectives" element={<AddObjectives />} />
+          <Route path="/edit-objectives" element={<AddObjectives />} />
+          <Route path="/user/:userId/edit-objectives" element={<EditObjectives />} />
+          <Route path="/user/:userId/view-objectives" element={<ViewObjectives />} />
+          <Route path="/objectives/:userId" element={<Objectives />} />
+          <Route path="/edit-objectives/:userId" element={<AddObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>

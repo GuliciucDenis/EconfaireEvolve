@@ -1,28 +1,55 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import Navbar from '../../components/common/navbar/Navbar';
 import Background from '../../components/background/Background';
 import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard';
 import User from '../../components/common/user/User';
 import './AddObjectives.css';
 import { getObjectivesByUserToken, getObjectiveById, deleteObjectiveById } from "../../services/objectiveService";
+import { getUserById } from "../../services/userService";
 
 const AddObjectives = () => {
+  const { userId } = useParams();
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
   const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
   const [newObjectiveName, setNewObjectiveName] = useState("");
   const [userObjectives, setUserObjectives] = useState([]);
+  const [userName, setUserName] = useState('');
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
-      const userObjectiveIds = await getObjectivesByUserToken();
-      const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
-        const objective = await getObjectiveById(id);
-        return objective;
-      }));
-      setUserObjectives(userObjectives);
+      try {
+        const userObjectiveIds = await getObjectivesByUserToken(userId);
+        if (Array.isArray(userObjectiveIds)) {
+          const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
+            const objective = await getObjectiveById(id);
+            return objective;
+          }));
+          setUserObjectives(userObjectives);
+        } else {
+          console.error("Received invalid data for user objectives");
+          setUserObjectives([]);
+        }
+      } catch (error) {
+        console.error("Error fetching user objectives:", error);
+        setUserObjectives([]);
+      }
     };
     fetchUserObjectives();
-  }, []);
+  }, [userId]);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const user = await getUserById(userId);
+        setUserName(`${user.firstName} ${user.lastName}`);
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+        setUserName('Unknown User');
+      }
+    };
+    fetchUserName();
+  }, [userId]);
 
   const objectivesData = [
     {
@@ -80,7 +107,7 @@ const AddObjectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">User selected: Id Username</div>
+        <div className="user-info">User selected: {userName}</div>
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 

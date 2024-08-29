@@ -126,5 +126,16 @@ export const getUserIdFromToken = async () => {
   return decodedToken.id;
 };
 
+export const getUserObjectives = async (userId) => {
+  try {
+    const response = await axios.get(`${process.env.REACT_APP_API_URL}/users/${userId}/objectives`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user objectives:", error);
+    throw error;
+  }
+};
+
+
 
 
