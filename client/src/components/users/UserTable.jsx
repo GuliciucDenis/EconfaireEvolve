@@ -102,7 +102,7 @@ const UserTable = () => {
           {(user) => (
             <TableRow key={user.email}>
               {(columnKey) => (
-                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'}>
+                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'} >
                   {columnKey === 'actions' ? (
                     <div className="flex gap-2">
                       <Button auto shadow color="primary" onClick={() => {

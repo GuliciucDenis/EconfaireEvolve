@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams } from 'react-router-dom';
 import Navbar from '../../components/common/navbar/Navbar';
 import Background from '../../components/background/Background';
 import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard';
@@ -12,6 +12,7 @@ import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddOb
 // import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
 const AddObjectives = () => {
+  const { userId } = useParams();
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
   const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);

@@ -20,6 +20,8 @@ import LogoutPopup from "./components/common/logout/LogoutPopup";
 import ModifyPassword from "./pages/modifypassword/ModifyPassword";
 import ChangePasswordPopup from "./components/common/ChangePassword/ChangePasswordPopup";
 import AddObjectives from "./pages/AddObjectives/AddObjectives";
+import EditObjectives from "./components/EditObjectives/EditObjectives";
+import ViewObjectives from './components/ViewObjectives/ViewObjectives';
 
 function App() {
   return (
