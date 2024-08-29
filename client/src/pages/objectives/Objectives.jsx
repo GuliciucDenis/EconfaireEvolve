@@ -6,6 +6,7 @@ import Cardboard from '../../components/cardboard/Cardboard';
 import User from '../../components/common/user/User';
 import { getUserById } from "../../services/userService";
 import { getObjectivesByUserId, getObjectiveById } from "../../services/objectiveService";
+import GradePopup from "../../components/common/GradePopup/GradePopup";
 
 import './Objectives.css';
 
@@ -16,6 +17,7 @@ const Objectives = () => {
   const [userObjectives, setUserObjectives] = useState([]);
   const { id  } = useParams();
   const userId = id;
+  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
