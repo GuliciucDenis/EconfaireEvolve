@@ -7,6 +7,7 @@ import User from '../../components/common/user/User';
 import './AddObjectives.css';
 import { getObjectivesByUserToken, getObjectiveById, deleteObjectiveById } from "../../services/objectiveService";
 import { getUserById } from "../../services/userService";
+import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 
 const AddObjectives = () => {
   const { userId } = useParams();
