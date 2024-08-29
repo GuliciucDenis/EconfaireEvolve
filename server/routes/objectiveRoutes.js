@@ -471,7 +471,7 @@ const { restrictDeadlineUpdate, verifyUpdateAccessForObjectives, verifyAuthentic
  */
 
 router.get('', authenticate, adminOnly, objectiveController.getAllObjectives);
-router.get('/:id', authenticate, verifyAuthenticityOfEmployee, objectiveController.getObjectiveById);
+router.get('/:id', authenticate, objectiveController.getObjectiveById, verifyAuthenticityOfEmployee);
 router.post('', authenticate, adminOnly, verifyUpdateAccessForObjectives, objectiveController.createObjective);
 router.put('/:id', authenticate, restrictDeadlineUpdate, verifyUpdateAccessForObjectives, objectiveController.updateObjectiveById);
 router.delete('/:id', authenticate, adminOnly, objectiveController.deleteObjectiveById);

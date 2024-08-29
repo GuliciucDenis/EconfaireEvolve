@@ -75,8 +75,8 @@ const verifyUpdateAccessForObjectives = async (req, res, next) => {
 const verifyAuthenticityOfEmployee = async (req, res, next) => {
     const { role } = req.user;
     const { id } = req.params;
-
-    if (role === 'employee' && req.user.id !== id) {
+    
+    if (role === 'employee' && res.objective.assignedTo !== id) {
         return res.status(403).json({ error: 'You are not authorized to perform this action.' });
     }
     next();

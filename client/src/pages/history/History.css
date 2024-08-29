@@ -10,14 +10,18 @@
   padding-top: 100px;
 }
 
-.user-info {
+.user-info-history-page {
+  padding-top: 80px;
   margin-top: 40px;
-  margin-bottom: 40px;
-  font-size: 18px;
+  margin-bottom: 20px;
   color: #333;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
 }
 
 .cardboard-container {
+  margin-top: 1px;
   display: flex;
   justify-content: center;
   gap: 20px;

@@ -11,6 +11,7 @@ function Home() {
     <div className="home-container">
       <Background />
       <div className='home-content'>
+        <h1 className='home-title'>Home</h1>
         <User />
         <Navbar />
         <HomeWelcome/>

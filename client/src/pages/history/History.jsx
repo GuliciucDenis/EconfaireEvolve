@@ -111,7 +111,7 @@ const History = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">History:</div>
+        <div className="user-info-history-page">History:</div>
         <div className="cardboard-container">
           <Cardboard 
             title={objectivesData[0].title} 

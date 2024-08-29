@@ -17,7 +17,14 @@
     color: #333;
 }
 
+.user-info-text {
+    padding-top: 80px;
+    font-size: 20px;
+    color: #333;
+}
+
 .cardboard-container {
+    margin-top: 1px;
     display: flex;
     justify-content: center;
     gap: 20px;
