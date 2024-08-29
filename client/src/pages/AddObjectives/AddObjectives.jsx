@@ -8,6 +8,7 @@ import './AddObjectives.css';
 import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObjective} from "../../services/objectiveService";
 import {getUser, getUserById} from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
+import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
 // import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
 // import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
@@ -16,6 +17,7 @@ const AddObjectives = () => {
   const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [isSetDeadlinePopupOpen, setIsSetDeadlinePopupOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const { id  } = useParams();
   const userId = id;
@@ -123,11 +125,7 @@ const AddObjectives = () => {
 
   const handleAssignObjective = async () => {
     if (selectedRecommendedObjective !== null) {
-      const objectiveToAssign = objectivesData[selectedRecommendedObjective];
-      console.log("Assigning objective:", objectiveToAssign);
-      objectiveToAssign.assignedTo = userId;
-      const assignedObjective = await createObjective(objectiveToAssign);
-      setUserObjectives([...userObjectives, assignedObjective]);
+      setIsSetDeadlinePopupOpen(true);
     }
   };
 
@@ -199,6 +197,16 @@ const AddObjectives = () => {
           // After successfully creating the objective, you might want to refresh the list of objectives
         }}
         userId={userId}     />
+        <SetDeadlinePopup
+          isOpen={isSetDeadlinePopupOpen}
+          onClose={() => setIsSetDeadlinePopupOpen(false)}
+          onSubmit={async (newObjective) => {
+            setIsSetDeadlinePopupOpen(false);
+            setUserObjectives([...userObjectives, newObjective]);
+          }}
+          title={objectivesData[selectedRecommendedObjective] ? objectivesData[selectedRecommendedObjective].title : ""}
+          userId={userId}
+        />
     </div>
   );
 };
