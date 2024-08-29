@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-} from "@nextui-org/react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, Snippet } from "@nextui-org/react";
 import { getUsers } from "../../services/userService";
 import "./UserTable.css";
 import { useNavigate } from "react-router-dom";
@@ -39,21 +30,11 @@ const UserTable = () => {
   }, []);
 
   const columns = [
-    { key: "id", label: "Id", minWidth: "230px", maxWidth: "230px" },
-    {
-      key: "firstName",
-      label: "First Name",
-      minWidth: "175px",
-      maxWidth: "200px",
-    },
-    {
-      key: "lastName",
-      label: "Last Name",
-      minWidth: "175px",
-      maxWidth: "200px",
-    },
+    { key: "id", label: "Id", minWidth: "280px", maxWidth: "280px" },
+    { key: "firstName", label: "First Name", minWidth: "175px", maxWidth: "200px" },
+    { key: "lastName", label: "Last Name", minWidth: "175px", maxWidth: "200px" },
     { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
-    { key: "actions", label: "Actions", minWidth: "275px", maxWidth: "275px" },
+    { key: "actions", label: "Actions", minWidth: " px", maxWidth: "280px" },
   ];
 
   const handleSearchNameChange = (e) => {
@@ -137,7 +118,16 @@ const UserTable = () => {
       >
         <TableHeader columns={columns}>
           {(column) => (
-            <TableColumn key={column.key}>{column.label}</TableColumn>
+            <TableColumn 
+              key={column.key} 
+              style={{ 
+                minWidth: column.minWidth, 
+                maxWidth: column.maxWidth,
+                width: `clamp(${column.minWidth}, auto, ${column.maxWidth})`
+              }}
+            >
+              {column.label}
+            </TableColumn>
           )}
         </TableHeader>
         <TableBody
@@ -152,11 +142,20 @@ const UserTable = () => {
             <TableRow key={user.email}>
               {(columnKey) => (
                 <TableCell
-                  className={
-                    columnKey === "actions" ? "max-w-[400px]" : "max-w-[200px]"
-                  }
+                  style={{
+                    minWidth: columns.find(col => col.key === columnKey)?.minWidth,
+                    maxWidth: columns.find(col => col.key === columnKey)?.maxWidth,
+                    width: `clamp(${columns.find(col => col.key === columnKey)?.minWidth}, auto, ${columns.find(col => col.key === columnKey)?.maxWidth})`,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
                 >
-                  {columnKey === "actions" ? (
+                  {columnKey === "id" ? (
+                    <Snippet disableTooltip hideSymbol variant="bordered" color="default">
+                      {user.id}
+                    </Snippet>
+                  ) : columnKey === "actions" ? (
                     <div className="flex gap-2">
                       <Button
                         auto

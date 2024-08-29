@@ -23,6 +23,7 @@ import AddObjectives from "./pages/AddObjectives/AddObjectives";
 import EditObjectives from "./components/EditObjectives/EditObjectives";
 import ViewObjectives from "./components/ViewObjectives/ViewObjectives";
 import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup";
+import GradePopup from "./components/common/GradePopup/GradePopup";
 
 function App() {
   return (
@@ -42,12 +43,14 @@ function App() {
           <Route path="/faq" element={<FAQs />} />
           <Route path="/logout-popup" element={<LogoutPopup />} />
           <Route path="/modifypassword" element={<ModifyPassword />} />
+          <Route path="/objectives" element={<Objectives />} />
           <Route
             path="/change-password-popup"
             element={<ChangePasswordPopup />}
           />
           <Route path="/edit-objectives/:id" element={<AddObjectives />} />
           <Route path="/delete-user-popup" element={<DeleteUserPopup />} />
+          <Route path="/grade-subobjective-popup" element={<GradePopup />} />
         </Routes>
       </Router>
     </NextUIProvider>

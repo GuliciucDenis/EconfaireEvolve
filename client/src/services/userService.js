@@ -95,11 +95,7 @@ export const updateUser = async (user) => {
       }
     );
 
-    return {
-      ...response.data.user,
-      id: response.data.user._id,
-      _id: undefined,
-    };
+    return response.data.user;
   } catch (error) {
     console.error("Error fetching user by ID:", error);
     throw error;

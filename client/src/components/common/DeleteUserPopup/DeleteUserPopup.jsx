@@ -11,6 +11,10 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
   useEffect(() => {
     if (isOpen) {
       fetchUsers();
+    } else {
+      // Clear the search bar when the popup is closed
+      setSearchId("");
+      setSelectedUser(null);
     }
   }, [isOpen]);
 
