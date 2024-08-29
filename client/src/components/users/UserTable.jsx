@@ -3,6 +3,7 @@ import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input,
 import { getUsers } from '../../services/userService';
 import './UserTable.css';
 import { useNavigate } from "react-router-dom"
+import {Snippet} from "@nextui-org/snippet";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -28,11 +29,11 @@ const UserTable = () => {
   }, []);
 
   const columns = [
-    { key: "id", label: "Id" },
-    { key: "firstName", label: "First Name" },
-    { key: "lastName", label: "Last Name" },
-    { key: "email", label: "Email" },
-    { key: "actions", label: "Actions" },
+    { key: "id", label: "Id", minWidth: "230px", maxWidth: "230px" },
+    { key: "firstName", label: "First Name", minWidth: "175px", maxWidth: "200px" },
+    { key: "lastName", label: "Last Name", minWidth: "175px", maxWidth: "200px" },
+    { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
+    { key: "actions", label: "Actions", minWidth: "275px", maxWidth: "275px" },
   ];
 
   const handleSearchNameChange = (e) => {
@@ -96,8 +97,18 @@ const UserTable = () => {
         }}
       >
         <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
-        </TableHeader>
+  {(column) => (
+    <TableColumn 
+      key={column.key} 
+      style={{
+        minWidth: column.minWidth,
+        maxWidth: column.maxWidth
+      }}
+    >
+      {column.label}
+    </TableColumn>
+  )}
+</TableHeader>
         <TableBody
           items={filteredUsers}
           loadingContent={<div className="text-center py-4">Loading users...</div>}
@@ -105,31 +116,40 @@ const UserTable = () => {
           isLoading={loading}
         >
           {(user) => (
-            <TableRow key={user.email}>
-              {(columnKey) => (
-                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'} >
-                  {columnKey === 'actions' ? (
-                    <div className="flex gap-2">
-                      <Button auto shadow color="primary" onClick={() => {
-                        navigate(`/edit-objectives/${user.id}`);
-                      }}>Edit Objectives</Button>
-                      <Button
-                        auto
-                        shadow
-                        color="success"
-                        style={{ color: 'white' }}
-                        onClick={() => navigate(`/objectives/${user.id}`)}
-                      >
-                        See Objectives
-                      </Button>
-                    </div>
-                  ) : (
-                    user[columnKey]
-                  )}
-                </TableCell>
-              )}
-            </TableRow>
-          )}
+  <TableRow key={user.email}>
+    {(columnKey) => (
+      <TableCell 
+        style={{
+          minWidth: columns.find(col => col.key === columnKey).minWidth,
+          maxWidth: columns.find(col => col.key === columnKey).maxWidth
+        }}
+      >
+        {columnKey === 'id' ? (
+          <Snippet hideSymbol disableTooltip variant="bordered" color="default" size="sm">
+            {user[columnKey]}
+          </Snippet>
+        ) : columnKey === 'actions' ? (
+          <div className="flex gap-2">
+            <Button auto shadow color="primary" onClick={() => {
+              navigate(`/edit-objectives/${user.id}`);
+            }}>Edit Objectives</Button>
+            <Button
+              auto
+              shadow
+              color="success"
+              style={{ color: 'white' }}
+              onClick={() => navigate(`/objectives/${user.id}`)}
+            >
+              See Objectives
+            </Button>
+          </div>
+        ) : (
+          user[columnKey]
+        )}
+      </TableCell>
+    )}
+  </TableRow>
+)}
         </TableBody>
       </Table>
     </div>
