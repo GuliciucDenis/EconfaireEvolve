@@ -6,15 +6,17 @@ import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard'
 import User from '../../components/common/user/User';
 import './AddObjectives.css';
 import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObjective} from "../../services/objectiveService";
+import {getUser, getUserById} from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
-import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
-import EditObjectives from "../../components/EditObjectives/EditObjectives";
+// import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
+// import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
   const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const { id  } = useParams();
   const userId = id;
 
@@ -27,7 +29,12 @@ const AddObjectives = () => {
       }));
       setUserObjectives(userObjectives);
     };
+    const fetchCurrentUser = async () => {
+      const user = await getUserById(userId);
+      setCurrentUser(user);
+    };
     fetchUserObjectives();
+    fetchCurrentUser();
   }, []);
 
   const objectivesData = [
@@ -128,7 +135,7 @@ const AddObjectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">User selected: Id Username</div>
+        <div className="user-info">Selected user: </div>
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 

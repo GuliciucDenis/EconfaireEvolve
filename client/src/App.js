@@ -30,7 +30,7 @@ function App() {
           <Route path="/login" element={<LogIn />} />
           <Route path="/home" element={<Home />} />
           <Route path="/user-dashboard" element={<UserDashboard />} />
-          <Route path="/objectives" element={<Objectives />} />
+          <Route path="/objectives/:id" element={<Objectives />} />
           <Route path="/help" element={<Help />} />
           <Route path="/history" element={<History />} />
           <Route path="/logout" element={<LogOut />} />
@@ -43,7 +43,7 @@ function App() {
             path="/change-password-popup"
             element={<ChangePasswordPopup />}
           />
-          <Route path="/add-objectives/:id" element={<AddObjectives />} />
+          <Route path="/edit-objectives/:id" element={<AddObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>
