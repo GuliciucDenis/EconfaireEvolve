@@ -9,16 +9,20 @@ import logout from "../../../images/logout 1.png";
 import searchUser from "../../../images/userDashboard.png";
 import LogoutPopup from "../logout/LogoutPopup";
 import { getUserRoleFromToken } from "../../../services/authService";
+import { getUserIdFromToken } from "../../../services/userService";
 
 const Navbar = () => {
   const location = useLocation();
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const checkUserRole = () => {
       const role = getUserRoleFromToken();
       setUserRole(role);
+      const userId = getUserIdFromToken();
+      setUserId(userId);
     };
 
     checkUserRole();
@@ -48,7 +52,7 @@ const Navbar = () => {
     </div>
   </Link>
 )}
-      <Link to="/objectives" className="home-link">
+      <Link to={`/objectives/${userId}`} className="home-link">
         <div className={getIconClass("/objectives")}>
           <img src={target} className="target-icon" alt="Objectives" />
         </div>

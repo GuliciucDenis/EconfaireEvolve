@@ -39,11 +39,21 @@ const UserTable = () => {
   }, []);
 
   const columns = [
-    { key: "id", label: "Id" },
-    { key: "firstName", label: "First Name" },
-    { key: "lastName", label: "Last Name" },
-    { key: "email", label: "Email" },
-    { key: "actions", label: "Actions" },
+    { key: "id", label: "Id", minWidth: "230px", maxWidth: "230px" },
+    {
+      key: "firstName",
+      label: "First Name",
+      minWidth: "175px",
+      maxWidth: "200px",
+    },
+    {
+      key: "lastName",
+      label: "Last Name",
+      minWidth: "175px",
+      maxWidth: "200px",
+    },
+    { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
+    { key: "actions", label: "Actions", minWidth: "275px", maxWidth: "275px" },
   ];
 
   const handleSearchNameChange = (e) => {
