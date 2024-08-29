@@ -3,7 +3,7 @@ import {getObjectiveById, updateObjective} from './objectiveService';
 export const addSubobjectiveByObjectiveId = async (objectiveId, subobjective) => {
   const objective = await getObjectiveById(objectiveId);
   objective.subObjectives.push(subobjective);
-  await updateObjective(objective);
+  await updateObjective({id:objective.id, subObjectives: objective.subObjectives});
 };
 
 export const getSubobjectivesByObjectiveId = async (objectiveId) => {

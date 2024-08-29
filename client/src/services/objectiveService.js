@@ -77,7 +77,8 @@ export const deleteObjectiveById = async (id) => {
 
 export const updateObjective = async (objective) => {
   const token = getJwt();
-  const response = await axios.put(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, objective, {
+  const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key,value]) => key!=="id"));
+  const response = await axios.put(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, objectiveUpdatableData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
