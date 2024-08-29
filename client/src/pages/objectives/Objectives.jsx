@@ -28,9 +28,9 @@ const Objectives = () => {
     const fetchUserData = async () => {
       try {
         const user = await getUserById(userId);
+        console.log(user);
         setCurrentUser(user);
-
-        const userObjectiveIds = await getObjectivesByUserId(userId);
+        const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );

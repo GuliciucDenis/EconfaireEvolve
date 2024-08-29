@@ -9,6 +9,7 @@ import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObj
 import {getUser, getUserById} from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
+import { useNavigate } from "react-router-dom";
 // import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
 // import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
@@ -21,6 +22,7 @@ const AddObjectives = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const { id  } = useParams();
   const userId = id;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
@@ -173,7 +175,7 @@ const AddObjectives = () => {
               )}
               {selectedExistingObjective !== null && (
                 <>
-                  <button className="action-button">Edit Subobjectives</button>
+                  <button className="action-button" onClick={() => navigate(`/edit-subobjectives/${userObjectives[selectedExistingObjective].id}`)}>Edit Subobjectives</button>
                   <button className="action-button delete-button" onClick={handleDeleteObjective}>Delete Objective</button>
                 </>
               )}
