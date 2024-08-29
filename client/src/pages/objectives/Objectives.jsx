@@ -1,15 +1,39 @@
 import React, { useState, useEffect } from "react";
+import {useParams} from "react-router-dom";
 import Navbar from '../../components/common/navbar/Navbar'
 import Background from '../../components/background/Background';
 import Cardboard from '../../components/cardboard/Cardboard';
 import User from '../../components/common/user/User';
-import GradePopup from '../../components/common/GradePopup/GradePopup'; 
+import { getUserById } from "../../services/userService";
+import { getObjectivesByUserId, getObjectiveById } from "../../services/objectiveService";
+
 import './Objectives.css';
 
 const Objectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
-  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [userObjectives, setUserObjectives] = useState([]);
+  const { id  } = useParams();
+  const userId = id;
+
+  useEffect(() => {
+    const fetchUserObjectives = async () => {
+      const userObjectiveIds = await getObjectivesByUserId(userId);
+      const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
+        const objective = await getObjectiveById(id);
+        return objective;
+      }));
+      setUserObjectives(userObjectives);
+    };
+    const fetchCurrentUser = async () => {
+      const user = await getUserById(userId);
+      setCurrentUser(user);
+      console.log("Current user:", currentUser);
+    };
+    fetchUserObjectives();
+    fetchCurrentUser();
+  }, []);
 
   const highlightStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
@@ -134,17 +158,21 @@ const Objectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">Selected User: User Name</div>
+      <div className="user-info">{currentUser ? (
+            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
+          ) : (
+            <>Loading user information...</>
+          )}</div>
         <div className="cardboard-container">
           <Cardboard
-            title={objectivesData[0].title}
-            content={objectivesData[0].content.map((objective, index) => (
+            title="Current Objectives"
+            content={userObjectives.map((objective, index) => (
               <div
                 key={index}
                 onClick={() => handleObjectiveClick(index)}
                 className={`objective-item ${index === selectedObjective ? 'selected' : ''}`}
               >
-                {objective}
+                {objective.title}
               </div>
             ))}
           />

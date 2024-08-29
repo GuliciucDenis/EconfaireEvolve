@@ -1,38 +1,40 @@
-import React, { useEffect, useState } from 'react';
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button } from "@nextui-org/react";
-import { getUsers } from '../../services/userService';
-import './UserTable.css';
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, Snippet } from "@nextui-org/react";
+import { getUsers } from "../../services/userService";
+import "./UserTable.css";
+import { useNavigate } from "react-router-dom";
+import DeleteUserPopup from "../common/DeleteUserPopup/DeleteUserPopup";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchName, setSearchName] = useState('');
-  const [searchObjective, setSearchObjective] = useState('');
+  const [searchName, setSearchName] = useState("");
+  const [searchObjective, setSearchObjective] = useState("");
+  const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+
+  const fetchUsers = async () => {
+    try {
+      const response = await getUsers();
+      setUsers(response);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await getUsers();
-        setUsers(response);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
 
   const columns = [
-    { key: "id", label: "Id" },
-    { key: "firstName", label: "First Name" },
-    { key: "lastName", label: "Last Name" },
-    { key: "email", label: "Email" },
-    { key: "actions", label: "Actions" },
+    { key: "id", label: "Id", minWidth: "280px", maxWidth: "280px" },
+    { key: "firstName", label: "First Name", minWidth: "175px", maxWidth: "200px" },
+    { key: "lastName", label: "Last Name", minWidth: "175px", maxWidth: "200px" },
+    { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
+    { key: "actions", label: "Actions", minWidth: " px", maxWidth: "280px" },
   ];
 
   const handleSearchNameChange = (e) => {
@@ -43,10 +45,15 @@ const UserTable = () => {
     setSearchObjective(e.target.value);
   };
 
-  const filteredUsers = users.filter(user =>
-    user.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
-    user.lastName.toLowerCase().includes(searchName.toLowerCase())
+  const filteredUsers = users.filter(
+    (user) =>
+      user.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
+      user.lastName.toLowerCase().includes(searchName.toLowerCase())
   );
+
+  const handleUserDeleted = (deletedUserId) => {
+    setUsers(users.filter((user) => user.id !== deletedUserId));
+  };
 
   return (
     <div className="user-table-container">
@@ -72,12 +79,31 @@ const UserTable = () => {
           />
         </div>
         <div>
-          <Button auto shadow>Filter</Button>
+          <Button auto shadow>
+            Filter
+          </Button>
         </div>
         <div>
-          <Button auto shadow color="primary" onClick={() => {
-            navigate('/create-user');
-          }}>Add New User</Button>
+          <Button
+            auto
+            shadow
+            color="primary"
+            onClick={() => {
+              navigate("/create-user");
+            }}
+          >
+            Add New User
+          </Button>
+        </div>
+        <div>
+          <Button
+            auto
+            shadow
+            color="danger"
+            onClick={() => setIsDeletePopupOpen(true)}
+          >
+            Delete User
+          </Button>
         </div>
       </div>
       <Table
@@ -91,28 +117,61 @@ const UserTable = () => {
         }}
       >
         <TableHeader columns={columns}>
-          {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
+          {(column) => (
+            <TableColumn 
+              key={column.key} 
+              style={{ 
+                minWidth: column.minWidth, 
+                maxWidth: column.maxWidth,
+                width: `clamp(${column.minWidth}, auto, ${column.maxWidth})`
+              }}
+            >
+              {column.label}
+            </TableColumn>
+          )}
         </TableHeader>
         <TableBody
           items={filteredUsers}
-          loadingContent={<div className="text-center py-4">Loading users...</div>}
+          loadingContent={
+            <div className="text-center py-4">Loading users...</div>
+          }
           emptyContent={<div className="text-center py-4">No users found</div>}
           isLoading={loading}
         >
           {(user) => (
             <TableRow key={user.email}>
               {(columnKey) => (
-                <TableCell className={columnKey === 'actions' ? 'max-w-[400px]' : 'max-w-[200px]'} >
-                  {columnKey === 'actions' ? (
+                <TableCell
+                  style={{
+                    minWidth: columns.find(col => col.key === columnKey)?.minWidth,
+                    maxWidth: columns.find(col => col.key === columnKey)?.maxWidth,
+                    width: `clamp(${columns.find(col => col.key === columnKey)?.minWidth}, auto, ${columns.find(col => col.key === columnKey)?.maxWidth})`,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  {columnKey === "id" ? (
+                    <Snippet disableTooltip hideSymbol variant="bordered" color="default">
+                      {user.id}
+                    </Snippet>
+                  ) : columnKey === "actions" ? (
                     <div className="flex gap-2">
-                      <Button auto shadow color="primary" onClick={() => {
-                        navigate(`/edit-objectives/${user.id}`);
-                      }}>Edit Objectives</Button>
+                      <Button
+                        auto
+                        shadow
+                        color="primary"
+                        onClick={() => {
+                          navigate(`/edit-objectives/${user.id}`);
+                        }}
+                      >
+                        Edit Objectives
+                      </Button>
                       <Button
                         auto
                         shadow
                         color="success"
-                        style={{ color: 'white' }}
+                        style={{ color: "white" }}
                         onClick={() => navigate(`/objectives/${user.id}`)}
                       >
                         See Objectives
@@ -127,6 +186,11 @@ const UserTable = () => {
           )}
         </TableBody>
       </Table>
+      <DeleteUserPopup
+        isOpen={isDeletePopupOpen}
+        onClose={() => setIsDeletePopupOpen(false)}
+        onUserDeleted={handleUserDeleted}
+      />
     </div>
   );
 };

@@ -10,10 +10,12 @@ const getObjectiveById = async (id) => {
 };
 
 const createObjective = async (objectiveData) => {
+    console.log(objectiveData);
     userId = objectiveData.assignedTo;
     user = await User.findById(userId);
+    console.log(user);
     currentObjectives = user.objectiveList;
-    console.log(currentObjectives);
+
 
     if (!currentObjectives) {
         currentObjectives = [];

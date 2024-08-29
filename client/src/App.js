@@ -21,8 +21,8 @@ import ModifyPassword from "./pages/modifypassword/ModifyPassword";
 import ChangePasswordPopup from "./components/common/ChangePassword/ChangePasswordPopup";
 import AddObjectives from "./pages/AddObjectives/AddObjectives";
 import EditObjectives from "./components/EditObjectives/EditObjectives";
-import ViewObjectives from './components/ViewObjectives/ViewObjectives';
-import GradePopup from './components/common/GradePopup/GradePopup';
+import ViewObjectives from "./components/ViewObjectives/ViewObjectives";
+import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup";
 
 function App() {
   return (
@@ -48,7 +48,7 @@ function App() {
             element={<ChangePasswordPopup />}
           />
           <Route path="/edit-objectives/:id" element={<AddObjectives />} />
-          <Route path="/grade-popup" element={<GradePopup />} />
+          <Route path="/delete-user-popup" element={<DeleteUserPopup />} />
         </Routes>
       </Router>
     </NextUIProvider>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./AddObjectivesPopup.css";
+import './SetDeadlinePopup.css';
 import { createObjective } from "../../../services/objectiveService";
 
-const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
-  const [title, setTitle] = useState("");
+const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
 
@@ -14,16 +13,11 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   }, [isOpen]);
 
   const resetForm = () => {
-    setTitle("");
     setDeadline("");
     setMessage({ type: "", text: "" });
   };
 
   const validateForm = () => {
-    if (!title.trim()) {
-      setMessage({ type: "error", text: "Please enter an objective title." });
-      return false;
-    }
     if (!deadline) {
       setMessage({ type: "error", text: "Please select a deadline." });
       return false;
@@ -53,16 +47,16 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
       const response = await createObjective(newObjective);
       onSubmit(response);
 
-      setMessage({ type: "success", text: "Objective created successfully!" });
+      setMessage({ type: "success", text: "Objective assigned successfully!" });
       setTimeout(() => {
         onClose();
         resetForm();
       }, 2000);
     } catch (err) {
-      console.error("Error creating objective:", err);
+      console.error("Error assigning objective:", err);
       setMessage({
         type: "error",
-        text: err.message || "Failed to create objective. Please try again.",
+        text: err.message || "Failed to assign objective. Please try again.",
       });
     }
   };
@@ -87,20 +81,13 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="add-objectives-popup-overlay">
-      <div className="add-objectives-popup-container">
-        <h2 className="add-objectives-popup-title">Create New Objective</h2>
+    <div className="set-deadline-popup-overlay">
+      <div className="set-deadline-popup-container">
+        <h2 className="set-deadline-popup-title">Set a deadline for this objective</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
           )}
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Objective Title"
-            required
-          />
           <input
             type="date"
             value={deadline}
@@ -108,17 +95,17 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
             min={today}
             required
           />
-          <div className="add-objectives-popup-buttons">
+          <div className="set-deadline-popup-buttons">
             <button
               type="button"
-              className="add-objectives-popup-button cancel"
+              className="set-deadline-popup-button cancel"
               onClick={onClose}
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="add-objectives-popup-button confirm"
+              className="set-deadline-popup-button confirm"
             >
               Create
             </button>
@@ -129,4 +116,5 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   );
 };
 
-export default AddObjectivesPopup;
+export default SetDeadlinePopup;
+
