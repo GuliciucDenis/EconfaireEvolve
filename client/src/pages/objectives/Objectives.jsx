@@ -5,54 +5,66 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import { getObjectivesByUserId, getObjectiveById} from "../../services/objectiveService";
+import {
+  getObjectivesByUserId,
+  getObjectiveById,
+} from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import './Objectives.css';
+import GradePopup from "../../components/common/GradePopup/GradePopup";
+import "./Objectives.css";
 
 const Objectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
-  const [selectedObjectiveId, setSelectedObjectiveId] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
-  const { id  } = useParams();
-  const userId = id;
   const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const { id } = useParams();
+  const userId = id;
 
   useEffect(() => {
-    const fetchUserObjectives = async () => {
-      const userObjectiveIds = await getObjectivesByUserId(userId);
-      const userObjectives = await Promise.all(
-        userObjectiveIds.map(async (id) => {
-          const objective = await getObjectiveById(id);
-          return objective;
-        })
-      );
-      setUserObjectives(userObjectives);
-    };
-    const fetchCurrentUser = async () => {
-      const user = await getUserById(userId);
-      setCurrentUser(user);
-    };
-    const fetchSubobjectives = async () => {
-      if (selectedObjectiveId) {
-      const subobjectives = await getSubobjectivesByObjectiveId(selectedObjectiveId);
-      }
-      setSubobjectives(subobjectives);
-    };
-    fetchUserObjectives();
-    fetchCurrentUser();
-    fetchSubobjectives();
-  }, []);
+    // Fetch user and objectives when component mounts
+    const fetchUserData = async () => {
+      try {
+        const user = await getUserById(userId);
+        setCurrentUser(user);
 
-  const highlightStyle = {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-  };
+        const userObjectiveIds = await getObjectivesByUserId(userId);
+        const objectives = await Promise.all(
+          userObjectiveIds.map(getObjectiveById)
+        );
+        setUserObjectives(objectives);
+      } catch (error) {
+        console.error("Failed to fetch user or objectives:", error);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  useEffect(() => {
+    // Fetch subobjectives whenever a new objective is selected
+    const fetchSubobjectives = async () => {
+      if (selectedObjective !== null) {
+        try {
+          const selectedObjectiveId = userObjectives[selectedObjective].id;
+          const subobjectivesData = await getSubobjectivesByObjectiveId(
+            selectedObjectiveId
+          );
+          console.log(subobjectivesData);
+          setSubobjectives(subobjectivesData);
+        } catch (error) {
+          console.error("Failed to fetch subobjectives:", error);
+        }
+      }
+    };
+
+    fetchSubobjectives();
+  }, [selectedObjective, userObjectives]);
 
   const handleObjectiveClick = (index) => {
     setSelectedObjective(index);
-    setSelectedObjectiveId(userObjectives[index].id);
     setSelectedSubobjective(null);
   };
 
@@ -66,33 +78,32 @@ const Objectives = () => {
     }
   };
 
-  const handleGradeSubmit = (subobjectiveId, grade) => {
-    // Here you would typically call an API to update the grade
-    console.log(`Grading subobjective ${subobjectiveId} with grade ${grade}`);
-    // Update the local state to reflect the new grade
-    const updatedSubobjectives = [...subobjectiveStatuses[selectedObjective]];
-    updatedSubobjectives[selectedSubobjective] = {
-      ...updatedSubobjectives[selectedSubobjective],
-      gradeAdmin: grade,
-    };
-    const newSubobjectiveStatuses = [...subobjectiveStatuses];
-    newSubobjectiveStatuses[selectedObjective] = updatedSubobjectives;
-    // setSubobjectiveStatuses(newSubobjectiveStatuses);
-  };
+  const getStatusContent = () => {
+    if (selectedObjective === null) return "Select an objective to view status";
+    const objective = userObjectives[selectedObjective];
+    const subobjective = subobjectives[selectedSubobjective];
+    if (selectedSubobjective === null) {
+      return (
+        <>
+          <p>Description: {objective.description}</p>
+          <p>Admin grade: {objective.gradeAdmin}/10</p>
+          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <p>Description: {objective.description}</p>
+          <p>Admin grade: {objective.gradeAdmin}/10</p>
+          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
 
-  const getStatusContent = (objectiveIndex, subobjectiveIndex) => {
-    if (objectiveIndex === null) return "Select an objective to view status";
-    const headerStyle = {
-      color: "white",
-      fontSize: "24px",
-      fontWeight: "bold",
-      marginBottom: "15px",
-    };
-    return (
-      <>
-        <p>Admin grade: {userObjectives[selectedObjective].adminGrade}/10</p>
-      </>
-    );
+          <h2>Subobjective status</h2>
+          <p>Description: {subobjective.description}</p>
+          <p>Admin grade: {subobjective.gradeAdmin}/10</p>
+          <p>User grade: {subobjective.gradeUser}/10</p>
+        </>
+      );
+    }
   };
 
   return (
@@ -100,11 +111,15 @@ const Objectives = () => {
       <Background />
       <User />
       <div className="content-wrapper">
-      {/* <div className="user-info">{currentUser ? (
-            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
+        <div className="user-info">
+          {currentUser ? (
+            <>
+              Selected user: {currentUser.firstName} {currentUser.lastName}
+            </>
           ) : (
             <>Loading user information...</>
-          )}</div> */}
+          )}
+        </div>
         <div className="cardboard-container">
           <Cardboard
             title="Current Objectives"
@@ -126,16 +141,15 @@ const Objectives = () => {
               <div
                 key={index}
                 onClick={() => handleSubobjectiveClick(index)}
-                className={`subobjective-item ${index === selectedSubobjective ? 'selected' : ''}`}
+                className={`subobjective-item ${
+                  index === selectedSubobjective ? "selected" : ""
+                }`}
               >
                 {subobjective.title}
               </div>
             ))}
           />
-          <Cardboard
-            title="Objective Status"
-            content={getStatusContent(selectedObjective, selectedSubobjective)}
-          />
+          <Cardboard title="Objective Status" content={getStatusContent()} />
         </div>
         {selectedObjective !== null && selectedSubobjective !== null && (
           <button onClick={handleGradeSubobjective} className="grade-button">
@@ -149,10 +163,9 @@ const Objectives = () => {
         onClose={() => setIsGradePopupOpen(false)}
         subobjective={
           selectedSubobjective !== null
-            ? subobjectives[selectedObjective][selectedSubobjective]
+            ? subobjectives[selectedSubobjective]
             : null
         }
-        onSubmit={handleGradeSubmit}
       />
     </div>
   );
