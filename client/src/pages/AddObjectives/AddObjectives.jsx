@@ -30,8 +30,8 @@ const AddObjectives = () => {
       setUserObjectives(userObjectives);
     };
     const fetchCurrentUser = async () => {
-      const user = await getUserById(userId);
-      setCurrentUser(user);
+      const currentUser = await getUserById(userId);
+      setCurrentUser(currentUser);
     };
     fetchUserObjectives();
     fetchCurrentUser();
@@ -135,7 +135,7 @@ const AddObjectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">Selected user: </div>
+        <div className="user-info">Selected user: {currentUser.firstName} {currentUser.lastName}</div>
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 
