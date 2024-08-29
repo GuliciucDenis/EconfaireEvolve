@@ -7,6 +7,8 @@ import User from '../../components/common/user/User';
 import './AddObjectives.css';
 import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObjective} from "../../services/objectiveService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
+import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
+import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
