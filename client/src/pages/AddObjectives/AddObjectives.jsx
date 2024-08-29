@@ -12,7 +12,6 @@ const AddObjectives = () => {
   const { userId } = useParams();
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
   const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
-  const [newObjectiveName, setNewObjectiveName] = useState("");
   const [userObjectives, setUserObjectives] = useState([]);
   const [userName, setUserName] = useState('');
 
@@ -52,15 +51,53 @@ const AddObjectives = () => {
   }, [userId]);
 
   const objectivesData = [
-    {
-        title: "Recommended Objectives",
-        content: ["Objective 1", "Objective 2", "Objective 3"]
-    },
-    {
-        title: "Existing Objectives",
-        content: ["Objective 4", "Objective 5", "Objective 6"]
-    }
-  ]
+  {
+    "title": "Perseverance",
+    "description": "Maintain a consistent effort towards achieving long-term goals despite challenges.",
+    "deadline": "2024-08-28",
+    "assignedTo": "0",
+    "gradeAdmin": 1,
+    "status": "new",
+    "subObjectives": []
+  },
+  {
+    "title": "Creativity",
+    "description": "Encourage innovative thinking and the generation of new ideas.",
+    "deadline": "2024-08-28",
+    "assignedTo": "0",
+    "gradeAdmin": 1,
+    "status": "new",
+    "subObjectives": []
+  },
+  {
+    "title": "Time Management",
+    "description": "Effectively prioritize tasks to make the best use of available time.",
+    "deadline": "2024-08-28",
+    "assignedTo": "0",
+    "gradeAdmin": 1,
+    "status": "new",
+    "subObjectives": []
+  },
+  {
+    "title": "Adaptability",
+    "description": "Demonstrate flexibility and the ability to adjust to new situations and changes.",
+    "deadline": "2024-08-28",
+    "assignedTo": "0",
+    "gradeAdmin": 1,
+    "status": "new",
+    "subObjectives": []
+  },
+  {
+    "title": "Continuous Learning",
+    "description": "Engage in ongoing education and skill development to stay current and improve.",
+    "deadline": "2024-08-28",
+    "assignedTo": "0",
+    "gradeAdmin": 1,
+    "status": "new",
+    "subObjectives": []
+  }
+]
+
 
   const handleRecommendedObjectiveClick = (index) => {
     // Reset existing objective selection
@@ -82,14 +119,8 @@ const AddObjectives = () => {
     }
   };
 
-  const handleNewObjectiveNameChange = (e) => {
-    setNewObjectiveName(e.target.value);
-  };
-
   const handleCreateObjective = () => {
-    // Logic to create a new objective
-    console.log("Creating new objective:", newObjectiveName);
-    setNewObjectiveName("");
+    setIsCreatePopupOpen(true);
   };
 
   const handleDeleteObjective = async () => {
@@ -102,6 +133,16 @@ const AddObjectives = () => {
     }
   };
 
+  const handleAssignObjective = async () => {
+    if (selectedRecommendedObjective !== null) {
+      const objectiveToAssign = objectivesData[selectedRecommendedObjective];
+      console.log("Assigning objective:", objectiveToAssign);
+      objectiveToAssign.assignedTo = userId;
+      const assignedObjective = await createObjective(objectiveToAssign);
+      setUserObjectives([...userObjectives, assignedObjective]);
+    }
+  };
+
   return (
     <div className="add-objectives-container">
       <Background/>
@@ -111,14 +152,14 @@ const AddObjectives = () => {
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 
-              title={objectivesData[0].title} 
-              content={objectivesData[0].content.map((objective, index) => (
+              title='Recommended Objectives' 
+              content={objectivesData.map((objective, index) => (
                 <div 
                   key={index} 
                   onClick={() => handleRecommendedObjectiveClick(index)}
                   className={`objective-item ${index === selectedRecommendedObjective ? 'selected' : ''}`}
                 >
-                  {objective}
+                  {objective.title}
                 </div>
               ))} 
             />
@@ -138,7 +179,7 @@ const AddObjectives = () => {
           <div className="decision-container">
             <div className="actions-container">
               {selectedRecommendedObjective !== null && (
-                <button className="action-button">Assign Objective</button>
+                <button className="action-button" onClick={handleAssignObjective}>Assign Objective</button>
               )}
               {selectedExistingObjective !== null && (
                 <>
@@ -155,7 +196,17 @@ const AddObjectives = () => {
           </div>
         </div>
       </div>
-      <Navbar/>
+      <Navbar />
+      <AddObjectivesPopup
+        isOpen={isCreatePopupOpen}
+        onClose={() => setIsCreatePopupOpen(false)}
+        onSubmit={async (newObjective) => {
+          // Here you would typically call an API to create the objective
+          console.log("Creating new objective:", newObjective);
+          setIsCreatePopupOpen(false);
+          // After successfully creating the objective, you might want to refresh the list of objectives
+        }}
+      />
     </div>
   );
 };
