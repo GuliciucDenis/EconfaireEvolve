@@ -22,7 +22,6 @@ const Objectives = () => {
   const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
   const { id } = useParams();
   const userId = id;
-  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
 
   useEffect(() => {
     // Fetch user and objectives when component mounts
