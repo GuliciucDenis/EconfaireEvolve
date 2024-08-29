@@ -1,29 +1,36 @@
 import React, { useState, useEffect } from "react";
-import {useParams} from "react-router-dom";
-import Navbar from '../../components/common/navbar/Navbar'
-import Background from '../../components/background/Background';
-import Cardboard from '../../components/cardboard/Cardboard';
-import User from '../../components/common/user/User';
+import { useParams } from "react-router-dom";
+import Navbar from "../../components/common/navbar/Navbar";
+import Background from "../../components/background/Background";
+import Cardboard from "../../components/cardboard/Cardboard";
+import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import { getObjectivesByUserId, getObjectiveById } from "../../services/objectiveService";
+import {
+  getObjectivesByUserId,
+  getObjectiveById,
+} from "../../services/objectiveService";
+import GradePopup from "../../components/common/GradePopup/GradePopup";
 
-import './Objectives.css';
+import "./Objectives.css";
 
 const Objectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
-  const { id  } = useParams();
+  const { id } = useParams();
   const userId = id;
+  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
       const userObjectiveIds = await getObjectivesByUserId(userId);
-      const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
-        const objective = await getObjectiveById(id);
-        return objective;
-      }));
+      const userObjectives = await Promise.all(
+        userObjectiveIds.map(async (id) => {
+          const objective = await getObjectiveById(id);
+          return objective;
+        })
+      );
       setUserObjectives(userObjectives);
     };
     const fetchCurrentUser = async () => {
@@ -36,7 +43,7 @@ const Objectives = () => {
   }, []);
 
   const highlightStyle = {
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
   };
 
   const objectivesData = [
@@ -47,11 +54,17 @@ const Objectives = () => {
         "2. Objective Name 2",
         "3. Objective Name 3",
         "4. Objective Name 4",
-        "5. Objective Name 5"
-      ]
+        "5. Objective Name 5",
+      ],
     },
-    { title: "Current SubObjectives", content: "Select an objective to view subobjectives" },
-    { title: "Objective Status", content: "Select an objective to view status" },
+    {
+      title: "Current SubObjectives",
+      content: "Select an objective to view subobjectives",
+    },
+    {
+      title: "Objective Status",
+      content: "Select an objective to view status",
+    },
   ];
 
   const subobjectives = [
@@ -59,37 +72,127 @@ const Objectives = () => {
     ["2.1 SubObjective for Objective 2", "2.2 SubObjective for Objective 2"],
     ["3.1 SubObjective for Objective 3", "3.2 SubObjective for Objective 3"],
     ["4.1 SubObjective for Objective 4", "4.2 SubObjective for Objective 4"],
-    ["5.1 SubObjective for Objective 5", "5.2 SubObjective for Objective 5"]
+    ["5.1 SubObjective for Objective 5", "5.2 SubObjective for Objective 5"],
   ];
 
   const objectiveStatuses = [
-    { status: "Done", adminGrade: 8, userGrade: 7, deadline: "2023-12-31", description: "Description for Objective 1" },
-    { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-01-15", description: "Description for Objective 2" },
-    { status: "Done", adminGrade: 9, userGrade: 8, deadline: "2023-11-30", description: "Description for Objective 3" },
-    { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-02-28", description: "Description for Objective 4" },
-    { status: "Done", adminGrade: 7, userGrade: 6, deadline: "2023-12-15", description: "Description for Objective 5" }
+    {
+      status: "Done",
+      adminGrade: 8,
+      userGrade: 7,
+      deadline: "2023-12-31",
+      description: "Description for Objective 1",
+    },
+    {
+      status: "Undone",
+      adminGrade: 0,
+      userGrade: 0,
+      deadline: "2024-01-15",
+      description: "Description for Objective 2",
+    },
+    {
+      status: "Done",
+      adminGrade: 9,
+      userGrade: 8,
+      deadline: "2023-11-30",
+      description: "Description for Objective 3",
+    },
+    {
+      status: "Undone",
+      adminGrade: 0,
+      userGrade: 0,
+      deadline: "2024-02-28",
+      description: "Description for Objective 4",
+    },
+    {
+      status: "Done",
+      adminGrade: 7,
+      userGrade: 6,
+      deadline: "2023-12-15",
+      description: "Description for Objective 5",
+    },
   ];
 
   const subobjectiveStatuses = [
     [
-      { status: "Done", adminGrade: 1, userGrade: 7, deadline: "2023-12-15", description: "Description for Subobjective 1.1" },
-      { status: "Undone", adminGrade: 2, userGrade: 0, deadline: "2023-12-31", description: "Description for Subobjective 1.2" },
+      {
+        status: "Done",
+        adminGrade: 1,
+        userGrade: 7,
+        deadline: "2023-12-15",
+        description: "Description for Subobjective 1.1",
+      },
+      {
+        status: "Undone",
+        adminGrade: 2,
+        userGrade: 0,
+        deadline: "2023-12-31",
+        description: "Description for Subobjective 1.2",
+      },
     ],
     [
-      { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-01-10", description: "Description for Subobjective 2.1" },
-      { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-01-20", description: "Description for Subobjective 2.2" },
+      {
+        status: "Undone",
+        adminGrade: 0,
+        userGrade: 0,
+        deadline: "2024-01-10",
+        description: "Description for Subobjective 2.1",
+      },
+      {
+        status: "Undone",
+        adminGrade: 0,
+        userGrade: 0,
+        deadline: "2024-01-20",
+        description: "Description for Subobjective 2.2",
+      },
     ],
     [
-      { status: "Done", adminGrade: 9, userGrade: 8, deadline: "2023-11-15", description: "Description for Subobjective 3.1" },
-      { status: "Done", adminGrade: 9, userGrade: 8, deadline: "2023-11-30", description: "Description for Subobjective 3.2" },
+      {
+        status: "Done",
+        adminGrade: 9,
+        userGrade: 8,
+        deadline: "2023-11-15",
+        description: "Description for Subobjective 3.1",
+      },
+      {
+        status: "Done",
+        adminGrade: 9,
+        userGrade: 8,
+        deadline: "2023-11-30",
+        description: "Description for Subobjective 3.2",
+      },
     ],
     [
-      { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-02-15", description: "Description for Subobjective 4.1" },
-      { status: "Undone", adminGrade: 0, userGrade: 0, deadline: "2024-02-28", description: "Description for Subobjective 4.2" },
+      {
+        status: "Undone",
+        adminGrade: 0,
+        userGrade: 0,
+        deadline: "2024-02-15",
+        description: "Description for Subobjective 4.1",
+      },
+      {
+        status: "Undone",
+        adminGrade: 0,
+        userGrade: 0,
+        deadline: "2024-02-28",
+        description: "Description for Subobjective 4.2",
+      },
     ],
     [
-      { status: "Done", adminGrade: 7, userGrade: 6, deadline: "2023-12-05", description: "Description for Subobjective 5.1" },
-      { status: "Done", adminGrade: 7, userGrade: 6, deadline: "2023-12-15", description: "Description for Subobjective 5.2" },
+      {
+        status: "Done",
+        adminGrade: 7,
+        userGrade: 6,
+        deadline: "2023-12-05",
+        description: "Description for Subobjective 5.1",
+      },
+      {
+        status: "Done",
+        adminGrade: 7,
+        userGrade: 6,
+        deadline: "2023-12-15",
+        description: "Description for Subobjective 5.2",
+      },
     ],
   ];
 
@@ -115,7 +218,7 @@ const Objectives = () => {
     const updatedSubobjectives = [...subobjectiveStatuses[selectedObjective]];
     updatedSubobjectives[selectedSubobjective] = {
       ...updatedSubobjectives[selectedSubobjective],
-      gradeAdmin: grade
+      gradeAdmin: grade,
     };
     const newSubobjectiveStatuses = [...subobjectiveStatuses];
     newSubobjectiveStatuses[selectedObjective] = updatedSubobjectives;
@@ -126,13 +229,16 @@ const Objectives = () => {
     if (objectiveIndex === null) return "Select an objective to view status";
 
     const objectiveStatus = objectiveStatuses[objectiveIndex];
-    const subobjectiveStatus = subobjectiveIndex !== null ? subobjectiveStatuses[objectiveIndex][subobjectiveIndex] : null;
+    const subobjectiveStatus =
+      subobjectiveIndex !== null
+        ? subobjectiveStatuses[objectiveIndex][subobjectiveIndex]
+        : null;
 
     const headerStyle = {
-      color: 'white',
-      fontSize: '24px',
-      fontWeight: 'bold',
-      marginBottom: '15px'
+      color: "white",
+      fontSize: "24px",
+      fontWeight: "bold",
+      marginBottom: "15px",
     };
     return (
       <>
@@ -155,14 +261,18 @@ const Objectives = () => {
 
   return (
     <div className="objectives-container">
-      <Background/>
+      <Background />
       <User />
       <div className="content-wrapper">
-      <div className="user-info">{currentUser ? (
-            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
+        <div className="user-info">
+          {currentUser ? (
+            <>
+              Selected user: {currentUser.firstName} {currentUser.lastName}
+            </>
           ) : (
             <>Loading user information...</>
-          )}</div>
+          )}
+        </div>
         <div className="cardboard-container">
           <Cardboard
             title="Current Objectives"
@@ -170,7 +280,9 @@ const Objectives = () => {
               <div
                 key={index}
                 onClick={() => handleObjectiveClick(index)}
-                className={`objective-item ${index === selectedObjective ? 'selected' : ''}`}
+                className={`objective-item ${
+                  index === selectedObjective ? "selected" : ""
+                }`}
               >
                 {objective.title}
               </div>
@@ -178,15 +290,23 @@ const Objectives = () => {
           />
           <Cardboard
             title={objectivesData[1].title}
-            content={selectedObjective !== null ? subobjectives[selectedObjective].map((subobjective, index) => (
-              <div
-                key={index}
-                onClick={() => handleSubobjectiveClick(index)}
-                className={`subobjective-item ${index === selectedSubobjective ? 'selected' : ''}`}
-              >
-                {subobjective}
-              </div>
-            )) : objectivesData[1].content}
+            content={
+              selectedObjective !== null
+                ? subobjectives[selectedObjective].map(
+                    (subobjective, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleSubobjectiveClick(index)}
+                        className={`subobjective-item ${
+                          index === selectedSubobjective ? "selected" : ""
+                        }`}
+                      >
+                        {subobjective}
+                      </div>
+                    )
+                  )
+                : objectivesData[1].content
+            }
           />
           <Cardboard
             title="Objective Status"
@@ -203,7 +323,11 @@ const Objectives = () => {
       <GradePopup
         isOpen={isGradePopupOpen}
         onClose={() => setIsGradePopupOpen(false)}
-        subobjective={selectedSubobjective !== null ? subobjectives[selectedObjective][selectedSubobjective] : null}
+        subobjective={
+          selectedSubobjective !== null
+            ? subobjectives[selectedObjective][selectedSubobjective]
+            : null
+        }
         onSubmit={handleGradeSubmit}
       />
     </div>

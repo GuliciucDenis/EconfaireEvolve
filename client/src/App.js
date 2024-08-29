@@ -23,6 +23,7 @@ import AddObjectives from "./pages/AddObjectives/AddObjectives";
 import EditObjectives from "./components/EditObjectives/EditObjectives";
 import ViewObjectives from "./components/ViewObjectives/ViewObjectives";
 import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup";
+import GradePopup from "./components/common/GradePopup/GradePopup";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           />
           <Route path="/edit-objectives/:id" element={<AddObjectives />} />
           <Route path="/delete-user-popup" element={<DeleteUserPopup />} />
+          <Route path="/grade-subobjective-popup" element={<GradePopup />} />
         </Routes>
       </Router>
     </NextUIProvider>
