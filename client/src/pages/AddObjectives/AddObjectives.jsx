@@ -194,11 +194,11 @@ const AddObjectives = () => {
         onClose={() => setIsCreatePopupOpen(false)}
         onSubmit={async (newObjective) => {
           // Here you would typically call an API to create the objective
-          console.log("Creating new objective:", newObjective);
           setIsCreatePopupOpen(false);
+          setUserObjectives([...userObjectives, newObjective]);
           // After successfully creating the objective, you might want to refresh the list of objectives
         }}
-      />
+        userId={userId}     />
     </div>
   );
 };

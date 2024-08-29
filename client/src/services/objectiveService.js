@@ -4,6 +4,7 @@ import { getJwt } from "./jwtService";
 
 export const createObjective = async (objective) => {
   const token = getJwt();
+  console.log(objective);
   const response = await axios.post(
     `${process.env.REACT_APP_API_URL}/objectives`,
     objective,
