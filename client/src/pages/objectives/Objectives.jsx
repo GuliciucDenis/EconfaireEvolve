@@ -9,8 +9,8 @@ import {
   getObjectivesByUserId,
   getObjectiveById,
 } from "../../services/objectiveService";
-import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
+import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
+import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
 
 const Objectives = () => {
@@ -19,7 +19,7 @@ const Objectives = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
-  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
@@ -71,12 +71,17 @@ const Objectives = () => {
     setSelectedSubobjective(index);
   };
 
-  const handleGradeSubobjective = () => {
-    if (selectedSubobjective !== null) {
-      setIsGradePopupOpen(true);
-    } else {
-      alert("Please select a subobjective to grade.");
+  const handleGradeSubobjective = async (grade) => {
+    if (selectedSubobjective === null) return;
+    try{
+        const subobjectiveToGrade = subobjectives[selectedSubobjective];
+        await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
+        setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjective ? { ...sub, gradeAdmin: grade } : sub));
+    }catch(error){
+      console.error("Failed to grade subobjective:", error);
     }
+    setSelectedSubobjective(null);
+    setIsGradeSubobjectivePopupOpen(false);
   };
 
   const handleGradeSubmit = (subobjective, grade) => {
@@ -85,7 +90,7 @@ const Objectives = () => {
     );
     // Here you would typically call an API to update the grade
     // Update your state or make an API call here
-    setIsGradePopupOpen(false);
+    setIsGradeSubobjectivePopupOpen(false);
   };
 
   const getStatusContent = () => {
@@ -110,7 +115,7 @@ const Objectives = () => {
           <h2>Subobjective status</h2>
           <p>Description: {subobjective.description}</p>
           <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>User grade: {subobjective.gradeUser}/10</p>
+          <p>User grade: {subobjective.gradeEmployee}/10</p>
         </>
       );
     }
@@ -163,7 +168,7 @@ const Objectives = () => {
         </div>
         <div className="action-buttons-container">
           <button 
-            onClick={handleGradeSubobjective} 
+            onClick={() => setIsGradeSubobjectivePopupOpen(true)} 
             className="grade-button"
             disabled={selectedSubobjective === null}
           >
@@ -172,26 +177,16 @@ const Objectives = () => {
         </div>
       </div>
       <Navbar />
-      {userRole === 'employee' && (
-        <GradePopup
-          isOpen={isGradePopupOpen}
-          onClose={() => setIsGradePopupOpen(false)}
-          subobjective={selectedSubobjective !== null ? subobjectives[selectedSubobjective] : null}
-          onSubmit={handleGradeSubmit}
-        />
-      )}
-      <GradePopup
-        isOpen={isGradePopupOpen}
-        onClose={() => setIsGradePopupOpen(false)}
-        subobjective={
-          selectedSubobjective !== null
-            ? subobjectives[selectedSubobjective]
-            : null
-        }
-        onSubmit={handleGradeSubmit}
+      <GradeSubobjectivePopup
+        isOpen={isGradeSubobjectivePopupOpen}
+        onClose={() => setIsGradeSubobjectivePopupOpen(false)}
+        onSubmit={(grade) => {
+          handleGradeSubobjective(grade);
+          setIsGradeSubobjectivePopupOpen(false);
+        }}
+        subobjective={subobjectives[selectedSubobjective]?.title}
+        objectiveId={userObjectives[selectedObjective]?.id}
       />
-      <Navbar />
-      
     </div>
   );
 };
