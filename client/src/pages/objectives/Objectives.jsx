@@ -161,19 +161,25 @@ const Objectives = () => {
           />
           <Cardboard title="Objective Status" content={getStatusContent()} />
         </div>
-        {userRole === "employee" && selectedObjective !== null && (
-          <div className="action-buttons-container">
-            <button
-              onClick={handleGradeSubobjective}
-              className="grade-button"
-              disabled={selectedSubobjective === null}
-            >
-              Grade Subobjective
-            </button>
-          </div>
-        )}
+        <div className="action-buttons-container">
+          <button 
+            onClick={handleGradeSubobjective} 
+            className="grade-button"
+            disabled={selectedSubobjective === null}
+          >
+            Grade Subobjective
+          </button>
+        </div>
       </div>
       <Navbar />
+      {userRole === 'employee' && (
+        <GradePopup
+          isOpen={isGradePopupOpen}
+          onClose={() => setIsGradePopupOpen(false)}
+          subobjective={selectedSubobjective !== null ? subobjectives[selectedSubobjective] : null}
+          onSubmit={handleGradeSubmit}
+        />
+      )}
       <GradePopup
         isOpen={isGradePopupOpen}
         onClose={() => setIsGradePopupOpen(false)}
@@ -184,6 +190,8 @@ const Objectives = () => {
         }
         onSubmit={handleGradeSubmit}
       />
+      <Navbar />
+      
     </div>
   );
 };
