@@ -125,7 +125,7 @@ const Objectives = () => {
       <User />
       <div className="content-wrapper">
         <div className="objectives-title-container">
-          <h1 className="objectives-title">Objectives</h1>
+          <h1 className="objectives-title">My objectives</h1>
         </div>
         <div className="user-info">
           {currentUser ? (

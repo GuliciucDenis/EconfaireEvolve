@@ -1,4 +1,5 @@
 .user-dashboard {
+  overflow: hidden;
   display: flex;
   height: 100vh;
 }
@@ -10,12 +11,10 @@
   top: 150px;
 }
 
-.user-dashboard-title {
+.dashboard-title {
+  margin-top: 18px;
+  color: #6093cf;
   font-size: 20px;
   font-weight: bold;
-  text-align: center;
-  margin-top: 150px;
-  z-index: 100;
-  position: absolute;
-  margin-left: 680px;
 }
+

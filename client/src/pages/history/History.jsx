@@ -116,6 +116,9 @@ const History = () => {
       <Background />
       <User />
       <div className="content-wrapper">
+      <div className="objectives-title-container">
+          <h1 className="objectives-title">History</h1>
+        </div>
         <div className="user-info">
           {currentUser ? (
             <>

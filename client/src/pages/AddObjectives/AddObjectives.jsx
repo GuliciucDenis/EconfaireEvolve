@@ -136,7 +136,7 @@ const AddObjectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">{currentUser ? (
+        <div className="add-objectives-user-info">{currentUser ? (
             <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
           ) : (
             <>Loading user information...</>
