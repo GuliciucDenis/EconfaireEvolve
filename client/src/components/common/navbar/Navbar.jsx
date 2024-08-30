@@ -61,7 +61,7 @@ const Navbar = () => {
           <img src={target} className="target-icon" alt="Objectives" />
         </div>
       </Link>
-      <Link to="/history" className="home-link">
+      <Link to={`/history/${userId ? userId : ''}`} className="home-link">
         <div className={getIconClass("/history")}>
           <img src={history} className="history-icon" alt="History" />
         </div>

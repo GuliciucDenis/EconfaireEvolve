@@ -35,7 +35,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/objectives/:id" element={<Objectives />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/history" element={<History />} />
+          <Route path="/history/:id" element={<History />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-user" element={<CreateUser />} />
