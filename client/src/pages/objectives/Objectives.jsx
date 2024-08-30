@@ -11,7 +11,6 @@ import {
 } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
 import GradePopup from "../../components/common/GradePopup/GradePopup";
-import { getUserRoleFromToken } from " ../../services/authService";
 import "./Objectives.css";
 
 const Objectives = () => {
