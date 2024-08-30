@@ -1,4 +1,5 @@
 .user-dashboard {
+  overflow: hidden;
   display: flex;
   height: 100vh;
 }
