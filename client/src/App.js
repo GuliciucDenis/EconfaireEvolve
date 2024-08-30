@@ -23,6 +23,8 @@ import AddObjectives from "./pages/AddObjectives/AddObjectives";
 import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup";
 import GradePopup from "./components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import EditSubobjectives from "./pages/EditSubobjectives/EditSubobjectives";
+import SeeObjectives from "./pages/SeeObjectives/SeeObjectives";
+
 
 function App() {
   return (
@@ -54,6 +56,7 @@ function App() {
             path="/edit-subobjectives/:id"
             element={<EditSubobjectives />}
           />
+          <Route path="/see-objectives/:id" element={<SeeObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>

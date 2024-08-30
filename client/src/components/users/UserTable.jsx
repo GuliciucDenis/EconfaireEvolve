@@ -70,9 +70,9 @@ const UserTable = () => {
           />
         </div>
         <div className="flex gap-2">
-          <Button auto shadow>
+          {/* <Button auto shadow>
             Filter
-          </Button>
+          </Button> */}
           <Button
             auto
             shadow
@@ -159,7 +159,7 @@ const UserTable = () => {
                         shadow
                         color="success"
                         style={{ color: "white" }}
-                        onClick={() => navigate(`/objectives/${user.id}`)}
+                        onClick={() => navigate(`/see-objectives/${user.id}`)}
                       >
                         See Objectives
                       </Button>

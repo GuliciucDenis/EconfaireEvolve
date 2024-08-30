@@ -8,7 +8,7 @@ import {
   addSubobjectiveByObjectiveId,
   removeSubobjectiveByObjectiveId,
   getSubobjectivesByObjectiveId,
-  gradeSubobjectiveByObjectiveId
+  gradeSubobjectiveByObjectiveId,
 } from "../../services/subobjectiveService";
 import { getObjectiveById } from "../../services/objectiveService";
 import AddSubobjectivePopup from "../../components/common/AddSubobjectivePopup/AddSubobjectivePopup";
@@ -22,9 +22,11 @@ const EditSubobjectives = () => {
   const [selectedSubobjectiveIndex, setSelectedSubobjectiveIndex] = useState(null); // Track selected subobjective
   const [isAddSubobjectivePopupOpen, setIsAddSubobjectivePopupOpen] = useState(false); // Popup state
   const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false); // Grade popup state
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchObjectiveAndSubobjectives = async () => {
+      setLoading(true);
       try {
         const objectiveData = await getObjectiveById(id);
         setObjective(objectiveData);
@@ -33,18 +35,29 @@ const EditSubobjectives = () => {
         setSubobjectives(subobjectivesData);
       } catch (error) {
         console.error("Failed to fetch objective or subobjectives:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchObjectiveAndSubobjectives();
   }, [id]);
 
+  const fetchSubobjectives = async () => {
+    try {
+      const subobjectivesData = await getSubobjectivesByObjectiveId(id);
+      setSubobjectives(subobjectivesData);
+    } catch (error) {
+      console.error("Failed to fetch subobjectives:", error);
+    }
+  };
+
   const handleAddSubobjective = async (newSubobjectiveTitle) => {
     if (newSubobjectiveTitle.trim() === "") return;
     try {
       const newSubobjective = { title: newSubobjectiveTitle };
-      const addedSubobjective = await addSubobjectiveByObjectiveId(id, newSubobjective);
-      setSubobjectives([...subobjectives, addedSubobjective]);
+      await addSubobjectiveByObjectiveId(id, newSubobjective);
+      await fetchSubobjectives(); // Refetch the subobjectives list
     } catch (error) {
       console.error("Failed to add subobjective:", error);
     }
@@ -53,9 +66,9 @@ const EditSubobjectives = () => {
   const handleRemoveSubobjective = async () => {
     if (selectedSubobjectiveIndex === null) return;
     try {
-      const subobjectiveToRemove = subobjectives[selectedSubobjectiveIndex];
-      await removeSubobjectiveByObjectiveId(id, subobjectiveToRemove.id);
-      setSubobjectives(subobjectives.filter((_, index) => index !== selectedSubobjectiveIndex));
+      const subobjectiveToRemove = subobjectives[selectedSubobjectiveIndex]?.title;
+      await removeSubobjectiveByObjectiveId(id, subobjectiveToRemove);
+      await fetchSubobjectives(); // Refetch the subobjectives list
       setSelectedSubobjectiveIndex(null); // Reset selected subobjective after removal
     } catch (error) {
       console.error("Failed to remove subobjective:", error);
@@ -64,14 +77,14 @@ const EditSubobjectives = () => {
 
   const handleGradeSubobjective = async (grade) => {
     if (selectedSubobjectiveIndex === null) return;
-    try{
-        const subobjectiveToGrade = subobjectives[selectedSubobjectiveIndex];
-        await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin");
-        setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjectiveIndex ? { ...sub, gradeAdmin: grade } : sub));
-    }catch(error){
+    try {
+      const subobjectiveToGrade = subobjectives[selectedSubobjectiveIndex];
+      await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin");
+      await fetchSubobjectives(); // Refetch the subobjectives list
+      setSelectedSubobjectiveIndex(null); // Reset selected subobjective after grading
+    } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
-    setSelectedSubobjectiveIndex(null);
   };
 
   const handleSubobjectiveClick = (index) => {
@@ -81,6 +94,10 @@ const EditSubobjectives = () => {
       setSelectedSubobjectiveIndex(index); // Select if a different subobjective is clicked
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Display a loading indicator while data is being fetched
+  }
 
   return (
     <div className="edit-subobjectives-container">
@@ -96,7 +113,7 @@ const EditSubobjectives = () => {
                 className={`subobjective-item ${index === selectedSubobjectiveIndex ? "selected" : ""}`} // Highlight if selected
                 onClick={() => handleSubobjectiveClick(index)} // Use the new function
               >
-                {sub.title} &rarr; {sub.gradeAdmin}/10
+                {sub?.title} &rarr; {sub?.gradeAdmin}/10
               </div>
             ))}
           />

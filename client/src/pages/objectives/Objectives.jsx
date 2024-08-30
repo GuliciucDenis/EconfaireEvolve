@@ -33,18 +33,23 @@ const Objectives = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        setUserObjectives(objectives);
+        const filteredObjectives = objectives.filter(
+          (objective) => objective.gradeAdmin <= 1 && objective.gradeEmployee <= 1
+        );
+        setUserObjectives(filteredObjectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
     };
 
-    fetchUserData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
     const fetchSubobjectives = async () => {
-      if (selectedObjective !== null) {
+      if (selectedObjective !== null && userObjectives.length > 0) {
         try {
           const selectedObjectiveId = userObjectives[selectedObjective].id;
           const subobjectivesData = await getSubobjectivesByObjectiveId(
@@ -73,23 +78,14 @@ const Objectives = () => {
 
   const handleGradeSubobjective = async (grade) => {
     if (selectedSubobjective === null) return;
-    try{
-        const subobjectiveToGrade = subobjectives[selectedSubobjective];
-        await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
-        setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjective ? { ...sub, gradeAdmin: grade } : sub));
-    }catch(error){
+    try {
+      const subobjectiveToGrade = subobjectives[selectedSubobjective];
+      await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
+      setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjective ? { ...sub, gradeAdmin: grade } : sub));
+    } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
     setSelectedSubobjective(null);
-    setIsGradeSubobjectivePopupOpen(false);
-  };
-
-  const handleGradeSubmit = (subobjective, grade) => {
-    console.log(
-      `Submitting grade ${grade} for subobjective ${subobjective.id}`
-    );
-    // Here you would typically call an API to update the grade
-    // Update your state or make an API call here
     setIsGradeSubobjectivePopupOpen(false);
   };
 
@@ -101,21 +97,23 @@ const Objectives = () => {
       return (
         <>
           <p>Description: {objective.description}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+          <p>Admin grade: {objective.gradeAdmin}/10</p>
+          <p>Employee grade: {objective.gradeAdmin}/10</p>
         </>
       );
     } else {
       return (
         <>
           <p>Description: {objective.description}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+          <p>Admin grade: {objective.gradeAdmin}/10</p>
+          <p>Employee grade: {objective.gradeEmployee}/10</p>  
 
           <h2>Subobjective status</h2>
           <p>Description: {subobjective.description}</p>
           <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>User grade: {subobjective.gradeEmployee}/10</p>
+          <p>Employee grade: {subobjective.gradeEmployee}/10</p>
         </>
       );
     }

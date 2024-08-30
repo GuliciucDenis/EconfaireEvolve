@@ -13,7 +13,8 @@ export const getSubobjectivesByObjectiveId = async (objectiveId) => {
 
 export const removeSubobjectiveByObjectiveId= async (objectiveId, subobjectiveToRemove) => {
     const objective = await getObjectiveById(objectiveId);
-    objective.subObjectives = objective.subObjectives.filter(subobjective => subobjective.title !== subobjectiveToRemove.title);
+    console.log(subobjectiveToRemove);
+    objective.subObjectives = objective.subObjectives.filter(subobjective => subobjective.title !== subobjectiveToRemove);
 
     await updateObjective(objective);
 };
