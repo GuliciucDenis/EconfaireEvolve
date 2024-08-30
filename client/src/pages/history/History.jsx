@@ -10,7 +10,7 @@ import {
   getObjectiveById,
 } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import GradePopup from "../../components/common/GradePopup/GradePopup";
+import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./History.css";
 
 const History = () => {
@@ -35,7 +35,7 @@ const History = () => {
           userObjectiveIds.map(getObjectiveById)
         );
         const filteredObjectives = objectives.filter(
-          objective => objective.gradeAdmin > 1 && objective.gradeEmployee > 1
+          (objective) => objective.gradeAdmin > 1 && objective.gradeEmployee > 1
         );
         setUserObjectives(filteredObjectives);
       } catch (error) {

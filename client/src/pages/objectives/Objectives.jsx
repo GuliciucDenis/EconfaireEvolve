@@ -10,7 +10,7 @@ import {
   getObjectiveById,
 } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import GradePopup from "../../components/common/GradePopup/GradePopup";
+import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
 
 const Objectives = () => {
@@ -80,7 +80,9 @@ const Objectives = () => {
   };
 
   const handleGradeSubmit = (subobjective, grade) => {
-    console.log(`Submitting grade ${grade} for subobjective ${subobjective.id}`);
+    console.log(
+      `Submitting grade ${grade} for subobjective ${subobjective.id}`
+    );
     // Here you would typically call an API to update the grade
     // Update your state or make an API call here
     setIsGradePopupOpen(false);
@@ -159,10 +161,10 @@ const Objectives = () => {
           />
           <Cardboard title="Objective Status" content={getStatusContent()} />
         </div>
-        {userRole === 'employee' && selectedObjective !== null && (
+        {userRole === "employee" && selectedObjective !== null && (
           <div className="action-buttons-container">
-            <button 
-              onClick={handleGradeSubobjective} 
+            <button
+              onClick={handleGradeSubobjective}
               className="grade-button"
               disabled={selectedSubobjective === null}
             >
@@ -175,7 +177,11 @@ const Objectives = () => {
       <GradePopup
         isOpen={isGradePopupOpen}
         onClose={() => setIsGradePopupOpen(false)}
-        subobjective={selectedSubobjective !== null ? subobjectives[selectedSubobjective] : null}
+        subobjective={
+          selectedSubobjective !== null
+            ? subobjectives[selectedSubobjective]
+            : null
+        }
         onSubmit={handleGradeSubmit}
       />
     </div>
