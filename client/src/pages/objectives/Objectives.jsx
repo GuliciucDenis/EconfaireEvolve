@@ -20,15 +20,14 @@ const Objectives = () => {
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
   const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
 
   useEffect(() => {
-    // Fetch user and objectives when component mounts
     const fetchUserData = async () => {
       try {
         const user = await getUserById(userId);
-        console.log(user);
         setCurrentUser(user);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
@@ -44,7 +43,6 @@ const Objectives = () => {
   }, [userId]);
 
   useEffect(() => {
-    // Fetch subobjectives whenever a new objective is selected
     const fetchSubobjectives = async () => {
       if (selectedObjective !== null) {
         try {
@@ -52,11 +50,12 @@ const Objectives = () => {
           const subobjectivesData = await getSubobjectivesByObjectiveId(
             selectedObjectiveId
           );
-          console.log(subobjectivesData);
           setSubobjectives(subobjectivesData);
         } catch (error) {
           console.error("Failed to fetch subobjectives:", error);
         }
+      } else {
+        setSubobjectives([]);
       }
     };
 
@@ -73,9 +72,18 @@ const Objectives = () => {
   };
 
   const handleGradeSubobjective = () => {
-    if (selectedObjective !== null && selectedSubobjective !== null) {
+    if (selectedSubobjective !== null) {
       setIsGradePopupOpen(true);
+    } else {
+      alert("Please select a subobjective to grade.");
     }
+  };
+
+  const handleGradeSubmit = (subobjective, grade) => {
+    console.log(`Submitting grade ${grade} for subobjective ${subobjective.id}`);
+    // Here you would typically call an API to update the grade
+    // Update your state or make an API call here
+    setIsGradePopupOpen(false);
   };
 
   const getStatusContent = () => {
@@ -151,21 +159,24 @@ const Objectives = () => {
           />
           <Cardboard title="Objective Status" content={getStatusContent()} />
         </div>
-        {selectedObjective !== null && selectedSubobjective !== null && (
-          <button onClick={handleGradeSubobjective} className="grade-button">
-            Grade Subobjective
-          </button>
+        {userRole === 'employee' && selectedObjective !== null && (
+          <div className="action-buttons-container">
+            <button 
+              onClick={handleGradeSubobjective} 
+              className="grade-button"
+              disabled={selectedSubobjective === null}
+            >
+              Grade Subobjective
+            </button>
+          </div>
         )}
       </div>
       <Navbar />
       <GradePopup
         isOpen={isGradePopupOpen}
         onClose={() => setIsGradePopupOpen(false)}
-        subobjective={
-          selectedSubobjective !== null
-            ? subobjectives[selectedSubobjective]
-            : null
-        }
+        subobjective={selectedSubobjective !== null ? subobjectives[selectedSubobjective] : null}
+        onSubmit={handleGradeSubmit}
       />
     </div>
   );

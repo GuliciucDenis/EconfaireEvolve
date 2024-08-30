@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 100px;
 }
 
 .user-info {
@@ -45,3 +44,28 @@
 .subobjective-item.selected {
     background-color: rgba(255, 255, 255, 0.2);
 }
+.action-buttons-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .grade-button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .grade-button:hover {
+    background-color: #218838;
+  }
+  .grade-button:disabled {
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+  }
