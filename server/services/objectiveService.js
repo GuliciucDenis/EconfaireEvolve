@@ -34,20 +34,30 @@ const updateObjectiveById = async (id, updateData) => {
         let totalGradeEmployee = 0;
         let totalGradeAdmin = 0;
         let subObjectiveCount = updateData.subObjectives.length;
+        let gradedSubobjectiveCount = 0;
 
         // Calculate the total grades for subObjectives
         for (let subObjective of updateData.subObjectives) {
             if (subObjective.gradeEmployee !== undefined) {
                 totalGradeEmployee += subObjective.gradeEmployee;
+                if (subObjective.gradeEmployee > 1)
+                    gradedSubobjectiveCount++;
             }
             if (subObjective.gradeAdmin !== undefined) {
                 totalGradeAdmin += subObjective.gradeAdmin;
+                if (subObjective.gradeAdmin > 1)
+                    gradedSubobjectiveCount++;
             }
         }
 
+        if (gradedSubobjectiveCount = subObjectiveCount * 2)
+        {
         // Calculate the mean grades
-        updateData.gradeEmployee = subObjectiveCount > 0 ? totalGradeEmployee / subObjectiveCount : 0;
-        updateData.gradeAdmin = subObjectiveCount > 0 ? totalGradeAdmin / subObjectiveCount : 0;
+            updateData.gradeEmployee = subObjectiveCount > 0 ? Math.round(totalGradeEmployee / subObjectiveCount) : 0;
+            console.log(updateData.gradeEmployee);
+            updateData.gradeAdmin = subObjectiveCount > 0 ? Math.round(totalGradeAdmin / subObjectiveCount) : 0;
+            console.log(updateData.gradeAdmin);
+        }
     }
 
     // Update the objective with the calculated mean grades

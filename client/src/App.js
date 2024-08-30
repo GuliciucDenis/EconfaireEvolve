@@ -21,8 +21,10 @@ import ModifyPassword from "./pages/modifypassword/ModifyPassword";
 import ChangePasswordPopup from "./components/common/ChangePassword/ChangePasswordPopup";
 import AddObjectives from "./pages/AddObjectives/AddObjectives";
 import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup";
-import GradePopup from "./components/common/GradePopup/GradePopup";
+import GradePopup from "./components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import EditSubobjectives from "./pages/EditSubobjectives/EditSubobjectives";
+import SeeObjectives from "./pages/SeeObjectives/SeeObjectives";
+
 
 function App() {
   return (
@@ -35,7 +37,7 @@ function App() {
           <Route path="/user-dashboard" element={<UserDashboard />} />
           <Route path="/objectives/:id" element={<Objectives />} />
           <Route path="/help" element={<Help />} />
-          <Route path="/history" element={<History />} />
+          <Route path="/history/:id" element={<History />} />
           <Route path="/logout" element={<LogOut />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/create-user" element={<CreateUser />} />
@@ -50,7 +52,11 @@ function App() {
           <Route path="/edit-objectives/:id" element={<AddObjectives />} />
           <Route path="/delete-user-popup" element={<DeleteUserPopup />} />
           <Route path="/grade-subobjective-popup" element={<GradePopup />} />
-          <Route path="/edit-subobjectives/:id" element={<EditSubobjectives />} />
+          <Route
+            path="/edit-subobjectives/:id"
+            element={<EditSubobjectives />}
+          />
+          <Route path="/see-objectives/:id" element={<SeeObjectives />} />
         </Routes>
       </Router>
     </NextUIProvider>

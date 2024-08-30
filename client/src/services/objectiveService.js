@@ -85,3 +85,28 @@ export const updateObjective = async (objective) => {
   });
   return response.data;
 };
+
+export const getAverageObjectiveGradeByUserId = async (userId) => {
+    const token = getJwt();
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/users/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const objectives = response.data.user.objectiveList;
+    console.log(objectives);
+    const objectivesGrades = await Promise.all(objectives.map(
+        async (objectiveId) => {
+            const objectiveData = await getObjectiveById(objectiveId);
+            const gradeEmployee = objectiveData.gradeEmployee;
+            const gradeAdmin = objectiveData.gradeAdmin;
+            return (gradeEmployee + gradeAdmin) / 2;
+        }
+    ));
+    console.log(objectivesGrades);
+    const averageGrade = objectivesGrades.reduce((sum, grade) => sum + grade, 0) / objectivesGrades.length;
+    return averageGrade;
+};

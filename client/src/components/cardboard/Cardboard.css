@@ -10,30 +10,43 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
 }
 
+.objectives-list {
+    overflow: scroll;
+}
+
 .card h2 {
     color: #ffffff;
     text-align: center;
+    margin-bottom: 20px;
 }
 
-.objectives-list {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-    width: 100%;
-    overflow-y: auto;
-    margin-top: 20px;
+.subobjectives-list {
+  list-style-type: none;
+  padding: 0;
 }
 
-.objectives-list li {
-    color: #ffffff;
-    margin-bottom: 10px;
-    padding-left: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.subobjective-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 5px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.card p {
-    color: #ffffff;
-    text-align: center;
+.subobjective-item:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.subobjective-item.selected {
+  background-color: rgba(255, 255, 255, 0.3);
+  font-weight: bold;
+}
+
+.grade-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }

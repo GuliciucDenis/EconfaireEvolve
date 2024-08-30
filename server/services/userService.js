@@ -25,7 +25,7 @@ const authenticateUser = async ({ email, password }) => {
         throw new Error('Invalid credentials');
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id, role: user.role }, config.jwtSecret, { expiresIn: '5h' });
     return token;
 };
 

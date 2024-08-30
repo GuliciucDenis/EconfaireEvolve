@@ -9,57 +9,55 @@ import {
   getObjectivesByUserId,
   getObjectiveById,
 } from "../../services/objectiveService";
-import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
-import "./History.css";
+import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
+import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
+import "./SeeObjectives.css";
 
-const History = () => {
+const SeeObjectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
   const [selectedSubobjective, setSelectedSubobjective] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
-  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
 
   useEffect(() => {
-    // Fetch user and objectives when component mounts
     const fetchUserData = async () => {
       try {
         const user = await getUserById(userId);
-        console.log(user);
         setCurrentUser(user);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        const filteredObjectives = objectives.filter(
-          (objective) => objective.gradeAdmin > 1 && objective.gradeEmployee > 1
-        );
-        setUserObjectives(filteredObjectives);
+        setUserObjectives(objectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
     };
 
-    fetchUserData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
-    // Fetch subobjectives whenever a new objective is selected
     const fetchSubobjectives = async () => {
-      if (selectedObjective !== null) {
+      if (selectedObjective !== null && userObjectives.length > 0) {
         try {
           const selectedObjectiveId = userObjectives[selectedObjective].id;
           const subobjectivesData = await getSubobjectivesByObjectiveId(
             selectedObjectiveId
           );
-          console.log(subobjectivesData);
           setSubobjectives(subobjectivesData);
         } catch (error) {
           console.error("Failed to fetch subobjectives:", error);
         }
+      } else {
+        setSubobjectives([]);
       }
     };
 
@@ -75,10 +73,17 @@ const History = () => {
     setSelectedSubobjective(index);
   };
 
-  const handleGradeSubobjective = () => {
-    if (selectedObjective !== null && selectedSubobjective !== null) {
-      setIsGradePopupOpen(true);
+  const handleGradeSubobjective = async (grade) => {
+    if (selectedSubobjective === null) return;
+    try {
+      const subobjectiveToGrade = subobjectives[selectedSubobjective];
+      await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
+      setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjective ? { ...sub, gradeAdmin: grade } : sub));
+    } catch (error) {
+      console.error("Failed to grade subobjective:", error);
     }
+    setSelectedSubobjective(null);
+    setIsGradeSubobjectivePopupOpen(false);
   };
 
   const getStatusContent = () => {
@@ -100,7 +105,7 @@ const History = () => {
           <p>Description: {objective.description}</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
           <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeEmployee}/10</p>  
+          <p>Employee grade: {objective.gradeAdmin}/10</p>  
 
           <h2>Subobjective status</h2>
           <p>Description: {subobjective.description}</p>
@@ -158,8 +163,18 @@ const History = () => {
         </div>
       </div>
       <Navbar />
+      <GradeSubobjectivePopup
+        isOpen={isGradeSubobjectivePopupOpen}
+        onClose={() => setIsGradeSubobjectivePopupOpen(false)}
+        onSubmit={(grade) => {
+          handleGradeSubobjective(grade);
+          setIsGradeSubobjectivePopupOpen(false);
+        }}
+        subobjective={subobjectives[selectedSubobjective]?.title}
+        objectiveId={userObjectives[selectedObjective]?.id}
+      />
     </div>
   );
 };
 
-export default History;
+export default SeeObjectives;

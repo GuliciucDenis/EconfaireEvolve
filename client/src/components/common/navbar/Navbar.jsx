@@ -32,14 +32,12 @@ const Navbar = () => {
     checkUserRole();
   }, []);
 
-  const getIconClass = useCallback((path) => {
-    if (path === "/objectives" && location.pathname.startsWith("/objectives")) {
-      return "icon-container active target-active";
-    }
-    return location.pathname === path
-      ? "icon-container active"
-      : "icon-container";
-  }, [location.pathname]);
+  const getIconClass = useCallback(
+    (path) => {
+      return location.pathname === path ? "icon-container active" : "icon-container";
+    },
+    [location.pathname]
+  );
 
   const handleLogoutClick = useCallback(() => {
     setIsLogoutPopupOpen(true);
@@ -52,23 +50,27 @@ const Navbar = () => {
           <img src={home} className="home-icon" alt="Home" />
         </div>
       </Link>
-      {userRole === 'admin' && (
-  <Link to="/user-dashboard" className="home-link">
-    <div className={getIconClass("/user-dashboard")}>
-      <img src={searchUser} className="search-icon" alt="User Dashboard" />
-    </div>
-  </Link>
-)}
-      <Link to={`/objectives/${userId ? userId : ''}`} className="home-link">
-        <div className={getIconClass("/objectives")}>
-          <img src={target} className="target-icon" alt="Objectives" />
-        </div>
-      </Link>
-      <Link to="/history" className="home-link">
-        <div className={getIconClass("/history")}>
-          <img src={history} className="history-icon" alt="History" />
-        </div>
-      </Link>
+      {userRole === "admin" && (
+        <Link to="/user-dashboard" className="home-link">
+          <div className={getIconClass("/user-dashboard")}>
+            <img src={searchUser} className="search-icon" alt="User Dashboard" />
+          </div>
+        </Link>
+      )}
+      {userId && (
+        <>
+          <Link to={`/objectives/${userId}`} className="home-link">
+            <div className={getIconClass(`/objectives/${userId}`)}>
+              <img src={target} className="target-icon" alt="Objectives" />
+            </div>
+          </Link>
+          <Link to={`/history/${userId}`} className="home-link">
+            <div className={getIconClass(`/history/${userId}`)}>
+              <img src={history} className="history-icon" alt="History" />
+            </div>
+          </Link>
+        </>
+      )}
       <Link to="/faq" className="home-link">
         <div className={getIconClass("/faq")}>
           <img src={help} className="help-icon" alt="Help" />
@@ -80,7 +82,7 @@ const Navbar = () => {
         </div>
       </Link>
     </div>
-  ), [userRole, getIconClass, handleLogoutClick]);
+  ), [userRole, userId, getIconClass, handleLogoutClick]);
 
   return (
     <>
