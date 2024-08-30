@@ -10,3 +10,12 @@
   top: 150px;
 }
 
+.user-dashboard-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 150px;
+  z-index: 100;
+  position: absolute;
+  margin-left: 680px;
+}

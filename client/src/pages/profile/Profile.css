@@ -60,12 +60,12 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  font-size: 32px;
+  font-size: 20px;
   font-weight: bold;
-  color: white;
+  color: black;
   z-index: 20;
-  margin-left: 400px;
-  margin-top: 50px;
+  margin-left: 680px;
+  margin-top: 130px;
 }
 .profile-pic-header {
   position: absolute;

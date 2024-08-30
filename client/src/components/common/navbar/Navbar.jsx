@@ -33,6 +33,9 @@ const Navbar = () => {
   }, []);
 
   const getIconClass = useCallback((path) => {
+    if (path === "/objectives" && location.pathname.startsWith("/objectives")) {
+      return "icon-container active target-active";
+    }
     return location.pathname === path
       ? "icon-container active"
       : "icon-container";
