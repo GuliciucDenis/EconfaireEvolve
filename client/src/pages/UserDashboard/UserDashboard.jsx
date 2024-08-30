@@ -10,6 +10,9 @@ function UserDashboard() {
       <Background />
       <User />
       <div className="content">
+        <div className="objectives-title-container">
+          <h1 className="dashboard-title">User management</h1>
+        </div>
         <Navbar />
         <UserTable />
       </div>
