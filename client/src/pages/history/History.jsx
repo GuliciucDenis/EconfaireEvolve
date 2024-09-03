@@ -20,6 +20,7 @@ const History = () => {
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
   const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
 
@@ -30,6 +31,7 @@ const History = () => {
         const user = await getUserById(userId);
         console.log(user);
         setCurrentUser(user);
+        setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
@@ -85,13 +87,31 @@ const History = () => {
     if (selectedObjective === null) return "Select an objective to view status";
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
+    
+    const formatGrade = (grade) => typeof grade === 'number' ? `${grade}/10` : grade;
+
+    const calculateAverageAdminGrade = () => {
+      if (subobjectives.length === 0) return "-";
+      const validGrades = subobjectives.filter(sub => sub.gradeAdmin > 1).map(sub => sub.gradeAdmin);
+      if (validGrades.length === 0) return "-";
+      const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
+      return average.toFixed(2);
+    };
+
+    const renderGrades = () => {
+      return <p>Admin grade: {calculateAverageAdminGrade()}</p>;
+    };
+
+    const renderSubobjectiveGrades = () => {
+      return <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>;
+    };
+
     if (selectedSubobjective === null) {
       return (
         <>
           <p>Description: {objective.description}</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeAdmin}/10</p>
+          {renderGrades()}
         </>
       );
     } else {
@@ -99,13 +119,11 @@ const History = () => {
         <>
           <p>Description: {objective.description}</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeEmployee}/10</p>  
+          {renderGrades()}
 
           <h2>Subobjective status</h2>
           <p>Description: {subobjective.description}</p>
-          <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>Employee grade: {subobjective.gradeEmployee}/10</p>
+          {renderSubobjectiveGrades()}
         </>
       );
     }

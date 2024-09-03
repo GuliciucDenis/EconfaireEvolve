@@ -9,7 +9,9 @@
     align-items: center;
 }
 
-.user-info {
+.user-info-seeobjectives {
+    margin-top: 50px;
+    margin-bottom: 50px;
     font-size: 18px;
     color:white;
 }

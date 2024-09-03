@@ -19,5 +19,9 @@ const Cardboard = ({ title, content, onItemClick }) => {
     </div>
   );
 };
-
+// Cardboard.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   content: PropTypes.oneOfType([PropTypes.string, PropTypes.array]).isRequired,
+//   onItemClick: PropTypes.func,
+// };
 export default Cardboard;

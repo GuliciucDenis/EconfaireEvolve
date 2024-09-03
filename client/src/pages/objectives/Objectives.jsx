@@ -29,11 +29,16 @@ const Objectives = () => {
       try {
         const user = await getUserById(userId);
         setCurrentUser(user);
+        setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        setUserObjectives(objectives);
+        // Filter out objectives that have been graded by both admin and employee
+        const activeObjectives = objectives.filter(
+          (objective) => objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
+        );
+        setUserObjectives(activeObjectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -86,17 +91,42 @@ const Objectives = () => {
     setIsGradeSubobjectivePopupOpen(false);
   };
 
+  const formatGrade = (grade, hasSubobjectives) => {
+    if (!hasSubobjectives) return "-/10";
+    return grade > 1 ? `${grade}/10` : "-/10";
+  };
+
   const getStatusContent = () => {
     if (selectedObjective === null) return "Select an objective to view status";
     const objective = userObjectives[selectedObjective];
-    const subobjective = subobjectives[selectedSubobjective];
+    const hasSubobjectives = subobjectives.length > 0;
+  
+    const renderGrades = () => {
+      return (
+        <>
+          <p>Admin grade: {formatGrade(objective.gradeAdmin, hasSubobjectives)}</p>
+          {userRole === 'employee' && (
+            <p>Employee grade: {formatGrade(objective.gradeEmployee, hasSubobjectives)}</p>
+          )}
+        </>
+      );
+    };
+
+    const renderSubobjectiveGrades = () => {
+      return (
+        <>
+          <p>Admin grade: {formatGrade(subobjectives[selectedSubobjective].gradeAdmin, hasSubobjectives)}</p>
+          <p>Employee grade: {formatGrade(subobjectives[selectedSubobjective].gradeEmployee, hasSubobjectives)}</p>
+        </>
+      );
+    };
+
     if (selectedSubobjective === null) {
       return (
         <>
           <p>Description: {objective.description}</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeAdmin}/10</p>
+          {renderGrades()}
         </>
       );
     } else {
@@ -104,13 +134,11 @@ const Objectives = () => {
         <>
           <p>Description: {objective.description}</p>
           <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeEmployee}/10</p>  
+          {renderGrades()}
 
           <h2>Subobjective status</h2>
-          <p>Description: {subobjective.description}</p>
-          <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>Employee grade: {subobjective.gradeEmployee}/10</p>
+          <p>Description: {subobjectives[selectedSubobjective].description}</p>
+          {renderSubobjectiveGrades()}
         </>
       );
     }
