@@ -33,10 +33,7 @@ const Objectives = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        const filteredObjectives = objectives.filter(
-          (objective) => objective.gradeAdmin <= 1 && objective.gradeEmployee <= 1
-        );
-        setUserObjectives(filteredObjectives);
+        setUserObjectives(objectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -129,9 +126,9 @@ const Objectives = () => {
         </div>
         <div className="user-info">
           {currentUser ? (
-            <div className="user-info-text">
+            <>
               Selected user: {currentUser.firstName} {currentUser.lastName}
-            </div>
+            </>
           ) : (
             <>Loading user information...</>
           )}
