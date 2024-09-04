@@ -100,7 +100,7 @@ const Objectives = () => {
   };
 
   const formatGrade = (grade) => {
-    if (typeof grade !== 'number' || isNaN(grade)) {
+    if (grade === "-" || typeof grade !== 'number' || isNaN(grade)) {
       return "-/10";
     }
     return `${grade.toFixed(2)}/10`;
@@ -109,21 +109,12 @@ const Objectives = () => {
   const calculateAverageGrade = (gradeType) => {
     if (subobjectives.length === 0) return "-";
     const validGrades = subobjectives
-      .map(sub => Number(sub[gradeType])) // Conversie la număr
-      .filter(grade => !isNaN(grade)); // Filtrare grade valide (elimină null sau grade nevalide)
+      .map(sub => Number(sub[gradeType]))
+      .filter(grade => grade > 1 && !isNaN(grade));
     if (validGrades.length === 0) return "-";
     const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
-    return average.toFixed(2); // Formatează media cu două zecimale
+    return average.toFixed(2);
   };
-  // const calculateAverageGrade = (gradeType) => {
-  //   if (subobjectives.length === 0) return "-";
-  //   const validGrades = subobjectives
-  //     .map(sub => Number(sub[gradeType]))
-  //     .filter(grade => grade > 1 && !isNaN(grade));
-  //   if (validGrades.length === 0) return "-";
-  //   const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
-  //   return average.toFixed(2);
-  // };
 
   const getStatusContent = () => {
     if (selectedObjective === null) return "Select an objective to view status";
