@@ -5,10 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import {
-  getObjectivesByUserId,
-  getObjectiveById,
-} from "../../services/objectiveService";
+import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./SeeObjectives.css";
@@ -104,56 +101,62 @@ const SeeObjectives = () => {
     setIsGradeSubobjectivePopupOpen(false);
   };
 
+  const formatGrade = (grade) => {
+    const numericGrade = Number(grade); // Convertește grade la număr
+    if (isNaN(numericGrade) || numericGrade <= 1) {
+      return "-/10"; // Returnează un fallback dacă grade nu este un număr valid sau este mai mic sau egal cu 1
+    }
+    return `${numericGrade.toFixed(2)}/10`; // Formatează grade dacă este un număr valid
+  };
+
+  const calculateAverageGrade = (gradeType) => {
+    if (subobjectives.length === 0) return "-";
+    const validGrades = subobjectives
+      .map(sub => Number(sub[gradeType])) // Conversie la număr
+      .filter(grade => !isNaN(grade) && grade > 1); // Filtrare grade valide
+    if (validGrades.length === 0) return "-";
+    const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
+    return average.toFixed(2); // Formatează media cu două zecimale
+  };
+
   const getStatusContent = () => {
     if (selectedObjective === null) return "Select an objective to view status";
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
-    
-    const formatGrade = (grade) => grade > 1 ? `${grade}/10` : "-";
 
-    const renderGrades = () => {
-      return (
-        <>
-          <p>Admin grade: {formatGrade(objective.gradeAdmin)}</p>
-          {userRole !== 'admin' && (
-            <p>Employee grade: {formatGrade(objective.gradeEmployee)}</p>
-          )}
-        </>
-      );
+    const renderObjectiveGrades = () => {
+      const adminGrade = calculateAverageGrade('gradeAdmin');
+      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+      if (userRole !== 'admin') {
+        const employeeGrade = calculateAverageGrade('gradeEmployee');
+        content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+      }
+      return content;
     };
 
     const renderSubobjectiveGrades = () => {
-      return (
-        <>
-          <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
-          {userRole !== 'admin' && (
-            <p>Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
-          )}
-        </>
-      );
+      if (!subobjective) return null;
+      const content = [<p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>];
+      if (userRole !== 'admin') {
+        content.push(<p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>);
+      }
+      return content;
     };
 
-    if (selectedSubobjective === null) {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          {renderGrades()}
-        </>
-      );
-    } else {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          {renderGrades()}
-
-          <h2>Subobjective status</h2>
-          <p>Description: {subobjective.description}</p>
-          {renderSubobjectiveGrades()}
-        </>
-      );
-    }
+    return (
+      <>
+        <p>Description: {objective.description}</p>
+        <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        {renderObjectiveGrades()}
+        {selectedSubobjective !== null && (
+          <>
+            <h2>Subobjective status</h2>
+            <p>Description: {subobjective.description}</p>
+            {renderSubobjectiveGrades()}
+          </>
+        )}
+      </>
+    );
   };
 
   return (

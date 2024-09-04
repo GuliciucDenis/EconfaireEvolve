@@ -1,12 +1,12 @@
 .edit-subobjectives-content-wrapper {
   position: relative;
-  top: 100px;
+  top: 150px;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .action-button {
@@ -47,6 +47,8 @@
   justify-content: center;
   gap: 20px;
   margin-top: 20px;
+  max-height: calc(100vh - 200px); /* Ajustează înălțimea maximă pentru a preveni overflow-ul */
+  overflow-y: auto; /* Permite scroll doar dacă este necesar */
 }
 
 .add-button,

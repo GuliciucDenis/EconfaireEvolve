@@ -31,16 +31,19 @@ const AddObjectives = () => {
         const objective = await getObjectiveById(id);
         return objective;
       }));
-      setUserObjectives(userObjectives);
+      // Filter objectives to include only those that are not completed (i.e., not in History)
+      const activeObjectives = userObjectives.filter(
+        objective => objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
+      );
+      setUserObjectives(activeObjectives);
     };
     const fetchCurrentUser = async () => {
       const user = await getUserById(userId);
       setCurrentUser(user);
-      console.log("Current user:", currentUser);
     };
     fetchUserObjectives();
     fetchCurrentUser();
-  }, []);
+  }, [userId]);
 
   const objectivesData = [
   {
