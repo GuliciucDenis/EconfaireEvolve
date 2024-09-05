@@ -31,7 +31,20 @@ const SeeObjectives = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        setUserObjectives(objectives);
+        
+        // Filter objectives to include only active ones
+        const activeObjectives = objectives.filter(
+          (objective) => objective && objective.status !== 'completed' && 
+          objective.subObjectives && objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
+        );
+        setUserObjectives(activeObjectives);
+        
+        // If there are active objectives, fetch subobjectives for the first one
+        if (activeObjectives.length > 0) {
+          const subobjectivesData = await getSubobjectivesByObjectiveId(activeObjectives[0].id);
+          setSubobjectives(subobjectivesData);
+          setSelectedObjective(0);
+        }
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -115,7 +128,9 @@ const SeeObjectives = () => {
   };
 
   const getStatusContent = () => {
-    if (selectedObjective === null) return "Select an objective to view status";
+    if (selectedObjective === null || !userObjectives[selectedObjective]) {
+      return "Select an objective to view status";
+    }
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
 
@@ -142,13 +157,13 @@ const SeeObjectives = () => {
 
     return (
       <>
-        <p>Description: {objective.description}</p>
-        <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        <p>Description: {objective.description || 'No description available'}</p>
+        <p>Deadline: {objective.deadline ? new Date(objective.deadline).toLocaleDateString() : 'No deadline set'}</p>
         {renderObjectiveGrades()}
-        {selectedSubobjective !== null && (
+        {selectedSubobjective !== null && subobjective && (
           <>
             <h2>Subobjective status</h2>
-            <p>Description: {subobjective.description}</p>
+            <p>Description: {subobjective.description || 'No description available'}</p>
             {renderSubobjectiveGrades()}
           </>
         )}
