@@ -102,21 +102,21 @@ const SeeObjectives = () => {
   };
 
   const formatGrade = (grade) => {
-    const numericGrade = Number(grade); // Convertește grade la număr
-    if (isNaN(numericGrade) || numericGrade <= 1) {
-      return "-/10"; // Returnează un fallback dacă grade nu este un număr valid sau este mai mic sau egal cu 1
+    if (grade === "-" || isNaN(Number(grade)) || Number(grade) <= 1) {
+      return "-/10";
     }
-    return `${numericGrade.toFixed(2)}/10`; // Formatează grade dacă este un număr valid
+    return `${Number(grade).toFixed(2)}/10`;
   };
 
   const calculateAverageGrade = (gradeType) => {
     if (subobjectives.length === 0) return "-";
     const validGrades = subobjectives
-      .map(sub => Number(sub[gradeType])) // Conversie la număr
-      .filter(grade => !isNaN(grade) && grade > 1); // Filtrare grade valide
+      .map(sub => Number(sub[gradeType]))
+      .filter(grade => !isNaN(grade) && grade > 1);
+    if (validGrades.length !== subobjectives.length) return "-"; // If any subobjective is not graded
     if (validGrades.length === 0) return "-";
     const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
-    return average.toFixed(2); // Formatează media cu două zecimale
+    return average.toFixed(2);
   };
 
   const getStatusContent = () => {
@@ -126,12 +126,13 @@ const SeeObjectives = () => {
 
     const renderObjectiveGrades = () => {
       const adminGrade = calculateAverageGrade('gradeAdmin');
-      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
-      if (userRole !== 'admin') {
-        const employeeGrade = calculateAverageGrade('gradeEmployee');
-        content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
-      }
-      return content;
+      const employeeGrade = calculateAverageGrade('gradeEmployee');
+      return (
+        <>
+          <p key="admin">Admin grade: {formatGrade(adminGrade)}</p>
+          <p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>
+        </>
+      );
     };
 
     const renderSubobjectiveGrades = () => {

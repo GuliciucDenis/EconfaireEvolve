@@ -32,7 +32,12 @@ const History = () => {
           userObjectiveIds.map(getObjectiveById)
         );
         const filteredObjectives = objectives.filter(
-          (objective) => objective.gradeAdmin > 1 && objective.gradeEmployee > 1
+          (objective) => {
+            const allSubobjectivesGraded = objective.subObjectives.every(
+              sub => Number(sub.gradeAdmin) > 1 && Number(sub.gradeEmployee) > 1
+            );
+            return objective.gradeAdmin > 1 && objective.gradeEmployee > 1 && allSubobjectivesGraded;
+          }
         );
         setUserObjectives(filteredObjectives);
       } catch (error) {

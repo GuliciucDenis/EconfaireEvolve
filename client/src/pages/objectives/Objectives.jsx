@@ -104,6 +104,7 @@ const Objectives = () => {
     const validGrades = subobjectives
       .map(sub => Number(sub[gradeType]))
       .filter(grade => !isNaN(grade) && grade > 1);
+    if (validGrades.length !== subobjectives.length) return "-"; // If any subobjective is not graded
     if (validGrades.length === 0) return "-";
     const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
     return average.toFixed(2);
