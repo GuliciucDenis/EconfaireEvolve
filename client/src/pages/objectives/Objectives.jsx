@@ -33,6 +33,11 @@ const Objectives = () => {
           (objective) => objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
         );
         setUserObjectives(activeObjectives);
+
+        if (activeObjectives.length > 0) {
+          const subobjectivesData = await getSubobjectivesByObjectiveId(activeObjectives[0].id);
+          setSubobjectives(subobjectivesData);
+        }
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -43,28 +48,15 @@ const Objectives = () => {
     }
   }, [userId]);
 
-  // Definirea funcției fetchSubobjectives la nivelul componentei
-  const fetchSubobjectives = async () => {
-    if (selectedObjective !== null && userObjectives.length > 0) {
-      try {
-        const selectedObjectiveId = userObjectives[selectedObjective].id;
-        const subobjectivesData = await getSubobjectivesByObjectiveId(selectedObjectiveId);
-        setSubobjectives(subobjectivesData);
-      } catch (error) {
-        console.error("Failed to fetch subobjectives:", error);
-      }
-    } else {
-      setSubobjectives([]);
-    }
-  };
-
-  useEffect(() => {
-    fetchSubobjectives();
-  }, [selectedObjective, userObjectives]);
-
-  const handleObjectiveClick = (index) => {
+  const handleObjectiveClick = async (index) => {
     setSelectedObjective(index);
     setSelectedSubobjective(null);
+    try {
+      const subobjectivesData = await getSubobjectivesByObjectiveId(userObjectives[index].id);
+      setSubobjectives(subobjectivesData);
+    } catch (error) {
+      console.error("Failed to fetch subobjectives:", error);
+    }
   };
 
   const handleSubobjectiveClick = (index) => {
@@ -100,17 +92,18 @@ const Objectives = () => {
   };
 
   const formatGrade = (grade) => {
-    if (grade === "-" || typeof grade !== 'number' || isNaN(grade)) {
+    const numericGrade = Number(grade);
+    if (isNaN(numericGrade) || numericGrade <= 1) {
       return "-/10";
     }
-    return `${grade.toFixed(2)}/10`;
+    return `${numericGrade.toFixed(2)}/10`;
   };
 
   const calculateAverageGrade = (gradeType) => {
     if (subobjectives.length === 0) return "-";
     const validGrades = subobjectives
       .map(sub => Number(sub[gradeType]))
-      .filter(grade => grade > 1 && !isNaN(grade));
+      .filter(grade => !isNaN(grade) && grade > 1);
     if (validGrades.length === 0) return "-";
     const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
     return average.toFixed(2);
@@ -121,45 +114,15 @@ const Objectives = () => {
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
 
-
     const renderObjectiveGrades = () => {
       const adminGrade = calculateAverageGrade('gradeAdmin');
-    
-      // Verifică dacă toate subobiectivele sunt notate
-      const allGraded = subobjectives.every(sub => !isNaN(sub.gradeAdmin) && sub.gradeAdmin > 0);
-    
-      // Dacă toate subobiectivele sunt notate, mută obiectivul în istoric
-      if (allGraded) {
-        moveObjectiveToHistory(userObjectives[selectedObjective]?.id);
-      }
-    
-      const content = [<p key="admin">Admin grade: {adminGrade}/10</p>];
+      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
       if (userRole === 'employee') {
         const employeeGrade = calculateAverageGrade('gradeEmployee');
         content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
       }
       return content;
     };
-    
-    // const renderObjectiveGrades = () => {
-    //   const adminGrade = calculateAverageGrade('gradeAdmin'); // Calcularea mediei pentru Admin grade
-    //   const content = [<p key="admin">Admin grade: {adminGrade}/10</p>]; // Afișează media ca Admin grade
-    //   if (userRole === 'employee') {
-    //     const employeeGrade = calculateAverageGrade('gradeEmployee');
-    //     content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
-    //   }
-    //   return content;
-    // };
-
-    // const renderObjectiveGrades = () => {
-    //   const adminGrade = calculateAverageGrade('gradeAdmin');
-    //   const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
-    //   if (userRole === 'employee') {
-    //     const employeeGrade = calculateAverageGrade('gradeEmployee');
-    //     content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
-    //   }
-    //   return content;
-    // };
 
     const renderSubobjectiveGrades = () => {
       if (!subobjective) return null;
@@ -196,7 +159,17 @@ const Objectives = () => {
       console.error("Failed to move objective to history:", error);
     }
   };
-  
+
+  const fetchSubobjectives = async () => {
+    if (selectedObjective !== null) {
+      try {
+        const subobjectivesData = await getSubobjectivesByObjectiveId(userObjectives[selectedObjective].id);
+        setSubobjectives(subobjectivesData);
+      } catch (error) {
+        console.error("Failed to fetch subobjectives:", error);
+      }
+    }
+  };
 
   return (
     <div className="objectives-container">
