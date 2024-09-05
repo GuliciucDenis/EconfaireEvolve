@@ -24,12 +24,22 @@ const AddObjectives = () => {
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
-      const userObjectiveIds = await getObjectivesByUserId(userId);
-      const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
-        const objective = await getObjectiveById(id);
-        return objective;
-      }));
-      setUserObjectives(userObjectives);
+      try {
+        const userObjectiveIds = await getObjectivesByUserId(userId);
+        const objectives = await Promise.all(userObjectiveIds.map(async (id) => {
+          const objective = await getObjectiveById(id);
+          return objective;
+        }));
+        
+        // Filter objectives to include only active ones
+        const activeObjectives = objectives.filter(
+          (objective) => objective.status !== 'completed' && 
+          objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
+        );
+        setUserObjectives(activeObjectives);
+      } catch (error) {
+        console.error("Failed to fetch user objectives:", error);
+      }
     };
     const fetchCurrentUser = async () => {
       const user = await getUserById(userId);
