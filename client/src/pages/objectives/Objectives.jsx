@@ -21,6 +21,7 @@ const Objectives = () => {
   const { id } = useParams();
   const userId = id;
 
+  // Fetch user data and objectives
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -29,9 +30,13 @@ const Objectives = () => {
         setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(userObjectiveIds.map(getObjectiveById));
+        
+        // Filter objectives to exclude those fully graded
         const activeObjectives = objectives.filter(
-          (objective) => objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
+          (objective) => 
+            objective.subObjectives?.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
         );
+
         setUserObjectives(activeObjectives);
 
         if (activeObjectives.length > 0) {
@@ -48,6 +53,7 @@ const Objectives = () => {
     }
   }, [userId]);
 
+  // Handle clicking on an objective
   const handleObjectiveClick = async (index) => {
     setSelectedObjective(index);
     setSelectedSubobjective(null);
@@ -59,10 +65,12 @@ const Objectives = () => {
     }
   };
 
+  // Handle clicking on a subobjective
   const handleSubobjectiveClick = (index) => {
     setSelectedSubobjective(index);
   };
 
+  // Handle grading a subobjective
   const handleGradeSubobjective = async (grade) => {
     if (selectedSubobjective === null) return;
     try {
@@ -73,11 +81,11 @@ const Objectives = () => {
         grade,
         userRole
       );
-      
-      // Update local state
+
+      // Update local state with new subobjectives and objectives
       setSubobjectives(updatedObjective.subObjectives);
-      setUserObjectives(prevObjectives => 
-        prevObjectives.map(obj => 
+      setUserObjectives(prevObjectives =>
+        prevObjectives.map(obj =>
           obj.id === updatedObjective.id ? updatedObjective : obj
         )
       );
@@ -87,10 +95,10 @@ const Objectives = () => {
         sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1
       );
 
-      // If all subobjectives are graded and both overall grades are > 1, move to history
-      if (allSubobjectivesGraded && updatedObjective.gradeAdmin > 1 && updatedObjective.gradeEmployee > 1) {
+      // If all subobjectives are graded, then update the objective's status
+      if (allSubobjectivesGraded) {
         await updateObjectiveStatus(updatedObjective.id, 'completed');
-        setUserObjectives(prevObjectives => 
+        setUserObjectives(prevObjectives =>
           prevObjectives.filter(obj => obj.id !== updatedObjective.id)
         );
         setSelectedObjective(null);
@@ -102,6 +110,7 @@ const Objectives = () => {
     setIsGradeSubobjectivePopupOpen(false);
   };
 
+  // Format the grade display
   const formatGrade = (grade) => {
     const numericGrade = Number(grade);
     if (isNaN(numericGrade) || numericGrade <= 1) {
@@ -110,6 +119,7 @@ const Objectives = () => {
     return `${numericGrade.toFixed(2)}/10`;
   };
 
+  // Calculate average grade for a specific type (admin or employee)
   const calculateAverageGrade = (gradeType) => {
     if (subobjectives.length === 0) return "-";
     const validGrades = subobjectives
@@ -121,6 +131,7 @@ const Objectives = () => {
     return average.toFixed(2);
   };
 
+  // Render the status content of objectives
   const getStatusContent = () => {
     if (selectedObjective === null) return "Select an objective to view status";
     const objective = userObjectives[selectedObjective];
@@ -161,26 +172,7 @@ const Objectives = () => {
     );
   };
 
-  const moveObjectiveToHistory = async (objectiveId) => {
-    try {
-      await updateObjectiveStatus(objectiveId, 'completed');
-      console.log(`Objective ${objectiveId} moved to history.`);
-    } catch (error) {
-      console.error("Failed to move objective to history:", error);
-    }
-  };
-
-  const fetchSubobjectives = async () => {
-    if (selectedObjective !== null) {
-      try {
-        const subobjectivesData = await getSubobjectivesByObjectiveId(userObjectives[selectedObjective].id);
-        setSubobjectives(subobjectivesData);
-      } catch (error) {
-        console.error("Failed to fetch subobjectives:", error);
-      }
-    }
-  };
-
+  // Render the main objectives component
   return (
     <div className="objectives-container">
       <Background />

@@ -31,11 +31,7 @@ const SeeObjectives = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        // Filter active objectives (those that are not fully evaluated)
-        const activeObjectives = objectives.filter(objective => 
-          objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
-        );
-        setUserObjectives(activeObjectives);
+        setUserObjectives(objectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -93,19 +89,6 @@ const SeeObjectives = () => {
           obj.id === updatedObjective.id ? updatedObjective : obj
         )
       );
-
-      // Check if all subobjectives are graded
-      const allSubobjectivesGraded = updatedObjective.subObjectives.every(
-        sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1
-      );
-
-      // If all subobjectives are graded and both overall grades are > 1, remove from list
-      if (allSubobjectivesGraded && updatedObjective.gradeAdmin > 1 && updatedObjective.gradeEmployee > 1) {
-        setUserObjectives(prevObjectives => 
-          prevObjectives.filter(obj => obj.id !== updatedObjective.id)
-        );
-        setSelectedObjective(null);
-      }
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
@@ -149,11 +132,12 @@ const SeeObjectives = () => {
 
     const renderSubobjectiveGrades = () => {
       if (!subobjective) return null;
-      const content = [<p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>];
-      if (userRole !== 'admin') {
-        content.push(<p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>);
-      }
-      return content;
+      return (
+        <>
+          <p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
+          <p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
+        </>
+      );
     };
 
     return (
@@ -179,9 +163,7 @@ const SeeObjectives = () => {
       <div className="content-wrapper">
         <div className="user-info-seeobjectives">
           {currentUser ? (
-            <>
-              Selected user: {currentUser.firstName} {currentUser.lastName}
-            </>
+            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
           ) : (
             <>Loading user information...</>
           )}

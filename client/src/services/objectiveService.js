@@ -77,7 +77,7 @@ export const deleteObjectiveById = async (id) => {
 
 export const updateObjective = async (objective) => {
   const token = getJwt();
-  const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key,value]) => key!=="id"));
+  const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key, value]) => key !== "id"));
   
   // Only calculate overall grades if all subobjectives are graded by both admin and employee
   if (objective.subObjectives && objective.subObjectives.every(sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1)) {
@@ -85,15 +85,24 @@ export const updateObjective = async (objective) => {
     const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
     objectiveUpdatableData.gradeAdmin = adminGrades.reduce((a, b) => a + b, 0) / adminGrades.length;
     objectiveUpdatableData.gradeEmployee = employeeGrades.reduce((a, b) => a + b, 0) / employeeGrades.length;
+  } else {
+    // Ensure the grades remain valid if subobjectives are not fully graded
+    objectiveUpdatableData.gradeAdmin = objective.gradeAdmin > 1 ? objective.gradeAdmin : 1;
+    objectiveUpdatableData.gradeEmployee = objective.gradeEmployee > 1 ? objective.gradeEmployee : 1;
   }
 
-  const response = await axios.put(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, objectiveUpdatableData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const response = await axios.put(
+    `${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, 
+    objectiveUpdatableData, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
 };
+
 
 export const getAverageObjectiveGradeByUserId = async (userId) => {
     const token = getJwt();
