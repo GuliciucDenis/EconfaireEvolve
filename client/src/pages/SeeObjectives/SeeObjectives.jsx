@@ -31,7 +31,7 @@ const SeeObjectives = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        // Filtrează obiectivele active (cele care nu sunt complet evaluate)
+        // Filter active objectives (those that are not fully evaluated)
         const activeObjectives = objectives.filter(objective => 
           objective.gradeAdmin <= 1 || objective.gradeEmployee <= 1
         );
@@ -79,21 +79,33 @@ const SeeObjectives = () => {
     if (selectedSubobjective === null) return;
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjective];
-      await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
-      
-      // Actualizăm starea locală
-      const updatedSubobjectives = subobjectives.map((sub, index) => 
-        index === selectedSubobjective ? { ...sub, gradeEmployee: grade } : sub
+      const updatedObjective = await gradeSubobjectiveByObjectiveId(
+        userObjectives[selectedObjective]?.id,
+        subobjectiveToGrade.title,
+        grade,
+        userRole
       );
-      setSubobjectives(updatedSubobjectives);
-
-      // Recalculăm nota obiectivului
-      const updatedObjective = await getObjectiveById(userObjectives[selectedObjective]?.id);
+      
+      // Update local state
+      setSubobjectives(updatedObjective.subObjectives);
       setUserObjectives(prevObjectives => 
-        prevObjectives.map((obj, index) => 
-          index === selectedObjective ? updatedObjective : obj
+        prevObjectives.map(obj => 
+          obj.id === updatedObjective.id ? updatedObjective : obj
         )
       );
+
+      // Check if all subobjectives are graded
+      const allSubobjectivesGraded = updatedObjective.subObjectives.every(
+        sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1
+      );
+
+      // If all subobjectives are graded and both overall grades are > 1, remove from list
+      if (allSubobjectivesGraded && updatedObjective.gradeAdmin > 1 && updatedObjective.gradeEmployee > 1) {
+        setUserObjectives(prevObjectives => 
+          prevObjectives.filter(obj => obj.id !== updatedObjective.id)
+        );
+        setSelectedObjective(null);
+      }
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }

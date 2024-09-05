@@ -29,7 +29,7 @@ function EditObjectives() {
         debugger;
         // Exclude obiectivele care au fost evaluate complet de admin și angajat
         const currentObjectives = objectives.filter(
-          (obj) => obj.gradeAdmin <= 1 || obj.gradeEmployee <= 1
+          (obj) => obj.status !== 'completed' && (obj.gradeAdmin <= 1 || obj.gradeEmployee <= 1)
         );
         console.log(currentObjectives);
         setUserObjectives(currentObjectives);

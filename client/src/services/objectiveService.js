@@ -79,15 +79,12 @@ export const updateObjective = async (objective) => {
   const token = getJwt();
   const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key,value]) => key!=="id"));
   
-  // Calculate overall grades only if all subobjectives are graded
+  // Only calculate overall grades if all subobjectives are graded by both admin and employee
   if (objective.subObjectives && objective.subObjectives.every(sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1)) {
     const adminGrades = objective.subObjectives.map(sub => sub.gradeAdmin);
     const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
     objectiveUpdatableData.gradeAdmin = adminGrades.reduce((a, b) => a + b, 0) / adminGrades.length;
     objectiveUpdatableData.gradeEmployee = employeeGrades.reduce((a, b) => a + b, 0) / employeeGrades.length;
-  } else {
-    objectiveUpdatableData.gradeAdmin = 1;
-    objectiveUpdatableData.gradeEmployee = 1;
   }
 
   const response = await axios.put(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, objectiveUpdatableData, {
@@ -121,4 +118,27 @@ export const getAverageObjectiveGradeByUserId = async (userId) => {
     console.log(objectivesGrades);
     const averageGrade = objectivesGrades.reduce((sum, grade) => sum + grade, 0) / objectivesGrades.length;
     return averageGrade;
+};
+
+export const updateObjectiveStatus = async (objectiveId, status) => {
+  try {
+    const token = getJwt();
+    const response = await axios.put(
+      `${process.env.REACT_APP_API_URL}/objectives/${objectiveId}/status`,
+      { status },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error('Failed to update objective status');
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error updating objective status:', error);
+    throw error;
+  }
 };

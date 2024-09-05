@@ -5,7 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import { getObjectiveById } from "../../services/objectiveService";
+import { getObjectiveById, updateObjectiveStatus } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
@@ -67,23 +67,34 @@ const Objectives = () => {
     if (selectedSubobjective === null) return;
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjective];
-      await gradeSubobjectiveByObjectiveId(
+      const updatedObjective = await gradeSubobjectiveByObjectiveId(
         userObjectives[selectedObjective]?.id,
         subobjectiveToGrade.title,
         grade,
-        userRole // Use the user's role instead of hardcoding "admin"
+        userRole
+      );
+      
+      // Update local state
+      setSubobjectives(updatedObjective.subObjectives);
+      setUserObjectives(prevObjectives => 
+        prevObjectives.map(obj => 
+          obj.id === updatedObjective.id ? updatedObjective : obj
+        )
       );
 
-      // Update local subobjectives to reflect the change
-      const updatedSubobjectives = subobjectives.map((sub, index) =>
-        index === selectedSubobjective
-          ? { ...sub, [userRole === 'admin' ? 'gradeAdmin' : 'gradeEmployee']: grade }
-          : sub
+      // Check if all subobjectives are graded by both admin and employee
+      const allSubobjectivesGraded = updatedObjective.subObjectives.every(
+        sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1
       );
-      setSubobjectives(updatedSubobjectives);
 
-      // Refetch to ensure you have the most recent data
-      await fetchSubobjectives();
+      // If all subobjectives are graded and both overall grades are > 1, move to history
+      if (allSubobjectivesGraded && updatedObjective.gradeAdmin > 1 && updatedObjective.gradeEmployee > 1) {
+        await updateObjectiveStatus(updatedObjective.id, 'completed');
+        setUserObjectives(prevObjectives => 
+          prevObjectives.filter(obj => obj.id !== updatedObjective.id)
+        );
+        setSelectedObjective(null);
+      }
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
@@ -152,10 +163,8 @@ const Objectives = () => {
 
   const moveObjectiveToHistory = async (objectiveId) => {
     try {
-      // Logică pentru mutarea obiectivului în istoric
-      // Exemplu: apelare API pentru a actualiza starea obiectivului ca fiind finalizată
+      await updateObjectiveStatus(objectiveId, 'completed');
       console.log(`Objective ${objectiveId} moved to history.`);
-      // Aici poți adăuga un apel la API pentru a marca obiectivul ca fiind complet și a-l muta în istoric
     } catch (error) {
       console.error("Failed to move objective to history:", error);
     }

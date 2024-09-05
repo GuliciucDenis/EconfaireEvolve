@@ -20,16 +20,29 @@ export const removeSubobjectiveByObjectiveId= async (objectiveId, subobjectiveTo
 };
 
 export const gradeSubobjectiveByObjectiveId = async (objectiveId, subobjectiveToGrade, grade, role) => {
-    if (role === "admin") {
-        const objective = await getObjectiveById(objectiveId);
-        objective.subObjectives = objective.subObjectives.map(subobjective => subobjective.title === subobjectiveToGrade ? { ...subobjective, gradeAdmin: grade } : subobjective);
-        await updateObjective(objective);
-    }
-    else if (role === "employee") {
-        const objective = await getObjectiveById(objectiveId);
-        objective.subObjectives = objective.subObjectives.map(subobjective => subobjective.title === subobjectiveToGrade ? { ...subobjective, gradeEmployee: grade } : subobjective);
-        await updateObjective(objective);
-    }
+  const objective = await getObjectiveById(objectiveId);
+  objective.subObjectives = objective.subObjectives.map(subobjective => 
+    subobjective.title === subobjectiveToGrade 
+      ? { ...subobjective, [role === "admin" ? "gradeAdmin" : "gradeEmployee"]: grade } 
+      : subobjective
+  );
+  
+  // Check if all subobjectives are graded by both admin and employee
+  const allGraded = objective.subObjectives.every(sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1);
+  
+  if (allGraded) {
+    const adminGrades = objective.subObjectives.map(sub => sub.gradeAdmin);
+    const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
+    objective.gradeAdmin = adminGrades.reduce((a, b) => a + b, 0) / adminGrades.length;
+    objective.gradeEmployee = employeeGrades.reduce((a, b) => a + b, 0) / employeeGrades.length;
+  } else {
+    // Ensure the objective remains visible in the active list
+    objective.gradeAdmin = objective.gradeAdmin > 1 ? objective.gradeAdmin : 1;
+    objective.gradeEmployee = objective.gradeEmployee > 1 ? objective.gradeEmployee : 1;
+  }
+
+  await updateObjective(objective);
+  return objective;
 };
 
 

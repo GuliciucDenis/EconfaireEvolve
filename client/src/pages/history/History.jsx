@@ -31,21 +31,19 @@ const History = () => {
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        const filteredObjectives = objectives.filter(
-          (objective) => {
-            const allSubobjectivesGraded = objective.subObjectives.every(
-              sub => Number(sub.gradeAdmin) > 1 && Number(sub.gradeEmployee) > 1
-            );
-            return objective.gradeAdmin > 1 && objective.gradeEmployee > 1 && allSubobjectivesGraded;
-          }
+        // Filter completed objectives (those that are fully evaluated)
+        const completedObjectives = objectives.filter(objective => 
+          objective.gradeAdmin > 1 && objective.gradeEmployee > 1
         );
-        setUserObjectives(filteredObjectives);
+        setUserObjectives(completedObjectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
     };
 
-    fetchUserData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
