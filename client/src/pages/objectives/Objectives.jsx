@@ -25,15 +25,19 @@ const Objectives = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        console.log("Fetching user data..."); // Add log to check fetching starts
         const user = await getUserById(userId);
-        setCurrentUser(user);
-        setUserRole(user.role);
+        if (user) {
+          setCurrentUser(user);
+          setUserRole(user.role);
+          console.log("User fetched:", user); // Log user data to ensure it's correct
+        }
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(userObjectiveIds.map(getObjectiveById));
-        
+
         // Filter objectives to exclude those fully graded
         const activeObjectives = objectives.filter(
-          (objective) => 
+          (objective) =>
             objective.subObjectives?.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
         );
 
@@ -51,7 +55,6 @@ const Objectives = () => {
   // Handle clicking on an objective
   const handleObjectiveClick = async (index) => {
     if (index === selectedObjective) {
-      // Deselect the objective and clear subobjectives
       setSelectedObjective(null);
       setSubobjectives([]);
       return;
@@ -75,13 +78,23 @@ const Objectives = () => {
   // Handle grading a subobjective
   const handleGradeSubobjective = async (grade) => {
     if (selectedSubobjective === null) return;
+
+    // Ensure currentUser is properly set before using
+    if (!currentUser || !currentUser.id) {
+      console.error("Current user not set correctly:", currentUser);
+      return;
+    }
+
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjective];
+      console.log("Grading subobjective with current user ID:", currentUser.id);
+      
       const updatedObjective = await gradeSubobjectiveByObjectiveId(
         userObjectives[selectedObjective]?.id,
         subobjectiveToGrade.title,
         grade,
-        userRole
+        userRole,
+        currentUser.id // Ensure currentUser.id is correctly passed
       );
 
       // Update local state with new subobjectives and objectives
@@ -94,7 +107,7 @@ const Objectives = () => {
 
       // Check if all subobjectives are graded by both admin and employee
       const allSubobjectivesGraded = updatedObjective.subObjectives.every(
-        sub => (userRole === "admin" && sub.gradeAdmin > 1) || 
+        sub => (userRole === "admin" && sub.gradeAdmin > 1) ||
                (userRole === "employee" && sub.gradeAdmin > 1 && sub.gradeEmployee > 1)
       );
 
