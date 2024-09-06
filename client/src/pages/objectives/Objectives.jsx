@@ -38,11 +38,6 @@ const Objectives = () => {
         );
 
         setUserObjectives(activeObjectives);
-
-        if (activeObjectives.length > 0) {
-          const subobjectivesData = await getSubobjectivesByObjectiveId(activeObjectives[0].id);
-          setSubobjectives(subobjectivesData);
-        }
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -55,6 +50,13 @@ const Objectives = () => {
 
   // Handle clicking on an objective
   const handleObjectiveClick = async (index) => {
+    if (index === selectedObjective) {
+      // Deselect the objective and clear subobjectives
+      setSelectedObjective(null);
+      setSubobjectives([]);
+      return;
+    }
+
     setSelectedObjective(index);
     setSelectedSubobjective(null);
     try {
@@ -92,7 +94,8 @@ const Objectives = () => {
 
       // Check if all subobjectives are graded by both admin and employee
       const allSubobjectivesGraded = updatedObjective.subObjectives.every(
-        sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1
+        sub => (userRole === "admin" && sub.gradeAdmin > 1) || 
+               (userRole === "employee" && sub.gradeAdmin > 1 && sub.gradeEmployee > 1)
       );
 
       // If all subobjectives are graded, then update the objective's status
@@ -101,7 +104,10 @@ const Objectives = () => {
         setUserObjectives(prevObjectives =>
           prevObjectives.filter(obj => obj.id !== updatedObjective.id)
         );
+
+        // Clear selected objective and subobjectives after completion
         setSelectedObjective(null);
+        setSubobjectives([]);
       }
     } catch (error) {
       console.error("Failed to grade subobjective:", error);

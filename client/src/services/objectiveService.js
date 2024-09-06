@@ -133,7 +133,7 @@ export const updateObjectiveStatus = async (objectiveId, status) => {
   try {
     const token = getJwt();
     const response = await axios.put(
-      `${process.env.REACT_APP_API_URL}/objectives/${objectiveId}/status`,
+      `${process.env.REACT_APP_API_URL}/objectives/${objectiveId}`,
       { status },
       {
         headers: {
