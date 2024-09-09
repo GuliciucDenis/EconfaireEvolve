@@ -28,23 +28,15 @@ const SeeObjectives = () => {
         setCurrentUser(user);
         setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
-        const objectives = await Promise.all(
-          userObjectiveIds.map(getObjectiveById)
-        );
-        
-        // Filter objectives to include only active ones
+        const objectives = await Promise.all(userObjectiveIds.map(getObjectiveById));
+
+        // Filtrarea obiectivelor active, inclusiv cele fără subobiective
         const activeObjectives = objectives.filter(
-          (objective) => objective && objective.status !== 'completed' && 
-          objective.subObjectives && objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
+          (objective) =>
+            objective && (objective.subObjectives.length === 0 || 
+            objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1))
         );
         setUserObjectives(activeObjectives);
-        
-        // If there are active objectives, fetch subobjectives for the first one
-        if (activeObjectives.length > 0) {
-          const subobjectivesData = await getSubobjectivesByObjectiveId(activeObjectives[0].id);
-          setSubobjectives(subobjectivesData);
-          setSelectedObjective(0);
-        }
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -60,9 +52,7 @@ const SeeObjectives = () => {
       if (selectedObjective !== null && userObjectives.length > 0) {
         try {
           const selectedObjectiveId = userObjectives[selectedObjective].id;
-          const subobjectivesData = await getSubobjectivesByObjectiveId(
-            selectedObjectiveId
-          );
+          const subobjectivesData = await getSubobjectivesByObjectiveId(selectedObjectiveId);
           setSubobjectives(subobjectivesData);
         } catch (error) {
           console.error("Failed to fetch subobjectives:", error);
@@ -94,13 +84,10 @@ const SeeObjectives = () => {
         grade,
         userRole
       );
-      
-      // Update local state
+
       setSubobjectives(updatedObjective.subObjectives);
-      setUserObjectives(prevObjectives => 
-        prevObjectives.map(obj => 
-          obj.id === updatedObjective.id ? updatedObjective : obj
-        )
+      setUserObjectives(prevObjectives =>
+        prevObjectives.map(obj => obj.id === updatedObjective.id ? updatedObjective : obj)
       );
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
@@ -121,10 +108,19 @@ const SeeObjectives = () => {
     const validGrades = subobjectives
       .map(sub => Number(sub[gradeType]))
       .filter(grade => !isNaN(grade) && grade > 1);
-    if (validGrades.length !== subobjectives.length) return "-"; // If any subobjective is not graded
-    if (validGrades.length === 0) return "-";
+    if (validGrades.length !== subobjectives.length) return "-";
     const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
     return average.toFixed(2);
+  };
+
+  const renderObjectiveGrades = () => {
+    const adminGrade = calculateAverageGrade('gradeAdmin');
+    const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+    if (userRole === 'employee') {
+      const employeeGrade = calculateAverageGrade('gradeEmployee');
+      content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+    }
+    return content;
   };
 
   const getStatusContent = () => {
@@ -133,27 +129,6 @@ const SeeObjectives = () => {
     }
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
-
-    const renderObjectiveGrades = () => {
-      const adminGrade = calculateAverageGrade('gradeAdmin');
-      const employeeGrade = calculateAverageGrade('gradeEmployee');
-      return (
-        <>
-          <p key="admin">Admin grade: {formatGrade(adminGrade)}</p>
-          <p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>
-        </>
-      );
-    };
-
-    const renderSubobjectiveGrades = () => {
-      if (!subobjective) return null;
-      return (
-        <>
-          <p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
-          <p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
-        </>
-      );
-    };
 
     return (
       <>
@@ -164,7 +139,10 @@ const SeeObjectives = () => {
           <>
             <h2>Subobjective status</h2>
             <p>Description: {subobjective.description || 'No description available'}</p>
-            {renderSubobjectiveGrades()}
+            <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
+            {userRole === 'employee' && (
+              <p>Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
+            )}
           </>
         )}
       </>

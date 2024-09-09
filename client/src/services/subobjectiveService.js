@@ -23,6 +23,7 @@ export const gradeSubobjectiveByObjectiveId = async (objectiveId, subobjectiveTo
   // Check if the admin is grading themselves
   const isSelfEvaluation = role === "admin" && objective.assignedTo === currentUserId;
 
+  console.log(isSelfEvaluation);
   console.log(objective.assignedTo);
   console.log(currentUserId);
   console.log(role);

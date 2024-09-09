@@ -38,7 +38,8 @@ const Objectives = () => {
         // Filter objectives to exclude those fully graded
         const activeObjectives = objectives.filter(
           (objective) =>
-            objective.subObjectives?.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
+          (objective.subObjectives.length === 0 ||
+            objective.subObjectives?.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1) )
         );
 
         setUserObjectives(activeObjectives);
@@ -107,7 +108,7 @@ const Objectives = () => {
 
       // Check if all subobjectives are graded by both admin and employee
       const allSubobjectivesGraded = updatedObjective.subObjectives.every(
-        sub => (userRole === "admin" && sub.gradeAdmin > 1) ||
+        sub => (userRole === "admin" && sub.gradeAdmin > 1 && sub.gradeEmployee !== 1) ||
                (userRole === "employee" && sub.gradeAdmin > 1 && sub.gradeEmployee > 1)
       );
 
@@ -121,6 +122,10 @@ const Objectives = () => {
         // Clear selected objective and subobjectives after completion
         setSelectedObjective(null);
         setSubobjectives([]);
+      }
+      else
+      {
+        await updateObjectiveStatus(updatedObjective.id, "new");
       }
     } catch (error) {
       console.error("Failed to grade subobjective:", error);

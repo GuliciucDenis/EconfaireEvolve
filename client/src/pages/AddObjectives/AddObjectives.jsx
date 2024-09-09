@@ -33,8 +33,9 @@ const AddObjectives = () => {
         
         // Filter objectives to include only active ones
         const activeObjectives = objectives.filter(
-          (objective) => objective.status !== 'completed' && 
-          objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1)
+          (objective) => objective.status !== 'completed' &&
+          (objective.subObjectives.length === 0 || 
+          objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1) )
         );
         setUserObjectives(activeObjectives);
       } catch (error) {
