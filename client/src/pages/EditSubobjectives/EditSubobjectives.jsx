@@ -79,13 +79,16 @@ const EditSubobjectives = () => {
     if (selectedSubobjectiveIndex === null) return;
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjectiveIndex];
-      await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin");
+      // Assuming `currentUserId` is available in the component's state or context
+      const currentUserId = objective.assignedTo; // Or fetch it from wherever it's stored
+      await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin", currentUserId);
       await fetchSubobjectives(); // Refetch the subobjectives list
       setSelectedSubobjectiveIndex(null); // Reset selected subobjective after grading
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
   };
+  
 
   const handleSubobjectiveClick = (index) => {
     if (selectedSubobjectiveIndex === index) {
