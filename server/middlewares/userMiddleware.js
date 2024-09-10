@@ -12,12 +12,15 @@ const verifyProfileAccess = async (req, res, next) => {
 
 const verifyUpdateAccess = async (req, res, next) => {
     const { role } = req.user;  // Assuming the authenticated user's role is available in req.user
-    const allowedFieldsForEmployee = ['email', 'password'];
-    
+    console.log('REQUEST BODY:', req.body);
+    const allowedFieldsForEmployee = ['email', 'oldPassword', 'password'];
+    console.log(allowedFieldsForEmployee);
+    console.log(role);
     if (role !== 'admin') {
         // Filter the fields based on allowedFieldsForEmployee
         const updateData = req.body;
-        const fieldsToUpdate = Object.keys(updateData);
+        const fieldsToUpdate = Object.keys(updateData)
+        console.log(fieldsToUpdate);
 
         for (let field of fieldsToUpdate) {
             if (!allowedFieldsForEmployee.includes(field)) {
