@@ -105,28 +105,71 @@ export const updateObjective = async (objective) => {
 
 
 export const getAverageObjectiveGradeByUserId = async (userId) => {
-    const token = getJwt();
-    const response = await axios.get(
-      `${process.env.REACT_APP_API_URL}/users/${userId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const objectives = response.data.user.objectiveList;
-    console.log(objectives);
-    const objectivesGrades = await Promise.all(objectives.map(
-        async (objectiveId) => {
-            const objectiveData = await getObjectiveById(objectiveId);
-            const gradeEmployee = objectiveData.gradeEmployee;
-            const gradeAdmin = objectiveData.gradeAdmin;
-            return (gradeEmployee + gradeAdmin) / 2;
-        }
-    ));
-    console.log(objectivesGrades);
-    const averageGrade = objectivesGrades.reduce((sum, grade) => sum + grade, 0) / objectivesGrades.length;
-    return averageGrade;
+  const token = getJwt();
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_URL}/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const objectives = response.data.user.objectiveList;
+  console.log(objectives);
+
+  const objectivesGrades = await Promise.all(
+    objectives.map(async (objectiveId) => {
+      const objectiveData = await getObjectiveById(objectiveId);
+      const gradeEmployee = objectiveData.gradeEmployee;
+      const gradeAdmin = objectiveData.gradeAdmin;
+
+      // Extrage gradeAdmin și gradeEmployee din subObjectives
+      const subObjectiveGradesAdmin = objectiveData.subObjectives.map(
+        (subObjective) => subObjective.gradeAdmin
+      );
+      const subObjectiveGradesEmployee = objectiveData.subObjectives.map(
+        (subObjective) => subObjective.gradeEmployee
+      );
+
+      // console.log(subObjectiveGradesAdmin);
+      // console.log(subObjectiveGradesEmployee);
+      // Calculează media notelor gradeAdmin din subObjectives
+      const validAdminGrades = subObjectiveGradesAdmin.filter(
+        (grade) => grade !== undefined
+      );
+      const averageSubObjectiveAdminGrade =
+        validAdminGrades.length > 0
+          ? validAdminGrades.reduce((sum, grade) => sum + grade, 0) /
+            validAdminGrades.length
+          : 0;
+
+      // Calculează media notelor gradeEmployee din subObjectives
+      const validEmployeeGrades = subObjectiveGradesEmployee.filter(
+        (grade) => grade !== undefined
+      );
+      const averageSubObjectiveEmployeeGrade =
+        validEmployeeGrades.length > 0
+          ? validEmployeeGrades.reduce((sum, grade) => sum + grade, 0) /
+            validEmployeeGrades.length
+          : 0;
+
+      // console.log('Average gradeAdmin:', averageSubObjectiveAdminGrade);
+      // console.log('Average gradeEmployee:', averageSubObjectiveEmployeeGrade);
+
+      // Calculează media generală între gradeEmployee și gradeAdmin la nivel de obiectiv
+      const overallGrade =
+        (averageSubObjectiveAdminGrade + averageSubObjectiveEmployeeGrade) / 2;
+
+      // console.log(overallGrade);
+      return overallGrade;
+
+    })
+  );
+  console.log(objectivesGrades);
+  const averageGrade =
+    objectivesGrades.reduce((sum, grade) => sum + grade, 0) / objectivesGrades.length;
+
+  return averageGrade;
 };
 
 export const updateObjectiveStatus = async (objectiveId, status) => {

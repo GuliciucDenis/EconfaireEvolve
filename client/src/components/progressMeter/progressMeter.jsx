@@ -5,15 +5,23 @@ import './ProgressMeter.css';
 import { getAverageObjectiveGradeByUserId } from '../../services/objectiveService';
 import { getUser } from '../../services/userService';
 
-const ProgressMeter = ({ label = "Average objective grade" }) => {
+const ProgressMeter = ({ label = "Performance percentage" }) => {
   const [averageGrade, setAverageGrade] = useState(null); // Start with null to differentiate between loading state and actual 0 value
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const user = await getUser();
-        const averageGrade = await getAverageObjectiveGradeByUserId(user.id);
-        setAverageGrade(averageGrade*10);
+        const grade = await getAverageObjectiveGradeByUserId(user.id);
+
+        // În mulțirea cu 10 se face aici și verificarea de NaN
+        const calculatedGrade = grade * 10;
+        if (isNaN(calculatedGrade)) {
+          setAverageGrade(0); // Setăm la 0 dacă valoarea este NaN
+        } else {
+          setAverageGrade(calculatedGrade);
+        }
+        console.log(calculatedGrade);
       } catch (error) {
         console.error("Failed to fetch average grade:", error);
         setAverageGrade(0); // Optionally set to 0 in case of error
