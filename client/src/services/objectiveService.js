@@ -78,17 +78,49 @@ export const deleteObjectiveById = async (id) => {
 export const updateObjective = async (objective) => {
   const token = getJwt();
   const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key, value]) => key !== "id"));
+  console.log('Obiectiv: ',objectiveUpdatableData);
   
   // Only calculate overall grades if all subobjectives are graded by both admin and employee
   if (objective.subObjectives && objective.subObjectives.every(sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1)) {
     const adminGrades = objective.subObjectives.map(sub => sub.gradeAdmin);
+    let numericGradesForAdmin = adminGrades.map(Number);
+
+    // console.log(numericGradesForAdmin);
+    // console.log(adminGrades);
+
     const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
-    objectiveUpdatableData.gradeAdmin = adminGrades.reduce((a, b) => a + b, 0) / adminGrades.length;
-    objectiveUpdatableData.gradeEmployee = employeeGrades.reduce((a, b) => a + b, 0) / employeeGrades.length;
+    let numericGradesForEmployee = employeeGrades.map(Number);
+
+    // console.log(employeeGrades);
+    // console.log(numericGradesForEmployee);
+    console.log(numericGradesForAdmin.reduce((a,b) => a+b,0));
+
+    objectiveUpdatableData.gradeAdmin = numericGradesForAdmin.reduce((a, b) => a + b, 0) / numericGradesForAdmin.length;
+
+    console.log(objectiveUpdatableData.gradeAdmin);
+    // console.log(numericGradesForAdmin.length);
+
+    objectiveUpdatableData.gradeEmployee = numericGradesForEmployee.reduce((a, b) => a + b, 0) / numericGradesForEmployee.length;
+
+    console.log(numericGradesForEmployee.reduce((a,b) => a+b,0));
+    console.log(objectiveUpdatableData.gradeEmployee);
+    // console.log(numericGradesForEmployee.length);
+
+    objective.gradeAdmin=objectiveUpdatableData.gradeAdmin;
+    objective.gradeEmployee=objectiveUpdatableData.gradeEmployee;
+
   } else {
     // Ensure the grades remain valid if subobjectives are not fully graded
-    objectiveUpdatableData.gradeAdmin = objective.gradeAdmin > 1 ? objective.gradeAdmin : 1;
-    objectiveUpdatableData.gradeEmployee = objective.gradeEmployee > 1 ? objective.gradeEmployee : 1;
+    // objectiveUpdatableData.gradeAdmin = objective.gradeAdmin > 1 ? objective.gradeAdmin : 1;
+    objectiveUpdatableData.gradeAdmin = 1;
+    objective.gradeAdmin = 1;
+    // console.log(objectiveUpdatableData.gradeAdmin);
+    // console.log(objective.gradeAdmin);
+    // objectiveUpdatableData.gradeEmployee = objective.gradeEmployee > 1 ? objective.gradeEmployee : 1;
+    objectiveUpdatableData.gradeEmployee = 1;
+    objective.gradeEmployee = 1;
+    // console.log(objectiveUpdatableData.gradeEmployee);
+    // console.log(objective.gradeEmployee);
   }
 
   const response = await axios.put(
