@@ -93,7 +93,7 @@ export const updateObjective = async (objective) => {
 
     // console.log(employeeGrades);
     // console.log(numericGradesForEmployee);
-    console.log(numericGradesForAdmin.reduce((a,b) => a+b,0));
+    // console.log(numericGradesForAdmin.reduce((a,b) => a+b,0));
 
     objectiveUpdatableData.gradeAdmin = numericGradesForAdmin.reduce((a, b) => a + b, 0) / numericGradesForAdmin.length;
 
@@ -102,7 +102,7 @@ export const updateObjective = async (objective) => {
 
     objectiveUpdatableData.gradeEmployee = numericGradesForEmployee.reduce((a, b) => a + b, 0) / numericGradesForEmployee.length;
 
-    console.log(numericGradesForEmployee.reduce((a,b) => a+b,0));
+    // console.log(numericGradesForEmployee.reduce((a,b) => a+b,0));
     console.log(objectiveUpdatableData.gradeEmployee);
     // console.log(numericGradesForEmployee.length);
 
@@ -122,6 +122,8 @@ export const updateObjective = async (objective) => {
     // console.log(objectiveUpdatableData.gradeEmployee);
     // console.log(objective.gradeEmployee);
   }
+  console.log(objective.id);
+  console.log(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`);
 
   const response = await axios.put(
     `${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, 

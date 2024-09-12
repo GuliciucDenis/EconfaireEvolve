@@ -44,15 +44,18 @@ export const gradeSubobjectiveByObjectiveId = async (objectiveId, subobjectiveTo
     }
     return subobjective;
   });
-
+  console.log("FIRST:", objective.subObjectives);
   // Check if all subobjectives are graded by both admin and employee
   const allGraded = objective.subObjectives.every(sub =>
     sub.gradeAdmin > 1 && sub.gradeEmployee > 1
   );
 
+  
   if (allGraded) {
-    const adminGrades = objective.subObjectives.map(sub => sub.gradeAdmin);
-    const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
+    const adminGrades = objective.subObjectives.map(sub => parseInt(sub.gradeAdmin, 10));
+    const employeeGrades = objective.subObjectives.map(sub => parseInt(sub.gradeEmployee, 10));
+    console.log("NOTE ADMIN: ",adminGrades);
+    console.log("NOTE EMPLOYEE: ",employeeGrades);
     objective.gradeAdmin = adminGrades.reduce((a, b) => a + b, 0) / adminGrades.length;
 
     // If it's self-evaluation, keep grades equal, otherwise update normally

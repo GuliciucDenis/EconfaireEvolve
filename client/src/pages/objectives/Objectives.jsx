@@ -5,7 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import { getObjectiveById, updateObjectiveStatus } from "../../services/objectiveService";
+import { getObjectiveById, updateObjectiveStatus, updateObjective } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
@@ -112,6 +112,7 @@ const Objectives = () => {
                (userRole === "employee" && sub.gradeAdmin > 1 && sub.gradeEmployee > 1)
       );
 
+      console.log(updatedObjective);
       // If all subobjectives are graded, then update the objective's status
       if (allSubobjectivesGraded) {
         await updateObjectiveStatus(updatedObjective.id, 'completed');
