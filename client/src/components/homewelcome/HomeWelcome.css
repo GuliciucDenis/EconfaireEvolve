@@ -1,13 +1,13 @@
 .home-welcome-container {
-    position: relative;
+    position: absolute;
     z-index: 10;
-    padding: 20px;
+    padding: 0;
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin-top: 15%; 
+    margin-top: 270px; 
     margin-left: calc(1% + 280px); 
     width: calc(90% - (20% + 10px));
     max-width: 500px; 

@@ -5,10 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import {
-  getObjectivesByUserId,
-  getObjectiveById,
-} from "../../services/objectiveService";
+import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./SeeObjectives.css";
@@ -29,11 +26,17 @@ const SeeObjectives = () => {
       try {
         const user = await getUserById(userId);
         setCurrentUser(user);
+        setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
-        const objectives = await Promise.all(
-          userObjectiveIds.map(getObjectiveById)
+        const objectives = await Promise.all(userObjectiveIds.map(getObjectiveById));
+
+        // Filtrarea obiectivelor active, inclusiv cele fără subobiective
+        const activeObjectives = objectives.filter(
+          (objective) =>
+            objective && (objective.subObjectives.length === 0 || 
+            objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1))
         );
-        setUserObjectives(objectives);
+        setUserObjectives(activeObjectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
@@ -49,9 +52,7 @@ const SeeObjectives = () => {
       if (selectedObjective !== null && userObjectives.length > 0) {
         try {
           const selectedObjectiveId = userObjectives[selectedObjective].id;
-          const subobjectivesData = await getSubobjectivesByObjectiveId(
-            selectedObjectiveId
-          );
+          const subobjectivesData = await getSubobjectivesByObjectiveId(selectedObjectiveId);
           setSubobjectives(subobjectivesData);
         } catch (error) {
           console.error("Failed to fetch subobjectives:", error);
@@ -77,8 +78,17 @@ const SeeObjectives = () => {
     if (selectedSubobjective === null) return;
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjective];
-      await gradeSubobjectiveByObjectiveId(userObjectives[selectedObjective]?.id, subobjectiveToGrade.title, grade, "employee");
-      setSubobjectives(subobjectives.map((sub, index) => index === selectedSubobjective ? { ...sub, gradeAdmin: grade } : sub));
+      const updatedObjective = await gradeSubobjectiveByObjectiveId(
+        userObjectives[selectedObjective]?.id,
+        subobjectiveToGrade.title,
+        grade,
+        userRole
+      );
+
+      setSubobjectives(updatedObjective.subObjectives);
+      setUserObjectives(prevObjectives =>
+        prevObjectives.map(obj => obj.id === updatedObjective.id ? updatedObjective : obj)
+      );
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
@@ -86,34 +96,57 @@ const SeeObjectives = () => {
     setIsGradeSubobjectivePopupOpen(false);
   };
 
+  const formatGrade = (grade) => {
+    if (grade === "-" || isNaN(Number(grade)) || Number(grade) <= 1) {
+      return "-/10";
+    }
+    return `${Number(grade).toFixed(2)}/10`;
+  };
+
+  const calculateAverageGrade = (gradeType) => {
+    if (subobjectives.length === 0) return "-";
+    const validGrades = subobjectives
+      .map(sub => Number(sub[gradeType]))
+      .filter(grade => !isNaN(grade) && grade > 1);
+    if (validGrades.length !== subobjectives.length) return "-";
+    const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
+    return average.toFixed(2);
+  };
+
+  const renderObjectiveGrades = () => {
+    const adminGrade = calculateAverageGrade('gradeAdmin');
+    const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+    if (userRole === 'employee') {
+      const employeeGrade = calculateAverageGrade('gradeEmployee');
+      content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+    }
+    return content;
+  };
+
   const getStatusContent = () => {
-    if (selectedObjective === null) return "Select an objective to view status";
+    if (selectedObjective === null || !userObjectives[selectedObjective]) {
+      return "Select an objective to view status";
+    }
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
-    if (selectedSubobjective === null) {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeAdmin}/10</p>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeAdmin}/10</p>  
 
-          <h2>Subobjective status</h2>
-          <p>Description: {subobjective.description}</p>
-          <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>Employee grade: {subobjective.gradeEmployee}/10</p>
-        </>
-      );
-    }
+    return (
+      <>
+        <p>Description: {objective.description || 'No description available'}</p>
+        <p>Deadline: {objective.deadline ? new Date(objective.deadline).toLocaleDateString() : 'No deadline set'}</p>
+        {renderObjectiveGrades()}
+        {selectedSubobjective !== null && subobjective && (
+          <>
+            <h2>Subobjective status</h2>
+            <p>Description: {subobjective.description || 'No description available'}</p>
+            <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
+            {userRole === 'employee' && (
+              <p>Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
+            )}
+          </>
+        )}
+      </>
+    );
   };
 
   return (
@@ -121,11 +154,9 @@ const SeeObjectives = () => {
       <Background />
       <User />
       <div className="content-wrapper">
-        <div className="user-info">
+        <div className="user-info-seeobjectives">
           {currentUser ? (
-            <>
-              Selected user: {currentUser.firstName} {currentUser.lastName}
-            </>
+            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
           ) : (
             <>Loading user information...</>
           )}

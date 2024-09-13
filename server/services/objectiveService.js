@@ -29,33 +29,69 @@ const createObjective = async (objectiveData) => {
 };
 
 const updateObjectiveById = async (id, updateData) => {
+    console.log("Test");
+    console.log("Obiectivul este: ",updateData);
+    console.log("Obiectivul are id-ul: ",id);
     // If there are subObjectives in the update data, calculate the mean grades
     if (updateData.subObjectives && Array.isArray(updateData.subObjectives) && updateData.subObjectives.length > 0) {
         let totalGradeEmployee = 0;
         let totalGradeAdmin = 0;
         let subObjectiveCount = updateData.subObjectives.length;
-        let gradedSubobjectiveCount = 0;
 
+        console.log(subObjectiveCount);
+
+        console.log("Obiectivul are subobiectivele: ",updateData.subObjectives);
+
+        // Assuming updateData.subobjectives is an array of strings or values that need conversion
+        const parsedSubObjectives = updateData.subObjectives.map(item => ({ 
+            ...item, 
+            gradeAdmin: parseInt(item.gradeAdmin, 10), 
+            gradeEmployee: parseInt(item.gradeEmployee, 10) 
+        }));
+
+        console.log(parsedSubObjectives);
+        
+        let gradedSubobjectiveCountEmployee = 0;
+        let gradedSubobjectiveCountAdmin = 0;
         // Calculate the total grades for subObjectives
-        for (let subObjective of updateData.subObjectives) {
-            if (subObjective.gradeEmployee !== undefined) {
+        for (let subObjective of parsedSubObjectives) {
+
+            console.log("Nota angajat: ",subObjective.gradeEmployee);
+
+            if (subObjective.gradeEmployee !== undefined && subObjective.gradeEmployee > 1) {
                 totalGradeEmployee += subObjective.gradeEmployee;
-                if (subObjective.gradeEmployee > 1)
-                    gradedSubobjectiveCount++;
+
+                console.log(totalGradeEmployee);
+
+                gradedSubobjectiveCountEmployee++;
+
+                console.log(gradedSubobjectiveCountEmployee);
             }
-            if (subObjective.gradeAdmin !== undefined) {
+
+            console.log("Nota admin: ",subObjective.gradeAdmin);
+
+            if (subObjective.gradeAdmin !== undefined && subObjective.gradeAdmin > 1) {
                 totalGradeAdmin += subObjective.gradeAdmin;
-                if (subObjective.gradeAdmin > 1)
-                    gradedSubobjectiveCount++;
+
+                console.log(totalGradeAdmin);
+
+                gradedSubobjectiveCountAdmin++;
+
+                console.log(gradedSubobjectiveCountAdmin);
             }
         }
 
-        if (gradedSubobjectiveCount = subObjectiveCount * 2)
+        if (gradedSubobjectiveCountEmployee === subObjectiveCount && gradedSubobjectiveCountAdmin === subObjectiveCount)
         {
-        // Calculate the mean grades
-            updateData.gradeEmployee = subObjectiveCount > 0 ? Math.round(totalGradeEmployee / subObjectiveCount) : 0;
+            console.log("Testareeee:")
+            // Calculate the mean grades
+            updateData.gradeEmployee = subObjectiveCount > 0 ? parseFloat((totalGradeEmployee / subObjectiveCount).toFixed(2)) : 0;
+
+
             console.log(updateData.gradeEmployee);
-            updateData.gradeAdmin = subObjectiveCount > 0 ? Math.round(totalGradeAdmin / subObjectiveCount) : 0;
+
+            updateData.gradeAdmin = subObjectiveCount > 0 ? parseFloat((totalGradeAdmin / subObjectiveCount).toFixed(2)) : 0;
+
             console.log(updateData.gradeAdmin);
         }
     }

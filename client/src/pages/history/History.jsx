@@ -5,10 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import {
-  getObjectivesByUserId,
-  getObjectiveById,
-} from "../../services/objectiveService";
+import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
 import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./History.css";
@@ -20,34 +17,36 @@ const History = () => {
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
   const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
 
   useEffect(() => {
-    // Fetch user and objectives when component mounts
     const fetchUserData = async () => {
       try {
         const user = await getUserById(userId);
-        console.log(user);
         setCurrentUser(user);
+        setUserRole(user.role);
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(
           userObjectiveIds.map(getObjectiveById)
         );
-        const filteredObjectives = objectives.filter(
-          (objective) => objective.gradeAdmin > 1 && objective.gradeEmployee > 1
+        // Filter completed objectives (those that are fully evaluated)
+        const completedObjectives = objectives.filter(objective => 
+          objective.gradeAdmin > 1 && objective.gradeEmployee > 1
         );
-        setUserObjectives(filteredObjectives);
+        setUserObjectives(completedObjectives);
       } catch (error) {
         console.error("Failed to fetch user or objectives:", error);
       }
     };
 
-    fetchUserData();
+    if (userId) {
+      fetchUserData();
+    }
   }, [userId]);
 
   useEffect(() => {
-    // Fetch subobjectives whenever a new objective is selected
     const fetchSubobjectives = async () => {
       if (selectedObjective !== null) {
         try {
@@ -55,7 +54,6 @@ const History = () => {
           const subobjectivesData = await getSubobjectivesByObjectiveId(
             selectedObjectiveId
           );
-          console.log(subobjectivesData);
           setSubobjectives(subobjectivesData);
         } catch (error) {
           console.error("Failed to fetch subobjectives:", error);
@@ -81,34 +79,62 @@ const History = () => {
     }
   };
 
+  const formatGrade = (grade) => {
+    const numericGrade = Number(grade); // Convertim la număr pentru siguranță
+    if (isNaN(numericGrade) || numericGrade <= 1) {
+      return "-/10"; // Returnăm fallback dacă grade nu este un număr valid sau este mai mic sau egal cu 1
+    }
+    return `${numericGrade.toFixed(2)}/10`; // Formatează grade dacă este un număr valid
+  };
+
+  const calculateAverageGrade = (gradeType) => {
+    if (subobjectives.length === 0) return "-";
+    const validGrades = subobjectives
+      .map(sub => Number(sub[gradeType])) // Conversie la număr
+      .filter(grade => !isNaN(grade) && grade > 1); // Filtrare grade valide
+    if (validGrades.length === 0) return "-";
+    const average = validGrades.reduce((sum, grade) => sum + grade, 0) / validGrades.length;
+    return average.toFixed(2); // Formatează media cu două zecimale
+  };
+
   const getStatusContent = () => {
     if (selectedObjective === null) return "Select an objective to view status";
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
-    if (selectedSubobjective === null) {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeAdmin}/10</p>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <p>Description: {objective.description}</p>
-          <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
-          <p>Admin grade: {objective.gradeAdmin}/10</p>
-          <p>Employee grade: {objective.gradeEmployee}/10</p>  
 
-          <h2>Subobjective status</h2>
-          <p>Description: {subobjective.description}</p>
-          <p>Admin grade: {subobjective.gradeAdmin}/10</p>
-          <p>Employee grade: {subobjective.gradeEmployee}/10</p>
-        </>
-      );
-    }
+    const renderObjectiveGrades = () => {
+      const adminGrade = calculateAverageGrade('gradeAdmin');
+      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+      if (userRole !== 'admin') {
+        const employeeGrade = calculateAverageGrade('gradeEmployee');
+        content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+      }
+      return content;
+    };
+
+    const renderSubobjectiveGrades = () => {
+      if (!subobjective) return null;
+      const content = [<p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>];
+      if (userRole !== 'admin') {
+        content.push(<p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>);
+      }
+      return content;
+    };
+
+    return (
+      <>
+        <p>Description: {objective.description}</p>
+        <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        {renderObjectiveGrades()}
+        {selectedSubobjective !== null && (
+          <>
+            <h2>Subobjective status</h2>
+            <p>Description: {subobjective.description}</p>
+            {renderSubobjectiveGrades()}
+          </>
+        )}
+      </>
+    );
   };
 
   return (
@@ -116,6 +142,9 @@ const History = () => {
       <Background />
       <User />
       <div className="content-wrapper">
+        <div className="objectives-title-container">
+          <h1 className="objectives-title">History</h1>
+        </div>
         <div className="user-info">
           {currentUser ? (
             <>
@@ -127,7 +156,7 @@ const History = () => {
         </div>
         <div className="cardboard-container">
           <Cardboard
-            title="Current Objectives"
+            title="Past Objectives"
             content={userObjectives.map((objective, index) => (
               <div
                 key={index}
@@ -141,7 +170,7 @@ const History = () => {
             ))}
           />
           <Cardboard
-            title="Current SubObjectives"
+            title="Past SubObjectives"
             content={subobjectives.map((subobjective, index) => (
               <div
                 key={index}

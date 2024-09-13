@@ -8,6 +8,7 @@
     flex-direction: column;
     align-items: center;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    overflow: auto;
 }
 
 .objectives-list {
@@ -49,4 +50,7 @@
 .grade-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+.objective-status-cardboard{
+  color:white;
 }

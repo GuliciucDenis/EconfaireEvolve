@@ -77,11 +77,154 @@ export const deleteObjectiveById = async (id) => {
 
 export const updateObjective = async (objective) => {
   const token = getJwt();
-  const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key,value]) => key!=="id"));
-  const response = await axios.put(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, objectiveUpdatableData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  const objectiveUpdatableData = Object.fromEntries(Object.entries(objective).filter(([key, value]) => key !== "id"));
+  console.log('Obiectiv: ',objectiveUpdatableData);
+  
+  // Only calculate overall grades if all subobjectives are graded by both admin and employee
+  if (objective.subObjectives && objective.subObjectives.every(sub => sub.gradeAdmin > 1 && sub.gradeEmployee > 1)) {
+    const adminGrades = objective.subObjectives.map(sub => sub.gradeAdmin);
+    let numericGradesForAdmin = adminGrades.map(Number);
+
+    // console.log(numericGradesForAdmin);
+    // console.log(adminGrades);
+
+    const employeeGrades = objective.subObjectives.map(sub => sub.gradeEmployee);
+    let numericGradesForEmployee = employeeGrades.map(Number);
+
+    // console.log(employeeGrades);
+    // console.log(numericGradesForEmployee);
+    // console.log(numericGradesForAdmin.reduce((a,b) => a+b,0));
+
+    objectiveUpdatableData.gradeAdmin = numericGradesForAdmin.reduce((a, b) => a + b, 0) / numericGradesForAdmin.length;
+
+    console.log(objectiveUpdatableData.gradeAdmin);
+    // console.log(numericGradesForAdmin.length);
+
+    objectiveUpdatableData.gradeEmployee = numericGradesForEmployee.reduce((a, b) => a + b, 0) / numericGradesForEmployee.length;
+
+    // console.log(numericGradesForEmployee.reduce((a,b) => a+b,0));
+    console.log(objectiveUpdatableData.gradeEmployee);
+    // console.log(numericGradesForEmployee.length);
+
+    objective.gradeAdmin=objectiveUpdatableData.gradeAdmin;
+    objective.gradeEmployee=objectiveUpdatableData.gradeEmployee;
+
+  } else {
+    // Ensure the grades remain valid if subobjectives are not fully graded
+    // objectiveUpdatableData.gradeAdmin = objective.gradeAdmin > 1 ? objective.gradeAdmin : 1;
+    objectiveUpdatableData.gradeAdmin = 1;
+    objective.gradeAdmin = 1;
+    // console.log(objectiveUpdatableData.gradeAdmin);
+    // console.log(objective.gradeAdmin);
+    // objectiveUpdatableData.gradeEmployee = objective.gradeEmployee > 1 ? objective.gradeEmployee : 1;
+    objectiveUpdatableData.gradeEmployee = 1;
+    objective.gradeEmployee = 1;
+    // console.log(objectiveUpdatableData.gradeEmployee);
+    // console.log(objective.gradeEmployee);
+  }
+  console.log(objective.id);
+  console.log(`${process.env.REACT_APP_API_URL}/objectives/${objective.id}`);
+
+  const response = await axios.put(
+    `${process.env.REACT_APP_API_URL}/objectives/${objective.id}`, 
+    objectiveUpdatableData, 
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
   return response.data;
+};
+
+
+export const getAverageObjectiveGradeByUserId = async (userId) => {
+  const token = getJwt();
+  const response = await axios.get(
+    `${process.env.REACT_APP_API_URL}/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+  const objectives = response.data.user.objectiveList;
+  console.log(objectives);
+
+  const objectivesGrades = await Promise.all(
+    objectives.map(async (objectiveId) => {
+      const objectiveData = await getObjectiveById(objectiveId);
+      const gradeEmployee = objectiveData.gradeEmployee;
+      const gradeAdmin = objectiveData.gradeAdmin;
+
+      // Extrage gradeAdmin și gradeEmployee din subObjectives
+      const subObjectiveGradesAdmin = objectiveData.subObjectives.map(
+        (subObjective) => subObjective.gradeAdmin
+      );
+      const subObjectiveGradesEmployee = objectiveData.subObjectives.map(
+        (subObjective) => subObjective.gradeEmployee
+      );
+
+      // console.log(subObjectiveGradesAdmin);
+      // console.log(subObjectiveGradesEmployee);
+      // Calculează media notelor gradeAdmin din subObjectives
+      const validAdminGrades = subObjectiveGradesAdmin.filter(
+        (grade) => grade !== undefined
+      );
+      const averageSubObjectiveAdminGrade =
+        validAdminGrades.length > 0
+          ? validAdminGrades.reduce((sum, grade) => sum + grade, 0) /
+            validAdminGrades.length
+          : 0;
+
+      // Calculează media notelor gradeEmployee din subObjectives
+      const validEmployeeGrades = subObjectiveGradesEmployee.filter(
+        (grade) => grade !== undefined
+      );
+      const averageSubObjectiveEmployeeGrade =
+        validEmployeeGrades.length > 0
+          ? validEmployeeGrades.reduce((sum, grade) => sum + grade, 0) /
+            validEmployeeGrades.length
+          : 0;
+
+      // console.log('Average gradeAdmin:', averageSubObjectiveAdminGrade);
+      // console.log('Average gradeEmployee:', averageSubObjectiveEmployeeGrade);
+
+      // Calculează media generală între gradeEmployee și gradeAdmin la nivel de obiectiv
+      const overallGrade =
+        (averageSubObjectiveAdminGrade + averageSubObjectiveEmployeeGrade) / 2;
+
+      // console.log(overallGrade);
+      return overallGrade;
+
+    })
+  );
+  console.log(objectivesGrades);
+  const averageGrade =
+    objectivesGrades.reduce((sum, grade) => sum + grade, 0) / objectivesGrades.length;
+
+  return averageGrade;
+};
+
+export const updateObjectiveStatus = async (objectiveId, status) => {
+  try {
+    const token = getJwt();
+    const response = await axios.put(
+      `${process.env.REACT_APP_API_URL}/objectives/${objectiveId}`,
+      { status },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    if (response.status !== 200) {
+      throw new Error('Failed to update objective status');
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error updating objective status:', error);
+    throw error;
+  }
 };

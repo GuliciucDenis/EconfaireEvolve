@@ -10,3 +10,18 @@
     top: 0;
     width: 100%;
   }
+
+.home-title-container {
+  position: absolute;
+  margin-left: 700px;
+}
+  .home-title {
+    color: black;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 150px;
+    z-index: 100;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+  }

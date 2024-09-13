@@ -10,6 +10,9 @@ function Home() {
   return (
     <div className="home-container">
       <Background />
+      <div className='home-title-container'>
+          <h1 className='home-title'>Home</h1>
+        </div>
       <div className='home-content'>
         <User />
         <Navbar />

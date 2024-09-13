@@ -14,7 +14,7 @@ const Cardboard = ({ title, content, onItemClick }) => {
           ))}
         </ul>
       ) : (
-        <p>{content}</p>
+        <span className='objective-status-cardboard'>{content}</span>
       )}
     </div>
   );

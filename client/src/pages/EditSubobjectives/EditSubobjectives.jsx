@@ -13,6 +13,7 @@ import {
 import { getObjectiveById } from "../../services/objectiveService";
 import AddSubobjectivePopup from "../../components/common/AddSubobjectivePopup/AddSubobjectivePopup";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
+import { getUserById, getUserIdFromToken } from "../../services/userService";
 import "./EditSubobjectives.css";
 
 const EditSubobjectives = () => {
@@ -23,6 +24,34 @@ const EditSubobjectives = () => {
   const [isAddSubobjectivePopupOpen, setIsAddSubobjectivePopupOpen] = useState(false); // Popup state
   const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false); // Grade popup state
   const [loading, setLoading] = useState(true); // Loading state
+  const [currentUser, setCurrentUser] = useState(null);
+
+
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const userId = await getUserIdFromToken(); // Obține ID-ul utilizatorului din token
+      if (!userId) {
+        console.error("User ID is null or undefined.");
+        return;
+      }
+
+      console.log("Fetching user with ID:", userId); // Log pentru a verifica ID-ul corect
+      const user = await getUserById(userId);
+
+      if (!user) {
+        console.error("User not found or response is null.");
+        return;
+      }
+
+      setCurrentUser(user);
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+    }
+  };
+
+  fetchUserData();
+}, []);
 
   useEffect(() => {
     const fetchObjectiveAndSubobjectives = async () => {
@@ -76,16 +105,19 @@ const EditSubobjectives = () => {
   };
 
   const handleGradeSubobjective = async (grade) => {
-    if (selectedSubobjectiveIndex === null) return;
+    if (selectedSubobjectiveIndex === null || !currentUser) return;
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjectiveIndex];
-      await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin");
-      await fetchSubobjectives(); // Refetch the subobjectives list
-      setSelectedSubobjectiveIndex(null); // Reset selected subobjective after grading
+      // const currentUserId = currentUser.id; // Utilizează `currentUser.id` în loc de `objective.assignedTo`
+      console.log(currentUser.id);
+      await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin", currentUser.id);
+      await fetchSubobjectives();
+      setSelectedSubobjectiveIndex(null);
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
-  };
+  };  
+  
 
   const handleSubobjectiveClick = (index) => {
     if (selectedSubobjectiveIndex === index) {

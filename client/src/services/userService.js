@@ -80,11 +80,15 @@ export const updateUser = async (user) => {
     const decodedToken = jwtDecode(token); // Decode the JWT
     const userId = decodedToken.id; // Extract the ID from the decoded token
 
+    console.log("Token:", token);
+    console.log("Decoded Token:", decodedToken);
+    console.log("User ID from token:", userId);
+
     if (!userId) {
       throw new Error("User ID not found in token");
     }
 
-    // Make the API call to fetch the user data by ID
+    // Make the API call to update the user data by ID
     const response = await axios.put(
       `${process.env.REACT_APP_API_URL}/users/${userId}`,
       user,
@@ -94,13 +98,21 @@ export const updateUser = async (user) => {
         },
       }
     );
-
+    console.log('THIS IS THE RESPONSE: ', response);
     return response.data.user;
   } catch (error) {
+    // Moved the error handling code inside the catch block
     console.error("Error fetching user by ID:", error);
+
+    if (error.response) {
+      console.error("Response data:", error.response.data);
+      console.error("Response status:", error.response.status);
+    }
+
     throw error;
   }
 };
+
 
 export const deleteUser = async (id) => {
   const token = getJwt();

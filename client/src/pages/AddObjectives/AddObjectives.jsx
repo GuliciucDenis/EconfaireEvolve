@@ -6,12 +6,10 @@ import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard'
 import User from '../../components/common/user/User';
 import './AddObjectives.css';
 import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObjective} from "../../services/objectiveService";
-import {getUser, getUserById} from "../../services/userService";
+import {getUserById} from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
 import { useNavigate } from "react-router-dom";
-// import ViewObjectives from "../../components/ViewObjectives/ViewObjectives";
-// import EditObjectives from "../../components/EditObjectives/EditObjectives";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
@@ -20,95 +18,94 @@ const AddObjectives = () => {
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
   const [isSetDeadlinePopupOpen, setIsSetDeadlinePopupOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  const { id  } = useParams();
+  const { id } = useParams();
   const userId = id;
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
-      const userObjectiveIds = await getObjectivesByUserId(userId);
-      const userObjectives = await Promise.all(userObjectiveIds.map(async (id) => {
-        const objective = await getObjectiveById(id);
-        return objective;
-      }));
-      setUserObjectives(userObjectives);
+      try {
+        const userObjectiveIds = await getObjectivesByUserId(userId);
+        const objectives = await Promise.all(userObjectiveIds.map(async (id) => {
+          const objective = await getObjectiveById(id);
+          return objective;
+        }));
+        
+        // Filter objectives to include only active ones
+        const activeObjectives = objectives.filter(
+          (objective) => objective.status !== 'completed' &&
+          (objective.subObjectives.length === 0 || 
+          objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1) )
+        );
+        setUserObjectives(activeObjectives);
+      } catch (error) {
+        console.error("Failed to fetch user objectives:", error);
+      }
     };
     const fetchCurrentUser = async () => {
       const user = await getUserById(userId);
       setCurrentUser(user);
-      console.log("Current user:", currentUser);
     };
     fetchUserObjectives();
     fetchCurrentUser();
-  }, []);
+  }, [userId]);
 
   const objectivesData = [
-  {
-    "title": "Perseverance",
-    "description": "Maintain a consistent effort towards achieving long-term goals despite challenges.",
-    "deadline": "2024-08-28",
-    "assignedTo": "0",
-    "gradeAdmin": 1,
-    "status": "new",
-    "subObjectives": []
-  },
-  {
-    "title": "Creativity",
-    "description": "Encourage innovative thinking and the generation of new ideas.",
-    "deadline": "2024-08-28",
-    "assignedTo": "0",
-    "gradeAdmin": 1,
-    "status": "new",
-    "subObjectives": []
-  },
-  {
-    "title": "Time Management",
-    "description": "Effectively prioritize tasks to make the best use of available time.",
-    "deadline": "2024-08-28",
-    "assignedTo": "0",
-    "gradeAdmin": 1,
-    "status": "new",
-    "subObjectives": []
-  },
-  {
-    "title": "Adaptability",
-    "description": "Demonstrate flexibility and the ability to adjust to new situations and changes.",
-    "deadline": "2024-08-28",
-    "assignedTo": "0",
-    "gradeAdmin": 1,
-    "status": "new",
-    "subObjectives": []
-  },
-  {
-    "title": "Continuous Learning",
-    "description": "Engage in ongoing education and skill development to stay current and improve.",
-    "deadline": "2024-08-28",
-    "assignedTo": "0",
-    "gradeAdmin": 1,
-    "status": "new",
-    "subObjectives": []
-  }
-]
-
+    {
+      "title": "Perseverance",
+      "description": "Maintain a consistent effort towards achieving long-term goals despite challenges.",
+      "deadline": "2024-08-28",
+      "assignedTo": "0",
+      "gradeAdmin": 1,
+      "status": "new",
+      "subObjectives": []
+    },
+    {
+      "title": "Creativity",
+      "description": "Encourage innovative thinking and the generation of new ideas.",
+      "deadline": "2024-08-28",
+      "assignedTo": "0",
+      "gradeAdmin": 1,
+      "status": "new",
+      "subObjectives": []
+    },
+    {
+      "title": "Time Management",
+      "description": "Effectively prioritize tasks to make the best use of available time.",
+      "deadline": "2024-08-28",
+      "assignedTo": "0",
+      "gradeAdmin": 1,
+      "status": "new",
+      "subObjectives": []
+    },
+    {
+      "title": "Adaptability",
+      "description": "Demonstrate flexibility and the ability to adjust to new situations and changes.",
+      "deadline": "2024-08-28",
+      "assignedTo": "0",
+      "gradeAdmin": 1,
+      "status": "new",
+      "subObjectives": []
+    },
+    {
+      "title": "Continuous Learning",
+      "description": "Engage in ongoing education and skill development to stay current and improve.",
+      "deadline": "2024-08-28",
+      "assignedTo": "0",
+      "gradeAdmin": 1,
+      "status": "new",
+      "subObjectives": []
+    }
+  ];
 
   const handleRecommendedObjectiveClick = (index) => {
-    // Reset existing objective selection
     setSelectedExistingObjective(null);
-    if (index === selectedRecommendedObjective) {
-        setSelectedRecommendedObjective(null);
-    } else {
-        setSelectedRecommendedObjective(index);
-    }
+    setSelectedRecommendedObjective(index === selectedRecommendedObjective ? null : index);
   };
 
   const handleExistingObjectiveClick = (index) => {
-    // Reset recommended objective selection
     setSelectedRecommendedObjective(null);
-    if (index === selectedExistingObjective) {
-        setSelectedExistingObjective(null);
-    } else {    
-        setSelectedExistingObjective(index);
-    }
+    setSelectedExistingObjective(index === selectedExistingObjective ? null : index);
   };
 
   const handleCreateObjective = () => {
@@ -118,14 +115,13 @@ const AddObjectives = () => {
   const handleDeleteObjective = async () => {
     if (selectedExistingObjective !== null) {
       const objectiveToDelete = userObjectives[selectedExistingObjective];
-      console.log("Deleting objective:", objectiveToDelete);
-      await deleteObjectiveById(objectiveToDelete.id); // Ensure this call waits for the deletion
+      await deleteObjectiveById(objectiveToDelete.id);
       setUserObjectives(userObjectives.filter((_, index) => index !== selectedExistingObjective));
-      setSelectedExistingObjective(null); // Reset the selection
+      setSelectedExistingObjective(null);
     }
   };
 
-  const handleAssignObjective = async () => {
+  const handleAssignObjective = () => {
     if (selectedRecommendedObjective !== null) {
       setIsSetDeadlinePopupOpen(true);
     }
@@ -136,11 +132,13 @@ const AddObjectives = () => {
       <Background/>
       <User />
       <div className="content-wrapper">
-        <div className="user-info">{currentUser ? (
+        <div className="add-objectives-user-info">
+          {currentUser ? (
             <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
           ) : (
             <>Loading user information...</>
-          )}</div>
+          )}
+        </div>
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 
@@ -180,7 +178,6 @@ const AddObjectives = () => {
                 </>
               )}
             </div>
-
             <div className="create-objective-container">
               <h2>Add a new objective</h2>
               <button onClick={handleCreateObjective}>Create Objective</button>
@@ -192,23 +189,22 @@ const AddObjectives = () => {
       <AddObjectivesPopup
         isOpen={isCreatePopupOpen}
         onClose={() => setIsCreatePopupOpen(false)}
-        onSubmit={async (newObjective) => {
-          // Here you would typically call an API to create the objective
-          setIsCreatePopupOpen(false);
+        onSubmit={(newObjective) => {
           setUserObjectives([...userObjectives, newObjective]);
-          // After successfully creating the objective, you might want to refresh the list of objectives
+          setIsCreatePopupOpen(false);
         }}
-        userId={userId}     />
-        <SetDeadlinePopup
-          isOpen={isSetDeadlinePopupOpen}
-          onClose={() => setIsSetDeadlinePopupOpen(false)}
-          onSubmit={async (newObjective) => {
-            setIsSetDeadlinePopupOpen(false);
-            setUserObjectives([...userObjectives, newObjective]);
-          }}
-          title={objectivesData[selectedRecommendedObjective] ? objectivesData[selectedRecommendedObjective].title : ""}
-          userId={userId}
-        />
+        userId={userId}     
+      />
+      <SetDeadlinePopup
+        isOpen={isSetDeadlinePopupOpen}
+        onClose={() => setIsSetDeadlinePopupOpen(false)}
+        onSubmit={(newObjective) => {
+          setUserObjectives([...userObjectives, newObjective]);
+          setIsSetDeadlinePopupOpen(false);
+        }}
+        title={objectivesData[selectedRecommendedObjective]?.title || ""}
+        userId={userId}
+      />
     </div>
   );
 };

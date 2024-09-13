@@ -16,7 +16,7 @@ function FAQs() {
     const faqList = [
         {
             question: "What is Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ is an application that helps Econfaire employees develop their skills."
+            answer: "Econfaire eVolve™ is an application that helps employees develop their skills."
         },
         {
             question: "How do I create an account?",
