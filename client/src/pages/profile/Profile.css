@@ -19,10 +19,12 @@
 
 .image-and-modify-container * {
   padding: 20px;
+  margin-left: 100px;
 }
 
 .profile-image {
-  width: 200px;
+  width: 230px;
+  margin-bottom: 10px;
   border-radius: 50%;
 }
 
@@ -60,9 +62,9 @@
   position: absolute;
   top: 20px;
   left: 20px;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
-  color: black;
+  color: #6093cf;
   z-index: 20;
   margin-left: 680px;
   margin-top: 130px;
@@ -91,5 +93,11 @@
   margin-top: 150px;
 }
 .profile-table-container {
-  margin-top: 35px;
+  margin-top: 60px;
+  margin-left: 30px;
+  width: 500px;
+  display: inline-block;
+}
+.profile-table {
+  width: 500px;
 }

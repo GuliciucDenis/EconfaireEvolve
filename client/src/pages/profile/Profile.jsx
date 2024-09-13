@@ -28,7 +28,7 @@ const Profile = () => {
           </button>
         </div>
         <div className="profile-table-container">
-          <ProfileTable />
+          <ProfileTable className="profile-table"/>
           <ChangePasswordPopup
             isOpen={isChangePasswordPopupOpen}
             onClose={() => setIsChangePasswordPopupOpen(false)}

@@ -37,7 +37,7 @@ const ProfileTable = () => {
     >
       <TableHeader>
         <TableColumn className="bg-[#6296CD] text-white">Personal information</TableColumn>
-        <TableColumn className="bg-[#6296CD] text-white">Value</TableColumn>  
+        <TableColumn className="bg-[#6296CD] text-white"></TableColumn>  
       </TableHeader>
       <TableBody>
         <TableRow key="1">
