@@ -68,6 +68,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 .create-objective-container input {
@@ -121,4 +122,25 @@
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+.select-objectives-container button {
+  padding: 10px 20px;
+  background-color: #BEBEBE;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+.select-objectives-container button:hover {
+  background-color: #7F7F7F;
+}
+.select-objectives-container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
 }

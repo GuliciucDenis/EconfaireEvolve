@@ -5,15 +5,16 @@ import Background from '../../components/background/Background';
 import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard';
 import User from '../../components/common/user/User';
 import './AddObjectives.css';
-import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, createObjective} from "../../services/objectiveService";
-import {getUserById} from "../../services/userService";
+import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById } from "../../services/objectiveService";
+import { getUserById } from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
 import { useNavigate } from "react-router-dom";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
-  const [selectedExistingObjective, setSelectedExistingObjective] = useState(null);
+  const [selectedExistingObjective, setSelectedExistingObjective] = useState(null); // Single selection
+  const [selectedExistingObjectives, setSelectedExistingObjectives] = useState([]); // Multiple selections
   const [userObjectives, setUserObjectives] = useState([]);
   const [isCreatePopupOpen, setIsCreatePopupOpen] = useState(false);
   const [isSetDeadlinePopupOpen, setIsSetDeadlinePopupOpen] = useState(false);
@@ -30,12 +31,12 @@ const AddObjectives = () => {
           const objective = await getObjectiveById(id);
           return objective;
         }));
-        
+
         // Filter objectives to include only active ones
         const activeObjectives = objectives.filter(
           (objective) => objective.status !== 'completed' &&
-          (objective.subObjectives.length === 0 || 
-          objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1) )
+            (objective.subObjectives.length === 0 ||
+              objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1))
         );
         setUserObjectives(activeObjectives);
       } catch (error) {
@@ -99,13 +100,23 @@ const AddObjectives = () => {
   ];
 
   const handleRecommendedObjectiveClick = (index) => {
-    setSelectedExistingObjective(null);
+    setSelectedExistingObjective(null); // Clear single selection
+    setSelectedExistingObjectives([]); // Clear multiple selections
     setSelectedRecommendedObjective(index === selectedRecommendedObjective ? null : index);
   };
 
   const handleExistingObjectiveClick = (index) => {
-    setSelectedRecommendedObjective(null);
-    setSelectedExistingObjective(index === selectedExistingObjective ? null : index);
+    setSelectedRecommendedObjective(null); // Clear recommended selection
+
+    // Toggle the selection of the clicked objective
+    setSelectedExistingObjectives((prevSelected) => {
+      if (prevSelected.includes(index)) {
+        return prevSelected.filter((i) => i !== index);
+      } else {
+        // Add the index to the selected list
+        return [...prevSelected, index];
+      }
+    });
   };
 
   const handleCreateObjective = () => {
@@ -113,11 +124,21 @@ const AddObjectives = () => {
   };
 
   const handleDeleteObjective = async () => {
-    if (selectedExistingObjective !== null) {
-      const objectiveToDelete = userObjectives[selectedExistingObjective];
-      await deleteObjectiveById(objectiveToDelete.id);
-      setUserObjectives(userObjectives.filter((_, index) => index !== selectedExistingObjective));
-      setSelectedExistingObjective(null);
+    if (selectedExistingObjectives.length > 0) {
+      const objectivesToDelete = selectedExistingObjectives.map((index) => userObjectives[index]);
+
+      // Delete each selected objective
+      for (const objective of objectivesToDelete) {
+        await deleteObjectiveById(objective.id);
+      }
+
+      // Update the state to remove deleted objectives
+      setUserObjectives((prevObjectives) =>
+        prevObjectives.filter((_, index) => !selectedExistingObjectives.includes(index))
+      );
+
+      // Clear the selected objectives
+      setSelectedExistingObjectives([]);
     }
   };
 
@@ -127,9 +148,35 @@ const AddObjectives = () => {
     }
   };
 
+  // pentru butonul de selectare
+  // const handleExistingObjectivesClickSelectButton = (index) => {
+  //   setSelectedRecommendedObjective(null);
+
+  //   // Toggle the selection of the clicked objective
+  //   setSelectedExistingObjectives((prevSelected) => {
+  //     if (prevSelected.includes(index)) {
+  //       // Remove the index if it's already selected
+  //       return prevSelected.filter((i) => i !== index);
+  //     } else {
+  //       // Add the index to the selected list
+  //       return [...prevSelected, index];
+  //     }
+  //   });
+  // };
+
+  const handleSelectingObjectives = () => {
+    // If there are selected objectives, update selectedExistingObjectives for deletion
+    if (selectedExistingObjectives.length > 0) {
+      const selectedForDeletion = selectedExistingObjectives.map(index => userObjectives[index]);
+
+      // Perform necessary actions with selected objectives, like logging or preparing for deletion
+      console.log("Selected objectives for deletion:", selectedForDeletion);
+    }
+  };
+
   return (
     <div className="add-objectives-container">
-      <Background/>
+      <Background />
       <User />
       <div className="content-wrapper">
         <div className="add-objectives-user-info">
@@ -159,7 +206,7 @@ const AddObjectives = () => {
                 <div 
                   key={index} 
                   onClick={() => handleExistingObjectiveClick(index)}
-                  className={`objective-item ${index === selectedExistingObjective ? 'selected' : ''}`}
+                  className={`objective-item ${selectedExistingObjectives.includes(index) ? 'selected' : ''}`}
                 >
                   {objective.title}
                 </div>
@@ -171,16 +218,22 @@ const AddObjectives = () => {
               {selectedRecommendedObjective !== null && (
                 <button className="action-button" onClick={handleAssignObjective}>Assign Objective</button>
               )}
-              {selectedExistingObjective !== null && (
-                <>
-                  <button className="action-button" onClick={() => navigate(`/edit-subobjectives/${userObjectives[selectedExistingObjective].id}`)}>Edit Subobjectives</button>
-                  <button className="action-button delete-button" onClick={handleDeleteObjective}>Delete Objective</button>
-                </>
+              {selectedExistingObjectives.length > 0 && (
+                <button 
+                  className="action-button delete-button" 
+                  onClick={handleDeleteObjective}
+                >
+                  {selectedExistingObjectives.length === 1 ? 'Delete Objective' : 'Delete Objectives'}
+                </button>
               )}
             </div>
             <div className="create-objective-container">
               <h2>Add a new objective</h2>
               <button onClick={handleCreateObjective}>Create Objective</button>
+            </div>
+            <div className="select-objectives-container">
+              <h2>Select existing objectives</h2>
+              <button onClick={handleSelectingObjectives}>Select</button>
             </div>
           </div>
         </div>
