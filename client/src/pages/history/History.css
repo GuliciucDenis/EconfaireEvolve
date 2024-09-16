@@ -51,3 +51,8 @@
   font-size: 20px;
   font-weight: bold;
 }
+.card{
+  overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+  max-width: 90%;
+}

@@ -57,3 +57,23 @@
   font-size: 20px;
   font-weight: bold;
 }
+.objective-status-container {
+  color: #ffffff;
+  text-align: center; /* Centers the text */
+  white-space: normal; /* Allows text to wrap within the container */
+  word-wrap: break-word; /* Breaks long words to prevent overflow */
+  overflow-wrap: break-word; /* Ensures proper wrapping of long words */
+  overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+  max-width: 90%; /* Ensures content does not exceed the card width */
+  margin-left: 19px;
+  box-sizing: border-box; /* Includes padding in the element's total width */
+  justify-content: center;
+  align-items: center;
+  /* border: 3px solid black; */
+}
+.card{
+  overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+  max-width: 90%;
+}

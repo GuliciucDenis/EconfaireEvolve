@@ -6,6 +6,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
@@ -17,11 +18,20 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
     setTitle("");
     setDeadline("");
     setMessage({ type: "", text: "" });
+    setDescription("");
   };
 
   const validateForm = () => {
     if (!title.trim()) {
       setMessage({ type: "error", text: "Please enter an objective title." });
+      return false;
+    }
+    if (!description.trim()) {
+      setMessage({ type: "error", text: "Please enter an objective description." });
+      return false;
+    }
+    if (description.length > 50) {
+      setMessage({ type: "error", text: "Description must be 50 characters or less." });
       return false;
     }
     if (!deadline) {
@@ -41,13 +51,13 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
 
     try {
       const newObjective = {
-        title : title,
-        description : "Brief description of the objective",
-        deadline : deadline,
+        title: title,
+        description: description,
+        deadline: deadline,
         assignedTo: userId,
         gradeAdmin: 1,
         status: "new",
-        subObjectives: []
+        subObjectives: [],
       };
 
       const response = await createObjective(newObjective);
@@ -99,6 +109,14 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Objective Title"
+            required
+          />
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Objective Description"
+            maxLength="50" // Limit to 50 characters
             required
           />
           <input

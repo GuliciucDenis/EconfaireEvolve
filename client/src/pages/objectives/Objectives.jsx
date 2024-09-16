@@ -182,7 +182,7 @@ const Objectives = () => {
     };
 
     return (
-      <>
+      <div className="objective-status-container">
         <p>Description: {objective.description}</p>
         <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
         {renderObjectiveGrades()}
@@ -193,7 +193,7 @@ const Objectives = () => {
             {renderSubobjectiveGrades()}
           </>
         )}
-      </>
+      </div>
     );
   };
 
