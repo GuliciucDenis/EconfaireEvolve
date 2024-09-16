@@ -14,10 +14,10 @@ const ProgressMeter = ({ label = "Performance percentage" }) => {
         const user = await getUser();
         const grade = await getAverageObjectiveGradeByUserId(user.id);
 
-        // În mulțirea cu 10 se face aici și verificarea de NaN
+        // Multiply by 10 and handle NaN values
         const calculatedGrade = grade * 10;
         if (isNaN(calculatedGrade)) {
-          setAverageGrade(0); // Setăm la 0 dacă valoarea este NaN
+          setAverageGrade(0); // Set to 0 if the value is NaN
         } else {
           setAverageGrade(calculatedGrade);
         }
@@ -45,6 +45,7 @@ const ProgressMeter = ({ label = "Performance percentage" }) => {
               value={averageGrade}
               strokeWidth={4}
               showValueLabel={true}
+              aria-label={`Performance percentage: ${averageGrade}%`} // Added aria-label for accessibility
             />
           ) : (
             <div>Loading...</div> // Show loading text or spinner while fetching
@@ -57,6 +58,7 @@ const ProgressMeter = ({ label = "Performance percentage" }) => {
               content: "text-white/90 text-small font-semibold",
             }}
             variant="bordered"
+            aria-label={label} // Optional: enhance accessibility by providing an aria-label
           >
             {label}
           </Chip>
