@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, Snippet } from "@nextui-org/react";
-import { getUsers } from "../../services/userService";
+import { deleteUser, getUsers } from "../../services/userService";
 import "./UserTable.css";
 import { useNavigate } from "react-router-dom";
 import DeleteUserPopup from "../common/DeleteUserPopup/DeleteUserPopup";
@@ -11,6 +11,8 @@ const UserTable = () => {
   const [searchName, setSearchName] = useState("");
   const [searchObjective, setSearchObjective] = useState("");
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [selectedKeys, setSelectedKeys] = useState([]);
 
   const navigate = useNavigate();
 
@@ -36,6 +38,38 @@ const UserTable = () => {
     { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
     { key: "actions", label: "Actions", minWidth: " px", maxWidth: "280px" },
   ];
+
+  const handleSelectionChange = (keys) => {
+    // Convert keys to an array if it's not already an array
+    const selectedKeysArray = Array.from(keys);
+    // Map the keys to corresponding user IDs
+    const selectedIds = selectedKeysArray.map((key) =>
+      users.find((user) => user.email === key)?.id
+    );
+    setSelectedUsers(selectedIds.filter(Boolean)); // Set only valid IDs
+  };
+  
+
+  // Function to handle deletion of selected users
+const deleteSelectedUsers = async () => {
+  try {
+    await Promise.all(
+      selectedUsers.map(async (userId) => {
+        console.log("ID-ul este: ", userId);
+        await deleteUser(userId);
+      })
+    );
+    // Correctly use `selectedUsers` instead of `setSelectedUsers`
+    setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
+    setSelectedUsers([]);
+    setSelectedKeys([]);
+    // alert("User(s) deleted successfully");
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    alert("An error occurred while deleting user(s)");
+  }
+};
+
 
   const handleSearchNameChange = (e) => {
     setSearchName(e.target.value);
@@ -83,20 +117,51 @@ const UserTable = () => {
           >
             Add New User
           </Button>
-          <Button
+          {selectedUsers.length > 0 ? (
+            //Button to delete a selected user
+            selectedUsers.length === 1 ? (
+              <Button
+                auto
+                shadow
+                color="danger"
+                onClick={deleteSelectedUsers}
+                onUserDeleted={handleUserDeleted}
+              >
+                Delete User
+              </Button>
+            ) : (
+              <Button
+                auto
+                shadow
+                color="danger"
+                onClick={deleteSelectedUsers}
+                onUserDeleted={handleUserDeleted}
+              >
+                Delete Users
+              </Button>
+            )
+          ) : (
+            <Button
             auto
             shadow
             color="danger"
             onClick={() => setIsDeletePopupOpen(true)}
-          >
-            Delete User
-          </Button>
+            >
+              Delete User By Id
+            </Button>
+          )}
         </div>
       </div>
       <Table
         isHeaderSticky
         aria-label="User table"
         selectionMode="multiple"
+        selectedKeys={selectedKeys} // Bind the selection state to control the selection visually
+        onSelectionChange={(keys) => {
+          const selectedKeysArray = Array.from(keys);
+          setSelectedKeys(selectedKeysArray); // Update table's visual selection state
+          handleSelectionChange(keys); // Update the IDs to be used for deletion
+        }}
         selectionBehavior="toggle"
         classNames={{
           base: "max-h-[380px] overflow-hidden",
@@ -126,7 +191,7 @@ const UserTable = () => {
           isLoading={loading}
         >
           {(user) => (
-            <TableRow key={user.email}>
+            <TableRow key={user.email} value={user.email}>
               {(columnKey) => (
                 <TableCell
                   style={{
