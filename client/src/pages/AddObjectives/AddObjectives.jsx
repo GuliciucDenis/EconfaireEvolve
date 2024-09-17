@@ -10,6 +10,7 @@ import { getUserById } from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
 import { useNavigate } from "react-router-dom";
+import EditObjectivesPopup from "../../components/common/EditObjectivesPopup/EditObjectivesPopup";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
@@ -22,6 +23,9 @@ const AddObjectives = () => {
   const { id } = useParams();
   const userId = id;
   const navigate = useNavigate();
+  const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
+  const [objectiveToEdit, setObjectiveToEdit] = useState(null);
+
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
@@ -148,6 +152,15 @@ const AddObjectives = () => {
     }
   };
 
+  const handleEditObjective = () => {
+    if (selectedExistingObjectives.length === 1) {
+      const objective = userObjectives[selectedExistingObjectives[0]];
+      setObjectiveToEdit(objective);
+      setIsEditPopupOpen(true);
+    }
+  };
+  
+
   // pentru butonul de selectare
   // const handleExistingObjectivesClickSelectButton = (index) => {
   //   setSelectedRecommendedObjective(null);
@@ -219,6 +232,11 @@ const AddObjectives = () => {
                 <button className="action-button" onClick={handleAssignObjective}>Assign Objective</button>
               )}
               {selectedExistingObjectives.length === 1 && (
+                <button className="action-button" onClick={handleEditObjective}>
+                  Edit Existing Objective
+                </button>
+              )}
+              {selectedExistingObjectives.length === 1 && (
                 <button
                   className="action-button"
                   onClick={() => navigate(`/edit-subobjectives/${userObjectives[selectedExistingObjectives[0]].id}`)}
@@ -265,6 +283,19 @@ const AddObjectives = () => {
         }}
         title={objectivesData[selectedRecommendedObjective]?.title || ""}
         userId={userId}
+      />
+      <EditObjectivesPopup
+        isOpen={isEditPopupOpen}
+        onClose={() => setIsEditPopupOpen(false)}
+        onSubmit={(updatedObjective) => {
+          setUserObjectives((prevObjectives) =>
+            prevObjectives.map((obj) =>
+              obj.id === updatedObjective.id ? updatedObjective : obj
+            )
+          );
+          setIsEditPopupOpen(false);
+        }}
+        objective={objectiveToEdit}
       />
     </div>
   );

@@ -2,7 +2,15 @@ import { getObjectiveById, updateObjective } from './objectiveService';
 
 export const addSubobjectiveByObjectiveId = async (objectiveId, subobjective) => {
   const objective = await getObjectiveById(objectiveId);
-  objective.subObjectives.push(subobjective);
+  // Adaugă subobiectivul cu descriere
+  const newSubobjective = {
+    title: subobjective.title,
+    description: subobjective.description || '', // Asigură-te că descrierea este inclusă
+    gradeAdmin: 1,
+    gradeEmployee: 1
+  };
+
+  objective.subObjectives.push(newSubobjective);
   await updateObjective({ id: objective.id, subObjectives: objective.subObjectives });
 };
 

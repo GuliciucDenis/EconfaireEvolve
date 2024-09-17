@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 // Define the SubObjective schema
 const subObjectiveSchema = new mongoose.Schema({
   title: { type: String, required: true, maxlength: 50 },
+  description: { type: String, required: true, maxlength: 50 },
   gradeAdmin: { type: Number, required: true, min: 0, max: 10, default: 1 }, // Grade given by admin
   gradeEmployee: { type: Number, required: true, min: 0, max: 10, default: 1 }, // Grade given by employee
 });
@@ -11,7 +12,7 @@ const subObjectiveSchema = new mongoose.Schema({
 const objectiveSchema = new mongoose.Schema({
   id: { type: mongoose.Schema.Types.ObjectId },
   title: { type: String, required: true, maxlength: 50 },
-  description: { type: String, required: true, maxlength: 200 },
+  description: { type: String, required: true, maxlength: 50 },
   deadline: { type: Date, required: true },
   assignedTo: {
     type: mongoose.Schema.Types.ObjectId,

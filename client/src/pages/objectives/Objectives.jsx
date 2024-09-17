@@ -65,6 +65,7 @@ const Objectives = () => {
     setSelectedSubobjective(null);
     try {
       const subobjectivesData = await getSubobjectivesByObjectiveId(userObjectives[index].id);
+      console.log("Fetched Subobjectives: ",subobjectivesData);
       setSubobjectives(subobjectivesData);
     } catch (error) {
       console.error("Failed to fetch subobjectives:", error);

@@ -46,9 +46,12 @@ const updateObjectiveById = async (id, updateData) => {
         const parsedSubObjectives = updateData.subObjectives.map(item => ({ 
             ...item, 
             gradeAdmin: parseInt(item.gradeAdmin, 10), 
-            gradeEmployee: parseInt(item.gradeEmployee, 10) 
+            gradeEmployee: parseInt(item.gradeEmployee, 10),
+            description: item.description || '' 
         }));
 
+        console.log("Subobiective cu descriere: ", parsedSubObjectives);
+        
         console.log(parsedSubObjectives);
         
         let gradedSubobjectiveCountEmployee = 0;
