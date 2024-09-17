@@ -57,23 +57,63 @@
   font-size: 20px;
   font-weight: bold;
 }
-.objective-status-container {
+.objective-status {
   color: #ffffff;
-  text-align: center; /* Centers the text */
+  text-align: center; /* Centers the text within the container */
   white-space: normal; /* Allows text to wrap within the container */
-  word-wrap: break-word; /* Breaks long words to prevent overflow */
-  overflow-wrap: break-word; /* Ensures proper wrapping of long words */
+  overflow-wrap: break-word; /* Breaks long words to prevent overflow */
+  word-break: break-word; /* Ensures proper breaking of long words */
   overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
   overflow-y: auto; /* Allows vertical scrolling if needed */
   max-width: 90%; /* Ensures content does not exceed the card width */
-  margin-left: 19px;
+  margin: 0 auto; /* Centers the entire container */
   box-sizing: border-box; /* Includes padding in the element's total width */
-  justify-content: center;
-  align-items: center;
-  /* border: 3px solid black; */
+  display: flex; /* Use flex to center child elements */
+  flex-direction: column; /* Stack child elements vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  /* border: 2px solid black; */
 }
+
+.objective-status-container {
+  color: #ffffff;
+  text-align: center; /* Centers the text within the container */
+  white-space: normal; /* Allows text to wrap within the container */
+  overflow-wrap: break-word; /* Ensures proper breaking of long words */
+  word-break: break-word; /* Allows long words to break */
+  overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+  overflow-y: auto; /* Allows vertical scrolling if needed */
+  max-width: 90%; /* Ensures content does not exceed the card width */
+  margin: 0 auto; /* Centers the entire container */
+  box-sizing: border-box; /* Includes padding in the element's total width */
+  display: flex; /* Use flex to center child elements */
+  flex-direction: column; /* Stack child elements vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  /* border: 3px solid white; */
+}
+
+.subobjective-description-container {
+  color: #ffffff;
+  text-align: center; /* Centers the text within the container */
+  white-space: normal; /* Allows text to wrap normally without breaking words */
+  overflow-wrap: break-word; /* Ensures proper breaking of long words */
+  word-break: break-word; /* Allows long words to break */
+  overflow-x: hidden; 
+  overflow-y: auto;
+  max-width: 90%; /* Adjust max width for consistency */
+  margin: 0 auto; /* Centers the entire container */
+  box-sizing: border-box; 
+  display: flex; /* Use flex to center child elements */
+  flex-direction: column; /* Stack child elements vertically */
+  justify-content: center; /* Centers content vertically */
+  align-items: center; /* Centers content horizontally */
+  /* border: 3px solid green; */
+}
+
+
 .card{
   overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
   overflow-y: auto; /* Allows vertical scrolling if needed */
-  max-width: 90%;
+  /* max-width: 90%; */
 }

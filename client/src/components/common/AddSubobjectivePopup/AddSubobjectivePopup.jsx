@@ -27,6 +27,10 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
       setMessage({ type: "error", text: "Please enter an objective description." });
       return false;
     }
+    if (description.length > 50) {
+      setMessage({ type: "error", text: "Description must be 50 characters or less." });
+      return false;
+    }
     return true;
   };
 

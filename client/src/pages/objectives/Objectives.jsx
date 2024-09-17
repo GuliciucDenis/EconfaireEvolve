@@ -183,14 +183,14 @@ const Objectives = () => {
     };
 
     return (
-      <div className="objective-status-container">
-        <p>Description: {objective.description}</p>
+      <div className="objective-status">
+        <p className="objective-status-container">Description: {objective.description}</p>
         <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && (
           <>
             <h2>Subobjective status</h2>
-            <p>Description: {subobjective.description}</p>
+            <p className="subobjective-description-container">Description: {subobjective.description}</p>
             {renderSubobjectiveGrades()}
           </>
         )}
