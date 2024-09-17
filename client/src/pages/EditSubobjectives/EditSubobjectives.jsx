@@ -81,16 +81,16 @@ useEffect(() => {
     }
   };
 
-  const handleAddSubobjective = async (newSubobjectiveTitle) => {
-    if (newSubobjectiveTitle.trim() === "") return;
+  const handleAddSubobjective = async (newSubobjective) => {
+    if (!newSubobjective.title.trim() || !newSubobjective.description.trim()) return;
     try {
-      const newSubobjective = { title: newSubobjectiveTitle };
+      // Crează un obiect cu titlul și descrierea subobiectivului
       await addSubobjectiveByObjectiveId(id, newSubobjective);
-      await fetchSubobjectives(); // Refetch the subobjectives list
+      await fetchSubobjectives(); // Reîncarcă lista de subobiective
     } catch (error) {
       console.error("Failed to add subobjective:", error);
     }
-  };
+  };  
 
   const handleRemoveSubobjective = async () => {
     if (selectedSubobjectiveIndex === null) return;
@@ -179,8 +179,8 @@ useEffect(() => {
       <AddSubobjectivePopup
         isOpen={isAddSubobjectivePopupOpen}
         onClose={() => setIsAddSubobjectivePopupOpen(false)}
-        onSubmit={(title) => {
-          handleAddSubobjective(title);
+        onSubmit={({title,description}) => {
+          handleAddSubobjective({title,description});
           setIsAddSubobjectivePopupOpen(false);
         }}
         objectiveId={id}

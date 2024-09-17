@@ -4,6 +4,7 @@ import "./AddSubobjectivePopup.css";
 const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (!isOpen) {
@@ -14,11 +15,16 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
   const resetForm = () => {
     setTitle("");
     setMessage({ type: "", text: "" });
+    setDescription("");
   };
 
   const validateForm = () => {
     if (!title.trim()) {
       setMessage({ type: "error", text: "Please enter a subobjective title." });
+      return false;
+    }
+    if (!description.trim()) {
+      setMessage({ type: "error", text: "Please enter an objective description." });
       return false;
     }
     return true;
@@ -32,7 +38,7 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
       return;
     }
 
-    onSubmit(title);
+    onSubmit({title,description});
     resetForm();
   };
 
@@ -51,6 +57,14 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Subobjective Title"
+            required
+          />
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Subobjective Description"
+            maxLength="50" // Limit to 50 characters
             required
           />
           <div className="add-subobjective-popup-buttons">
