@@ -218,6 +218,14 @@ const AddObjectives = () => {
               {selectedRecommendedObjective !== null && (
                 <button className="action-button" onClick={handleAssignObjective}>Assign Objective</button>
               )}
+              {selectedExistingObjectives.length === 1 && (
+                <button
+                  className="action-button"
+                  onClick={() => navigate(`/edit-subobjectives/${userObjectives[selectedExistingObjectives[0]].id}`)}
+                >
+                  Edit Subobjectives
+                </button>
+              )}
               {selectedExistingObjectives.length > 0 && (
                 <button 
                   className="action-button delete-button" 

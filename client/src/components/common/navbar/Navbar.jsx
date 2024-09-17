@@ -34,9 +34,13 @@ const Navbar = () => {
 
   const getIconClass = useCallback(
     (path) => {
+      if(location.pathname.includes('/edit-objectives/') || location.pathname.includes('/see-objectives/') || location.pathname.includes('/edit-subobjectives/'))
+      {
+        return path === `/objectives/${userId}` ? "icon-container active" : "icon-container";
+      }
       return location.pathname === path ? "icon-container active" : "icon-container";
     },
-    [location.pathname]
+    [location.pathname, userId]
   );
 
   const handleLogoutClick = useCallback(() => {
