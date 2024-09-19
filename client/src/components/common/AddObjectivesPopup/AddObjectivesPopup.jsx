@@ -34,8 +34,8 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
       setMessage({ type: "error", text: "Please enter an objective description." });
       return false;
     }
-    if (description.length > 50) {
-      setMessage({ type: "error", text: "Description must be 50 characters or less." });
+    if (description.length > 250) {
+      setMessage({ type: "error", text: "Description must be 250 characters or less." });
       return false;
     }
     if (!deadline) {
@@ -121,7 +121,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Objective Description"
-            maxLength="50" // Limit to 50 characters
+            maxLength="250" // Limit to 50 characters
             required
           />
           <input
