@@ -144,3 +144,8 @@
   margin-top: 10px;
   margin-bottom: 30px;
 }
+.multi-select-buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

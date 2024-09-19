@@ -26,6 +26,7 @@ const AddObjectives = () => {
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [objectiveToEdit, setObjectiveToEdit] = useState(null);
   const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
+  const [isEnabledMultiSelectButton,setIsEnabledMultiSelectButton] = useState(false);
 
 
   useEffect(() => {
@@ -167,6 +168,15 @@ const AddObjectives = () => {
     }
   };
   
+  const handleSelectAll = () => {
+    const allIndexes = userObjectives.map((_, index) => index);
+    setSelectedExistingObjectives(allIndexes);
+  };
+  
+  const handleUnselectAll = () => {
+    setSelectedExistingObjectives([]);
+  };
+  
 
   // pentru butonul de selectare
   // const handleExistingObjectivesClickSelectButton = (index) => {
@@ -186,8 +196,9 @@ const AddObjectives = () => {
 
   const handleSelectingObjectives = () => {
     setIsMultiSelectEnabled((prev) => !prev); // Toggle multi-select mode
-  };
-  
+    setIsEnabledMultiSelectButton((prev) => !prev); // Toggle the visibility of the buttons
+  };  
+
 
   return (
     <div className="add-objectives-container">
@@ -264,6 +275,12 @@ const AddObjectives = () => {
               <button onClick={handleSelectingObjectives}>
                 {isMultiSelectEnabled ? "Disable Multi-Select" : "Enable Multi-Select"}
               </button>
+              {isEnabledMultiSelectButton && (
+                <div className="multi-select-buttons">
+                  <button onClick={handleSelectAll}>Select All</button>
+                  <button onClick={handleUnselectAll}>Unselect All</button>
+                </div>
+              )}
             </div>
           </div>
         </div>
