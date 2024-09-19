@@ -27,6 +27,7 @@ const AddObjectives = () => {
   const [objectiveToEdit, setObjectiveToEdit] = useState(null);
   const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
   const [isEnabledMultiSelectButton,setIsEnabledMultiSelectButton] = useState(false);
+  const [objectiveUpdated, setObjectiveUpdated] = useState(false);
 
 
   useEffect(() => {
@@ -55,7 +56,8 @@ const AddObjectives = () => {
     };
     fetchUserObjectives();
     fetchCurrentUser();
-  }, [userId]);
+    setObjectiveUpdated(false);
+  }, [userId, objectiveUpdated]);
 
   const objectivesData = [
     {
@@ -315,6 +317,7 @@ const AddObjectives = () => {
             )
           );
           setIsEditPopupOpen(false);
+          setObjectiveUpdated(true);
         }}
         objective={objectiveToEdit}
       />
