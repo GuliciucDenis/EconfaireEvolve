@@ -25,6 +25,7 @@ const AddObjectives = () => {
   const navigate = useNavigate();
   const [isEditPopupOpen, setIsEditPopupOpen] = useState(false);
   const [objectiveToEdit, setObjectiveToEdit] = useState(null);
+  const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
 
 
   useEffect(() => {
@@ -111,17 +112,23 @@ const AddObjectives = () => {
 
   const handleExistingObjectiveClick = (index) => {
     setSelectedRecommendedObjective(null); // Clear recommended selection
-
-    // Toggle the selection of the clicked objective
-    setSelectedExistingObjectives((prevSelected) => {
-      if (prevSelected.includes(index)) {
-        return prevSelected.filter((i) => i !== index);
-      } else {
-        // Add the index to the selected list
-        return [...prevSelected, index];
-      }
-    });
+  
+    if (isMultiSelectEnabled) {
+      // If multi-select is enabled, toggle the selection of the clicked objective
+      setSelectedExistingObjectives((prevSelected) => {
+        if (prevSelected.includes(index)) {
+          return prevSelected.filter((i) => i !== index);
+        } else {
+          return [...prevSelected, index];
+        }
+      });
+    } else {
+      // If multi-select is not enabled, only allow one selection
+      setSelectedExistingObjective(index === selectedExistingObjective ? null : index);
+      setSelectedExistingObjectives([index]); // Ensure a single selection
+    }
   };
+  
 
   const handleCreateObjective = () => {
     setIsCreatePopupOpen(true);
@@ -178,14 +185,9 @@ const AddObjectives = () => {
   // };
 
   const handleSelectingObjectives = () => {
-    // If there are selected objectives, update selectedExistingObjectives for deletion
-    if (selectedExistingObjectives.length > 0) {
-      const selectedForDeletion = selectedExistingObjectives.map(index => userObjectives[index]);
-
-      // Perform necessary actions with selected objectives, like logging or preparing for deletion
-      console.log("Selected objectives for deletion:", selectedForDeletion);
-    }
+    setIsMultiSelectEnabled((prev) => !prev); // Toggle multi-select mode
   };
+  
 
   return (
     <div className="add-objectives-container">
@@ -259,7 +261,9 @@ const AddObjectives = () => {
             </div>
             <div className="select-objectives-container">
               <h2>Select existing objectives</h2>
-              <button onClick={handleSelectingObjectives}>Select</button>
+              <button onClick={handleSelectingObjectives}>
+                {isMultiSelectEnabled ? "Disable Multi-Select" : "Enable Multi-Select"}
+              </button>
             </div>
           </div>
         </div>
