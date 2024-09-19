@@ -31,6 +31,10 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
       setMessage({ type: "error", text: "Please enter an objective title." });
       return false;
     }
+    if (!title.trim() > 30) {
+      setMessage({ type: "error", text: "Title must be 30 characters or less." });
+      return false;
+    }
     if (!description.trim()) {
       setMessage({ type: "error", text: "Please enter an objective description." });
       return false;
@@ -112,6 +116,7 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Objective Title"
+            maxLength="30"
             required
           />
           <input

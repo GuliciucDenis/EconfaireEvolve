@@ -27,6 +27,10 @@ const EditSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => {
       setMessage({ type: "error", text: "Please enter a subobjective title." });
       return false;
     }
+    if (!title.trim() > 30) {
+      setMessage({ type: "error", text: "Title must be 30 characters or less." });
+      return false;
+    }
     if (!description.trim()) {
       setMessage({ type: "error", text: "Please enter a subobjective description." });
       return false;
@@ -82,6 +86,7 @@ const EditSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Subobjective Title"
+            maxLength="30"
             required
           />
           <input
