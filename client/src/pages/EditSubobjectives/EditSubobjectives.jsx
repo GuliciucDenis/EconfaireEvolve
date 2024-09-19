@@ -9,9 +9,11 @@ import {
   removeSubobjectiveByObjectiveId,
   getSubobjectivesByObjectiveId,
   gradeSubobjectiveByObjectiveId,
+  updateSubobjectiveByObjectiveId,
 } from "../../services/subobjectiveService";
 import { getObjectiveById } from "../../services/objectiveService";
 import AddSubobjectivePopup from "../../components/common/AddSubobjectivePopup/AddSubobjectivePopup";
+import EditSubobjectivePopup from "../../components/common/EditSubobjectivePopup/EditSubobjectivePopup";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import { getUserById, getUserIdFromToken } from "../../services/userService";
 import "./EditSubobjectives.css";
@@ -25,6 +27,8 @@ const EditSubobjectives = () => {
   const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false); // Grade popup state
   const [loading, setLoading] = useState(true); // Loading state
   const [currentUser, setCurrentUser] = useState(null);
+  const [isEditSubobjectivePopupOpen, setIsEditSubobjectivePopupOpen] = useState(false);
+  const [subobjectiveToEdit, setSubobjectiveToEdit] = useState(null);
 
 
 useEffect(() => {
@@ -127,6 +131,20 @@ useEffect(() => {
     }
   };
 
+  const handleEditSubobjective = async (updatedSubobjective) => {
+    if (!subobjectiveToEdit) return;
+  
+    try {
+      await updateSubobjectiveByObjectiveId(id, subobjectiveToEdit.title, updatedSubobjective);
+  
+      await fetchSubobjectives();
+      setSelectedSubobjectiveIndex(null);
+    } catch (error) {
+      console.error("Failed to edit subobjective:", error);
+    }
+  };
+  
+
   if (loading) {
     return <div>Loading...</div>; // Display a loading indicator while data is being fetched
   }
@@ -171,6 +189,15 @@ useEffect(() => {
               >
                 Grade subobjective
               </button>
+              <button
+                onClick={() => {
+                  setSubobjectiveToEdit(subobjectives[selectedSubobjectiveIndex]);
+                  setIsEditSubobjectivePopupOpen(true);
+                }}
+                className="action-button edit-button"
+              >
+                Edit Existing Subobjective
+              </button>
             </>
           )}
         </div>
@@ -194,6 +221,15 @@ useEffect(() => {
         }}
         subobjective={subobjectives[selectedSubobjectiveIndex]?.title}
         objectiveId={id}
+      />
+      <EditSubobjectivePopup
+        isOpen={isEditSubobjectivePopupOpen}
+        onClose={() => setIsEditSubobjectivePopupOpen(false)}
+        onSubmit={(updatedSubobjective) => {
+          handleEditSubobjective(updatedSubobjective);
+          setIsEditSubobjectivePopupOpen(false); // Închide popup-ul după salvare
+        }}
+        subobjective={subobjectiveToEdit}
       />
     </div>
   );

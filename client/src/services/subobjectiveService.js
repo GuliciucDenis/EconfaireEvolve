@@ -82,3 +82,25 @@ export const gradeSubobjectiveByObjectiveId = async (objectiveId, subobjectiveTo
   await updateObjective(objective);
   return objective;
 };
+
+export const updateSubobjectiveByObjectiveId = async (objectiveId, subobjectiveTitle, updatedSubobjective) => {
+  const objective = await getObjectiveById(objectiveId);
+
+  // Găsește și actualizează subobiectivul
+  objective.subObjectives = objective.subObjectives.map(subobjective => {
+    if (subobjective.title === subobjectiveTitle) {
+      return {
+        ...subobjective,
+        title: updatedSubobjective.title,
+        description: updatedSubobjective.description
+      };
+    }
+    return subobjective;
+  });
+
+  // Actualizează obiectivul cu subobiectivele modificate
+  await updateObjective({ id: objective.id, subObjectives: objective.subObjectives });
+
+  return objective;
+};
+
