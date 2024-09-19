@@ -88,3 +88,32 @@
 .subobjectives-title {
   color: white;
 }
+
+.select-subobjectives-container button {
+  padding: 10px 20px;
+  background-color: #BEBEBE;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+}
+
+.select-subobjectives-container button:hover {
+  background-color: #7F7F7F;
+}
+
+.select-subobjectives-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.multi-select-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

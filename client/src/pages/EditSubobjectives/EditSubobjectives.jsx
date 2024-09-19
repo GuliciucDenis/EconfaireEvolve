@@ -22,40 +22,41 @@ const EditSubobjectives = () => {
   const { id } = useParams(); // Objective ID from URL
   const [objective, setObjective] = useState(null);
   const [subobjectives, setSubobjectives] = useState([]);
-  const [selectedSubobjectiveIndex, setSelectedSubobjectiveIndex] = useState(null); // Track selected subobjective
+  const [selectedSubobjectives, setSelectedSubobjectives] = useState([]); // Multiple selections
   const [isAddSubobjectivePopupOpen, setIsAddSubobjectivePopupOpen] = useState(false); // Popup state
   const [isGradeSubobjectivePopupOpen, setIsGradeSubobjectivePopupOpen] = useState(false); // Grade popup state
   const [loading, setLoading] = useState(true); // Loading state
   const [currentUser, setCurrentUser] = useState(null);
   const [isEditSubobjectivePopupOpen, setIsEditSubobjectivePopupOpen] = useState(false);
   const [subobjectiveToEdit, setSubobjectiveToEdit] = useState(null);
+  const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
+  const [isEnabledMultiSelectButton, setIsEnabledMultiSelectButton] = useState(false);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = await getUserIdFromToken(); // Obține ID-ul utilizatorului din token
+        if (!userId) {
+          console.error("User ID is null or undefined.");
+          return;
+        }
 
-useEffect(() => {
-  const fetchUserData = async () => {
-    try {
-      const userId = await getUserIdFromToken(); // Obține ID-ul utilizatorului din token
-      if (!userId) {
-        console.error("User ID is null or undefined.");
-        return;
+        console.log("Fetching user with ID:", userId); // Log pentru a verifica ID-ul corect
+        const user = await getUserById(userId);
+
+        if (!user) {
+          console.error("User not found or response is null.");
+          return;
+        }
+
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
       }
+    };
 
-      console.log("Fetching user with ID:", userId); // Log pentru a verifica ID-ul corect
-      const user = await getUserById(userId);
-
-      if (!user) {
-        console.error("User not found or response is null.");
-        return;
-      }
-
-      setCurrentUser(user);
-    } catch (error) {
-      console.error("Failed to fetch user:", error);
-    }
-  };
-
-  fetchUserData();
-}, []);
+    fetchUserData();
+  }, []);
 
   useEffect(() => {
     const fetchObjectiveAndSubobjectives = async () => {
@@ -94,56 +95,74 @@ useEffect(() => {
     } catch (error) {
       console.error("Failed to add subobjective:", error);
     }
-  };  
+  };
 
   const handleRemoveSubobjective = async () => {
-    if (selectedSubobjectiveIndex === null) return;
+    if (selectedSubobjectives.length === 0) return;
     try {
-      const subobjectiveToRemove = subobjectives[selectedSubobjectiveIndex]?.title;
-      await removeSubobjectiveByObjectiveId(id, subobjectiveToRemove);
+      const subobjectiveToRemove = selectedSubobjectives.map(index => subobjectives[index].title);
+      for (const subobjectiveTitle of subobjectiveToRemove) {
+        await removeSubobjectiveByObjectiveId(id, subobjectiveTitle);
+      }
       await fetchSubobjectives(); // Refetch the subobjectives list
-      setSelectedSubobjectiveIndex(null); // Reset selected subobjective after removal
+      setSelectedSubobjectives([]); // Reset selected subobjective after removal
     } catch (error) {
       console.error("Failed to remove subobjective:", error);
     }
   };
 
   const handleGradeSubobjective = async (grade) => {
-    if (selectedSubobjectiveIndex === null || !currentUser) return;
+    if (selectedSubobjectives.length === 0 || !currentUser) return;
+
     try {
-      const subobjectiveToGrade = subobjectives[selectedSubobjectiveIndex];
-      // const currentUserId = currentUser.id; // Utilizează `currentUser.id` în loc de `objective.assignedTo`
-      console.log(currentUser.id);
+      const subobjectiveToGrade = subobjectives[selectedSubobjectives[0]]; // Assuming only one subobjective is graded at a time
       await gradeSubobjectiveByObjectiveId(id, subobjectiveToGrade.title, grade, "admin", currentUser.id);
-      await fetchSubobjectives();
-      setSelectedSubobjectiveIndex(null);
+      await fetchSubobjectives(); // Refresh the subobjectives after grading
+      setSelectedSubobjectives([]); // Clear the selection after grading
     } catch (error) {
       console.error("Failed to grade subobjective:", error);
     }
-  };  
-  
+  };
 
   const handleSubobjectiveClick = (index) => {
-    if (selectedSubobjectiveIndex === index) {
-      setSelectedSubobjectiveIndex(null); // Deselect if clicked again
+    if (isMultiSelectEnabled) {
+      setSelectedSubobjectives((prevSelected) => {
+        if (prevSelected.includes(index)) {
+          return prevSelected.filter(i => i !== index); // Deselect if clicked again
+        } else {
+          return [...prevSelected, index]; // Select if a different subobjective is clicked
+        }
+      });
     } else {
-      setSelectedSubobjectiveIndex(index); // Select if a different subobjective is clicked
+      setSelectedSubobjectives([index]); // Single selection
     }
   };
 
   const handleEditSubobjective = async (updatedSubobjective) => {
     if (!subobjectiveToEdit) return;
-  
+
     try {
       await updateSubobjectiveByObjectiveId(id, subobjectiveToEdit.title, updatedSubobjective);
-  
       await fetchSubobjectives();
-      setSelectedSubobjectiveIndex(null);
+      setSelectedSubobjectives([]); // Clear selection after editing
     } catch (error) {
       console.error("Failed to edit subobjective:", error);
     }
   };
-  
+
+  const handleSelectAll = () => {
+    const allIndexes = subobjectives.map((_, index) => index);
+    setSelectedSubobjectives(allIndexes);
+  };
+
+  const handleUnselectAll = () => {
+    setSelectedSubobjectives([]);
+  };
+
+  const handleSelectingSubobjectives = () => {
+    setIsMultiSelectEnabled((prev) => !prev); // Toggle multi-select mode
+    setIsEnabledMultiSelectButton((prev) => !prev); // Toggle the visibility of the buttons
+  };
 
   if (loading) {
     return <div>Loading...</div>; // Display a loading indicator while data is being fetched
@@ -160,8 +179,8 @@ useEffect(() => {
             content={subobjectives.map((sub, index) => (
               <div
                 key={index}
-                className={`subobjective-item ${index === selectedSubobjectiveIndex ? "selected" : ""}`} // Highlight if selected
-                onClick={() => handleSubobjectiveClick(index)} // Use the new function
+                className={`subobjective-item ${selectedSubobjectives.includes(index) ? "selected" : ""}`} // Highlight if selected
+                onClick={() => handleSubobjectiveClick(index)}
               >
                 {sub?.title} &rarr; {sub?.gradeAdmin}/10
               </div>
@@ -175,39 +194,62 @@ useEffect(() => {
           >
             Add subobjective
           </button>
-          {selectedSubobjectiveIndex !== null && (
-            <>
+          {selectedSubobjectives.length > 0 && (
+          <>
+            {selectedSubobjectives.length > 1 ? (
               <button
                 onClick={handleRemoveSubobjective}
                 className="action-button delete-button"
               >
-                Remove subobjective
+                Remove subobjectives
               </button>
-              <button
-                onClick={() => setIsGradeSubobjectivePopupOpen(true)}
-                className="action-button grade-button"
-              >
-                Grade subobjective
-              </button>
-              <button
-                onClick={() => {
-                  setSubobjectiveToEdit(subobjectives[selectedSubobjectiveIndex]);
-                  setIsEditSubobjectivePopupOpen(true);
-                }}
-                className="action-button edit-button"
-              >
-                Edit Existing Subobjective
-              </button>
-            </>
-          )}
+            ) : (
+              <>
+                <button
+                  onClick={handleRemoveSubobjective}
+                  className="action-button delete-button"
+                >
+                  Remove subobjective
+                </button>
+                <button
+                  onClick={() => setIsGradeSubobjectivePopupOpen(true)}
+                  className="action-button grade-button"
+                >
+                  Grade subobjective
+                </button>
+                <button
+                  onClick={() => {
+                    setSubobjectiveToEdit(subobjectives[selectedSubobjectives[0]]);
+                    setIsEditSubobjectivePopupOpen(true);
+                  }}
+                  className="action-button edit-button"
+                >
+                  Edit Existing Subobjective
+                </button>
+              </>
+            )}
+          </>
+        )}
+          <div className="select-subobjectives-container">
+            <h2>Select existing subobjectives</h2>
+            <button onClick={handleSelectingSubobjectives}>
+              {isMultiSelectEnabled ? "Disable Multi-Select" : "Enable Multi-Select"}
+            </button>
+            {isEnabledMultiSelectButton && (
+              <div className="multi-select-buttons">
+                <button onClick={handleSelectAll}>Select All</button>
+                <button onClick={handleUnselectAll}>Unselect All</button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <Navbar />
       <AddSubobjectivePopup
         isOpen={isAddSubobjectivePopupOpen}
         onClose={() => setIsAddSubobjectivePopupOpen(false)}
-        onSubmit={({title,description}) => {
-          handleAddSubobjective({title,description});
+        onSubmit={({ title, description }) => {
+          handleAddSubobjective({ title, description });
           setIsAddSubobjectivePopupOpen(false);
         }}
         objectiveId={id}
@@ -219,7 +261,7 @@ useEffect(() => {
           handleGradeSubobjective(grade);
           setIsGradeSubobjectivePopupOpen(false);
         }}
-        subobjective={subobjectives[selectedSubobjectiveIndex]?.title}
+        subobjective={subobjectives[selectedSubobjectives[0]]?.title}
         objectiveId={id}
       />
       <EditSubobjectivePopup
@@ -227,7 +269,7 @@ useEffect(() => {
         onClose={() => setIsEditSubobjectivePopupOpen(false)}
         onSubmit={(updatedSubobjective) => {
           handleEditSubobjective(updatedSubobjective);
-          setIsEditSubobjectivePopupOpen(false); // Închide popup-ul după salvare
+          setIsEditSubobjectivePopupOpen(false); // Close popup after saving
         }}
         subobjective={subobjectiveToEdit}
       />
