@@ -5,7 +5,7 @@ import Background from '../../components/background/Background';
 import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard';
 import User from '../../components/common/user/User';
 import './AddObjectives.css';
-import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById } from "../../services/objectiveService";
+import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, updateObjectiveStatus } from "../../services/objectiveService";
 import { getUserById } from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
@@ -45,6 +45,16 @@ const AddObjectives = () => {
             (objective.subObjectives.length === 0 ||
               objective.subObjectives.some(sub => sub.gradeAdmin <= 1 || sub.gradeEmployee <= 1))
         );
+        // Check for inactive objectives and update their status to 'completed'
+        const inactiveObjectives = objectives.filter(
+          (objective) =>
+            !activeObjectives.includes(objective) && objective.status !== 'completed'
+        );
+
+        // Update the status of inactive objectives to 'completed'
+        for (const inactiveObjective of inactiveObjectives) {
+          await updateObjectiveStatus(inactiveObjective.id, 'completed');
+        }
         setUserObjectives(activeObjectives);
       } catch (error) {
         console.error("Failed to fetch user objectives:", error);
