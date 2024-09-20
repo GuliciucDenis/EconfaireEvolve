@@ -44,27 +44,65 @@
 .subobjective-item.selected {
     background-color: rgba(255, 255, 255, 0.2);
 }
-.action-buttons-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+
+.objective-status {
+    color: #ffffff;
+    text-align: center; /* Centers the text within the container */
+    white-space: normal; /* Allows text to wrap within the container */
+    overflow-wrap: break-word; /* Breaks long words to prevent overflow */
+    word-break: break-word; /* Ensures proper breaking of long words */
+    overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+    overflow-y: auto; /* Allows vertical scrolling if needed */
+    max-width: 90%; /* Ensures content does not exceed the card width */
+    margin: 0 auto; /* Centers the entire container */
+    box-sizing: border-box; /* Includes padding in the element's total width */
+    display: flex; /* Use flex to center child elements */
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    /* border: 2px solid black; */
   }
   
-  .grade-button {
-    padding: 10px 20px;
-    background-color: #6093cf;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
+  .objective-status-container {
+    color: #ffffff;
+    text-align: center; /* Centers the text within the container */
+    white-space: normal; /* Allows text to wrap within the container */
+    overflow-wrap: break-word; /* Ensures proper breaking of long words */
+    word-break: break-word; /* Allows long words to break */
+    overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+    overflow-y: auto; /* Allows vertical scrolling if needed */
+    max-width: 90%; /* Ensures content does not exceed the card width */
+    margin: 0 auto; /* Centers the entire container */
+    box-sizing: border-box; /* Includes padding in the element's total width */
+    display: flex; /* Use flex to center child elements */
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    /* border: 3px solid white; */
   }
-  .grade-button:hover {
-    background-color: #218838;
+  
+  .subobjective-description-container {
+    color: #ffffff;
+    text-align: center; /* Centers the text within the container */
+    white-space: normal; /* Allows text to wrap normally without breaking words */
+    overflow-wrap: break-word; /* Ensures proper breaking of long words */
+    word-break: break-word; /* Allows long words to break */
+    overflow-x: hidden; 
+    overflow-y: auto;
+    max-width: 90%; /* Adjust max width for consistency */
+    margin: 0 auto; /* Centers the entire container */
+    box-sizing: border-box; 
+    display: flex; /* Use flex to center child elements */
+    flex-direction: column; /* Stack child elements vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    /* border: 3px solid green; */
   }
-  .grade-button:disabled {
-    background-color: #cccccc;
-    color: #666666;
-    cursor: not-allowed;
+  
+  
+  .card{
+    overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
+    overflow-y: auto; /* Allows vertical scrolling if needed */
+    /* max-width: 90%; */
   }
+  

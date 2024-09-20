@@ -131,21 +131,21 @@ const SeeObjectives = () => {
     const subobjective = subobjectives[selectedSubobjective];
 
     return (
-      <>
-        <p>Description: {objective.description || 'No description available'}</p>
+      <div className="objective-status">
+        <p className="objective-status-container">Description: {objective.description || 'No description available'}</p>
         <p>Deadline: {objective.deadline ? new Date(objective.deadline).toLocaleDateString() : 'No deadline set'}</p>
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && subobjective && (
           <>
             <h2>Subobjective status</h2>
-            <p>Description: {subobjective.description || 'No description available'}</p>
+            <p className="subobjective-description-container">Description: {subobjective.description || 'No description available'}</p>
             <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
             {userRole === 'employee' && (
               <p>Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
             )}
           </>
         )}
-      </>
+      </div>
     );
   };
 
