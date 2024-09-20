@@ -54,3 +54,21 @@
 .objective-status-cardboard{
   color:white;
 }
+
+/* Stilizarea scrollbar-ului pentru carduri */
+.card::-webkit-scrollbar {
+  width: 4px; /* Lățimea scrollbar-ului */
+}
+
+.card::-webkit-scrollbar-track {
+  background: transparent; /* Fundalul track-ului scrollbar-ului */
+}
+
+.card::-webkit-scrollbar-thumb {
+  background-color: white; /* Culoarea thumb-ului (mânerul scrollbar-ului) */
+  border-radius: 10px; /* Rotunjirea colțurilor scrollbar-ului */
+}
+
+.card::-webkit-scrollbar-thumb:hover {
+  background: #e0e0e0; /* Culoarea thumb-ului la hover */
+}
