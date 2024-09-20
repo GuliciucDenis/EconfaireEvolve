@@ -4,6 +4,8 @@ import { deleteUser, getUsers } from "../../services/userService";
 import "./UserTable.css";
 import { useNavigate } from "react-router-dom";
 import DeleteUserPopup from "../common/DeleteUserPopup/DeleteUserPopup";
+import FilterPopup from "../common/FilterPopup/FilterPopup";
+import { getObjectiveById } from "../../services/objectiveService";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -13,23 +15,54 @@ const UserTable = () => {
   const [isDeletePopupOpen, setIsDeletePopupOpen] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedKeys, setSelectedKeys] = useState([]);
+  const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
+  const [filterCriteria, setFilterCriteria] = useState({});
+  const [filteredUsersByCriteria, setFilteredUsersByCriteria] = useState([]);
 
   const navigate = useNavigate();
 
   const fetchUsers = async () => {
     try {
       const response = await getUsers();
-      setUsers(response);
+  
+      // Pentru fiecare utilizator, obținem detaliile obiectivelor
+      const usersWithObjectives = await Promise.all(
+        response.map(async (user) => {
+          if (user.objectiveList && Array.isArray(user.objectiveList)) {
+            const detailedObjectives = await Promise.all(
+              user.objectiveList.map((objectiveId) =>
+                fetchObjectiveDetails(objectiveId)
+              )
+            );
+            return { ...user, objectives: detailedObjectives };
+          }
+          return user;
+        })
+      );
+  
+      setUsers(usersWithObjectives);
+      setFilteredUsersByCriteria(usersWithObjectives);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching users:", error);
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const fetchObjectiveDetails = async (objectiveId) => {
+    try {
+      const response = await getObjectiveById(objectiveId);
+      return response;
+    } catch (error) {
+      console.error("Error fetching objective details:", error);
+      return null;
+    }
+  };
 
   const columns = [
     { key: "id", label: "Id", minWidth: "280px", maxWidth: "280px" },
@@ -61,6 +94,7 @@ const deleteSelectedUsers = async () => {
     );
     // Correctly use `selectedUsers` instead of `setSelectedUsers`
     setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
+    setFilteredUsersByCriteria(filteredUsersByCriteria.filter((user) => !selectedUsers.includes(user.id)));
     setSelectedUsers([]);
     setSelectedKeys([]);
     // alert("User(s) deleted successfully");
@@ -89,6 +123,45 @@ const deleteSelectedUsers = async () => {
     setUsers(users.filter((user) => user.id !== deletedUserId));
   };
 
+// Funcția care va aplica filtrul pe baza titlului obiectivului
+const handleFilter = (criteria) => {
+  if (criteria.filterType === "Objective Title" && criteria.objectiveTitle) {
+    const filtered = users.filter((user) =>
+      user.objectives && // Verificăm dacă utilizatorul are obiective
+      Array.isArray(user.objectives) &&
+      user.objectives.some(
+        (objective) =>
+          objective.status === "new" && // Filtrăm doar obiectivele cu status "new"
+          objective.title.toLowerCase().includes(criteria.objectiveTitle.toLowerCase()) // Verificăm titlul obiectivului
+      )
+    );
+
+    setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
+  } else {
+    setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
+  }
+};
+
+
+  const filteredByCriteriaUsers = users.filter((user) => {
+    const matchesObjectiveTitle = filterCriteria.objectiveTitle
+      ? user.objectiveTitle?.includes(filterCriteria.objectiveTitle)
+      : true;
+    const matchesNumObjectives =
+      filterCriteria.numObjectives && filterCriteria.numFilterType
+        ? filterCriteria.numFilterType === "exact"
+          ? user.numObjectives === parseInt(filterCriteria.numObjectives, 10)
+          : filterCriteria.numFilterType === "ascending"
+          ? user.numObjectives >= parseInt(filterCriteria.numObjectives, 10)
+          : user.numObjectives <= parseInt(filterCriteria.numObjectives, 10)
+        : true;
+    const matchesDeadline = filterCriteria.deadline
+      ? user.deadline === filterCriteria.deadline
+      : true;
+
+    return matchesObjectiveTitle && matchesNumObjectives && matchesDeadline;
+  });
+
   return (
     <div className="user-table-container">
       <div className="flex justify-between items-center mb-5 user-table">
@@ -104,9 +177,13 @@ const deleteSelectedUsers = async () => {
           />
         </div>
         <div className="flex gap-2">
-          {/* <Button auto shadow>
+          <Button 
+            auto 
+            shadow 
+            onClick={() => setIsFilterPopupOpen(true)}
+          >
             Filter
-          </Button> */}
+          </Button>
           <Button
             auto
             shadow
@@ -156,6 +233,10 @@ const deleteSelectedUsers = async () => {
         isHeaderSticky
         aria-label="User table"
         selectionMode="multiple"
+        items={filteredUsersByCriteria} // Folosim utilizatorii filtrați aici
+        loadingContent={<div>Loading users...</div>}
+        emptyContent={<div>No users found</div>}
+        isLoading={loading}
         selectedKeys={selectedKeys} // Bind the selection state to control the selection visually
         onSelectionChange={(keys) => {
           const selectedKeysArray = Array.from(keys);
@@ -183,7 +264,7 @@ const deleteSelectedUsers = async () => {
           )}
         </TableHeader>
         <TableBody
-          items={filteredUsers}
+          items={filteredUsersByCriteria} // Afișăm utilizatorii filtrați
           loadingContent={
             <div className="text-center py-4">Loading users...</div>
           }
@@ -242,6 +323,13 @@ const deleteSelectedUsers = async () => {
         isOpen={isDeletePopupOpen}
         onClose={() => setIsDeletePopupOpen(false)}
         onUserDeleted={handleUserDeleted}
+      />
+      <FilterPopup
+        isOpen={isFilterPopupOpen}
+        onClose={() => {
+          setIsFilterPopupOpen(false);
+        }}
+        onFilter={handleFilter}
       />
     </div>
   );

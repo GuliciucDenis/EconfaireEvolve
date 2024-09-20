@@ -1,0 +1,141 @@
+/* FilterPopup.css */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundal semi-transparent */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup-content {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px; /* Colțuri rotunjite */
+    width: 450px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Umbre pentru un efect 3D */
+    position: relative;
+    animation: popupFadeIn 0.3s ease-in-out; /* Animație de apariție */
+  }
+  
+  @keyframes popupFadeIn {
+    from {
+      transform: translateY(-30px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .popup-header h3 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #333;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .close-button:hover {
+    color: #ff5f5f;
+  }
+  
+  .popup-body {
+    margin-top: 10px;
+  }
+  
+  .popup-field {
+    margin-bottom: 15px;
+  }
+  
+  .popup-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .popup-field input[type="text"],
+  .popup-field input[type="number"],
+  .popup-field input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+  
+  .popup-field input:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+  
+  .popup-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .popup-footer button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .popup-footer button:hover {
+    transform: translateY(-2px);
+  }
+  
+  .popup-footer button:first-child {
+    background-color: #f0f0f0;
+    color: #555;
+  }
+  
+  .popup-footer button:first-child:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .popup-footer button:last-child {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .popup-footer button:last-child:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Stiluri pentru radio buttons */
+  .popup-field div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .popup-field div label {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
