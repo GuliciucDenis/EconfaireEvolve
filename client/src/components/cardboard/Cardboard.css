@@ -11,10 +11,6 @@
     overflow: auto;
 }
 
-.objectives-list {
-    overflow: scroll;
-}
-
 .card h2 {
     color: #ffffff;
     text-align: center;
