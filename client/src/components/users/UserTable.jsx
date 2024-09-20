@@ -123,29 +123,29 @@ const deleteSelectedUsers = async () => {
     setUsers(users.filter((user) => user.id !== deletedUserId));
   };
 
-// Funcția care va aplica filtrul pe baza titlului obiectivului
-const handleFilter = (criteria) => {
-  if (criteria.filterType === "Objective Title" && criteria.objectiveTitle) {
-    const filtered = users.filter((user) =>
-      user.objectives && // Verificăm dacă utilizatorul are obiective
-      Array.isArray(user.objectives) &&
-      user.objectives.some(
-        (objective) =>
-          objective.status === "new" && // Filtrăm doar obiectivele cu status "new"
-          objective.title.toLowerCase().includes(criteria.objectiveTitle.toLowerCase()) // Verificăm titlul obiectivului
-      )
-    );
+  // Funcția care va aplica filtrul pe baza titlului obiectivului și a notelor
+  const handleFilter = (criteria) => {
+    if (criteria.filterType === "Objective Title" && criteria.objectiveTitle) {
+      const filtered = users.filter((user) =>
+        user.objectives && // Verificăm dacă utilizatorul are obiective
+        Array.isArray(user.objectives) &&
+        user.objectives.some(
+          (objective) =>
+            objective.title.toLowerCase() === criteria.objectiveTitle.toLowerCase() && // Verificăm titlul obiectivului
+            // Verificăm dacă gradeAdmin sau gradeEmployee sunt 1
+            (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
+        )
+      );
 
-    setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
-  } else {
-    setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
-  }
-};
-
+      setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
+    } else {
+      setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
+    }
+  };
 
   const filteredByCriteriaUsers = users.filter((user) => {
     const matchesObjectiveTitle = filterCriteria.objectiveTitle
-      ? user.objectiveTitle?.includes(filterCriteria.objectiveTitle)
+      ? user.objectiveTitle?.toLowerCase() === filterCriteria.objectiveTitle.toLowerCase()
       : true;
     const matchesNumObjectives =
       filterCriteria.numObjectives && filterCriteria.numFilterType
@@ -158,8 +158,11 @@ const handleFilter = (criteria) => {
     const matchesDeadline = filterCriteria.deadline
       ? user.deadline === filterCriteria.deadline
       : true;
+    const matchesGrades = user.objectives.some(
+      (objective) => objective.gradeAdmin === 1 || objective.gradeEmployee === 1
+    );
 
-    return matchesObjectiveTitle && matchesNumObjectives && matchesDeadline;
+    return matchesObjectiveTitle && matchesNumObjectives && matchesDeadline && matchesGrades;
   });
 
   return (
