@@ -189,7 +189,7 @@ const Objectives = () => {
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && (
           <>
-            <h2>Subobjective status</h2>
+            <h2 className="subobjective-status-title">Subobjective status</h2>
             <p className="subobjective-description-container">Description: {subobjective.description}</p>
             {renderSubobjectiveGrades()}
           </>

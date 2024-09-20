@@ -111,6 +111,10 @@
   /* border: 3px solid green; */
 }
 
+.subobjective-status-title{
+  margin-top: 25px;
+}
+
 
 .card{
   overflow-x: hidden; /* Hides horizontal overflow to prevent scrollbar */
