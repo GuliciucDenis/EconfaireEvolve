@@ -26,14 +26,15 @@ const UserTable = () => {
     try {
       const response = await getUsers();
   
-      // Pentru fiecare utilizator, obținem detaliile obiectivelor
+      // Pentru fiecare utilizator, obținem detaliile obiectivelor pe baza ID-urilor din objectiveList
       const usersWithObjectives = await Promise.all(
         response.map(async (user) => {
           if (user.objectiveList && Array.isArray(user.objectiveList)) {
             const detailedObjectives = await Promise.all(
-              user.objectiveList.map((objectiveId) =>
-                fetchObjectiveDetails(objectiveId)
-              )
+              user.objectiveList.map(async (objectiveId) => {
+                const objectiveDetails = await fetchObjectiveDetails(objectiveId);
+                return objectiveDetails; // Detaliile obiectivului preluate
+              })
             );
             return { ...user, objectives: detailedObjectives };
           }
@@ -48,7 +49,7 @@ const UserTable = () => {
       console.error("Error fetching users:", error);
       setLoading(false);
     }
-  };
+  };  
   
 
   useEffect(() => {
@@ -144,7 +145,35 @@ const deleteSelectedUsers = async () => {
     else
       if(criteria.filterType === "Number of Objectives")
       {
+        const numObjectives = parseInt(criteria.numObjectives, 10);
 
+        // Calculăm numărul de obiective active (gradeAdmin sau gradeEmployee == 1) pentru fiecare utilizator
+        const usersWithActiveObjectivesCount = users.map((user) => ({
+          ...user,
+          activeObjectivesCount: user.objectives
+            ? user.objectives.filter((objective) => objective.gradeAdmin === 1 || objective.gradeEmployee === 1).length
+            : 0,
+        }));
+
+        if (criteria.numFilterType === "exact") {
+          const filtered = usersWithActiveObjectivesCount.filter((user) =>
+            user.activeObjectivesCount === numObjectives
+          );
+          setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
+        } 
+        else if (criteria.numFilterType === "ascending") {
+          const sorted = [...usersWithActiveObjectivesCount].sort((a, b) =>
+            a.activeObjectivesCount - b.activeObjectivesCount
+          );
+          setFilteredUsersByCriteria(sorted);
+        } 
+        else if (criteria.numFilterType === "descending") {
+          const sorted = [...usersWithActiveObjectivesCount].sort((a, b) =>
+            b.activeObjectivesCount - a.activeObjectivesCount
+          );
+          setFilteredUsersByCriteria(sorted);
+        }
+        setIsFiltered(true);
       }
       else
         if(criteria.filterType === "Deadline" && criteria.deadline)

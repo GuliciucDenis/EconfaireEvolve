@@ -20,15 +20,18 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
   }, [isOpen]);
 
   const handleFilter = () => {
-    onFilter({
+    const filterCriteria = {
       filterType,
       objectiveTitle,
       numObjectives,
       numFilterType,
       deadline,
-    });
+    };
+  
+    console.log(filterCriteria);  // Verificăm valorile filtrului
+    onFilter(filterCriteria);      // Transmitem criteriile de filtrare
     onClose();
-  };
+  };  
 
   if (!isOpen) return null;
 
@@ -71,14 +74,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
 
           {filterType === "Number of Objectives" && (
             <div className="popup-field">
-              <label>Number of Objectives:</label>
-              <input
-                type="number"
-                value={numObjectives}
-                onChange={(e) => setNumObjectives(e.target.value)}
-                placeholder="Enter number"
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-              />
+              <label>Filter by Number of Objectives:</label>
               <div style={{ marginTop: "10px" }}>
                 <label>
                   <input
@@ -108,6 +104,19 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                   Descending
                 </label>
               </div>
+              
+              {/* Afișează inputul de număr doar dacă este selectată opțiunea "Exact" */}
+              {numFilterType === "exact" && (
+                <div style={{ marginTop: "10px" }}>
+                  <input
+                    type="number"
+                    value={numObjectives}
+                    onChange={(e) => setNumObjectives(e.target.value)}
+                    placeholder="Enter number"
+                    style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
+                  />
+                </div>
+              )}
             </div>
           )}
 
