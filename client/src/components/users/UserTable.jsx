@@ -140,10 +140,32 @@ const deleteSelectedUsers = async () => {
 
       setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
       setIsFiltered(true);
-    } else {
-      setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
-      setIsFiltered(false);
     }
+    else
+      if(criteria.filterType === "Number of Objectives")
+      {
+
+      }
+      else
+        if(criteria.filterType === "Deadline" && criteria.deadline)
+        {
+          const filtered = users.filter((user) =>
+            user.objectives &&
+          Array.isArray(user.objectives) &&
+          user.objectives.some(
+            (objective) =>
+              (objective.gradeAdmin === 1 || objective.gradeEmployee === 1) &&
+              new Date(objective.deadline).toISOString().split('T')[0] === new Date(criteria.deadline).toISOString().split('T')[0] 
+            )
+          );
+          setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
+          setIsFiltered(true);
+        } 
+        else
+        {
+          setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
+          setIsFiltered(false);
+        }
   };
 
   const filteredByCriteriaUsers = users.filter((user) => {
