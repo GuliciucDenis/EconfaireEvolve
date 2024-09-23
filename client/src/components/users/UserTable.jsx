@@ -176,17 +176,82 @@ const deleteSelectedUsers = async () => {
         setIsFiltered(true);
       }
       else
-        if(criteria.filterType === "Deadline" && criteria.deadline)
-        {
-          const filtered = users.filter((user) =>
-            user.objectives &&
-          Array.isArray(user.objectives) &&
-          user.objectives.some(
-            (objective) =>
-              (objective.gradeAdmin === 1 || objective.gradeEmployee === 1) &&
-              new Date(objective.deadline).toISOString().split('T')[0] === new Date(criteria.deadline).toISOString().split('T')[0] 
-            )
-          );
+        if (criteria.filterType === "Deadline") {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); // Resetăm ora pentru a compara doar zilele
+          let filtered = [];
+        
+          if (criteria.deadlineFilterType === "next-day") {
+            const nextDay = new Date(today);
+            nextDay.setDate(today.getDate() + 1);
+        
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective =>
+                new Date(objective.deadline).toISOString().split('T')[0] === nextDay.toISOString().split('T')[0] &&
+                (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
+              )
+            );
+          } else if (criteria.deadlineFilterType === "this-week") {
+            const startOfWeek = new Date(today);
+            const endOfWeek = new Date(today);
+            
+            const day = startOfWeek.getDay() || 7; // Get the day (1 for Monday, 7 for Sunday)
+            if (day !== 1) {
+              startOfWeek.setHours(-24 * (day - 1)); // Set to last Monday
+            }
+            endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to next Sunday
+        
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective => {
+                const deadline = new Date(objective.deadline);
+                return deadline >= startOfWeek && deadline <= endOfWeek &&
+                       (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+              })
+            );
+          } else if (criteria.deadlineFilterType === "next-week") {
+            const nextWeekStart = new Date(today);
+            const nextWeekEnd = new Date(today);
+            nextWeekStart.setDate(today.getDate() + 7);
+            nextWeekEnd.setDate(today.getDate() + 14); // Sfârșitul săptămânii viitoare
+        
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective => {
+                const deadline = new Date(objective.deadline);
+                return deadline >= nextWeekStart && deadline <= nextWeekEnd &&
+                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+              })
+            );
+          } else if (criteria.deadlineFilterType === "next-month") {
+            const nextMonthStart = new Date(today);
+            nextMonthStart.setMonth(today.getMonth() + 1);
+            nextMonthStart.setDate(1); // Prima zi a lunii următoare
+        
+            const nextMonthEnd = new Date(nextMonthStart);
+            nextMonthEnd.setMonth(nextMonthEnd.getMonth() + 1);
+            nextMonthEnd.setDate(0); // Ultima zi a lunii următoare
+        
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective => {
+                const deadline = new Date(objective.deadline);
+                return deadline >= nextMonthStart && deadline <= nextMonthEnd &&
+                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+              })
+            );
+          } else if (criteria.deadline) {
+            // Filtrare după data setată
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective =>
+                new Date(objective.deadline).toISOString().split('T')[0] === new Date(criteria.deadline).toISOString().split('T')[0] &&
+                (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
+              )
+            );
+          }
+        
           setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
           setIsFiltered(true);
         }

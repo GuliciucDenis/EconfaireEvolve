@@ -8,6 +8,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
   const [numFilterType, setNumFilterType] = useState("exact");
   const [deadline, setDeadline] = useState("");
   const [sortNameOrder, setSortNameOrder] = useState("asc");
+  const [deadlineFilterType, setDeadlineFilterType] = useState("set");
 
   // Resetarea valorilor când popup-ul este deschis
   useEffect(() => {
@@ -17,6 +18,8 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
       setNumObjectives("");
       setNumFilterType("exact");
       setDeadline("");
+      setSortNameOrder("asc");
+      setDeadlineFilterType("set");
     }
   }, [isOpen]);
 
@@ -28,6 +31,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
       numFilterType,
       deadline,
       sortNameOrder,
+      deadlineFilterType,
     };
   
     console.log(filterCriteria);  // Verificăm valorile filtrului
@@ -122,16 +126,65 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
               )}
             </div>
           )}
-
           {filterType === "Deadline" && (
             <div className="popup-field">
               <label>Deadline:</label>
-              <input
-                type="date"
-                value={deadline}
-                onChange={(e) => setDeadline(e.target.value)}
-                style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
-              />
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="set"
+                    checked={deadlineFilterType === "set"}
+                    onChange={() => setDeadlineFilterType("set")}
+                  />
+                  Set a deadline
+                </label>
+                <label style={{ marginLeft: "10px" }}>
+                  <input
+                    type="radio"
+                    value="next-day"
+                    checked={deadlineFilterType === "next-day"}
+                    onChange={() => setDeadlineFilterType("next-day")}
+                  />
+                  Next day
+                </label>
+                <label style={{ marginLeft: "10px" }}>
+                  <input
+                    type="radio"
+                    value="this-week"
+                    checked={deadlineFilterType === "this-week"}
+                    onChange={() => setDeadlineFilterType("this-week")}
+                  />
+                  This week
+                </label>
+                <label style={{ marginLeft: "10px" }}>
+                  <input
+                    type="radio"
+                    value="next-week"
+                    checked={deadlineFilterType === "next-week"}
+                    onChange={() => setDeadlineFilterType("next-week")}
+                  />
+                  Next week
+                </label>
+                <label style={{ marginLeft: "10px" }}>
+                  <input
+                    type="radio"
+                    value="next-month"
+                    checked={deadlineFilterType === "next-month"}
+                    onChange={() => setDeadlineFilterType("next-month")}
+                  />
+                  Next month
+                </label>
+              </div>
+
+              {deadlineFilterType === "set" && (
+                <input
+                  type="date"
+                  value={deadline}
+                  onChange={(e) => setDeadline(e.target.value)}
+                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
+                />
+              )}
             </div>
           )}
           {filterType === "Sort by Name" && (
