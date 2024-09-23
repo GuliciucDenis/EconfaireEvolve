@@ -189,12 +189,26 @@ const deleteSelectedUsers = async () => {
           );
           setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
           setIsFiltered(true);
-        } 
-        else
-        {
-          setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
-          setIsFiltered(false);
         }
+        else
+          if(criteria.filterType === "Sort by Name")
+          {
+            const sortedUsers = [...users].sort((a,b) => {
+              const nameA = `${a.firstName} ${a.lastName}`.toLowerCase();
+              const nameB = `${b.firstName} ${b.lastName}`.toLowerCase();
+              if (criteria.sortNameOrder === "asc")
+                return nameA.localeCompare(nameB);
+              else
+                return nameB.localeCompare(nameA);
+            });
+            setFilteredUsersByCriteria(sortedUsers);
+            setIsFiltered(true);
+          }
+          else
+          {
+            setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
+            setIsFiltered(false);
+          }
   };
 
   const filteredByCriteriaUsers = users.filter((user) => {

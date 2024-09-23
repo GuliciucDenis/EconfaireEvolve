@@ -7,6 +7,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
   const [numObjectives, setNumObjectives] = useState("");
   const [numFilterType, setNumFilterType] = useState("exact");
   const [deadline, setDeadline] = useState("");
+  const [sortNameOrder, setSortNameOrder] = useState("asc");
 
   // Resetarea valorilor când popup-ul este deschis
   useEffect(() => {
@@ -26,6 +27,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
       numObjectives,
       numFilterType,
       deadline,
+      sortNameOrder,
     };
   
     console.log(filterCriteria);  // Verificăm valorile filtrului
@@ -55,6 +57,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
               <option value="Objective Title">Objective Title</option>
               <option value="Number of Objectives">Number of Objectives</option>
               <option value="Deadline">Deadline</option>
+              <option value="Sort by Name">Sort by Name</option>
             </select>
           </div>
 
@@ -129,6 +132,31 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                 onChange={(e) => setDeadline(e.target.value)}
                 style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
               />
+            </div>
+          )}
+          {filterType === "Sort by Name" && (
+            <div className="popup-field">
+              <label>Sort Order:</label>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="asc"
+                    checked={sortNameOrder === "asc"}
+                    onChange={() => setSortNameOrder("asc")}
+                  />
+                  Ascending
+                </label>
+                <label style={{ marginLeft: "10px" }}>
+                  <input
+                    type="radio"
+                    value="desc"
+                    checked={sortNameOrder === "desc"}
+                    onChange={() => setSortNameOrder("desc")}
+                  />
+                  Descending
+                </label>
+              </div>
             </div>
           )}
         </div>
