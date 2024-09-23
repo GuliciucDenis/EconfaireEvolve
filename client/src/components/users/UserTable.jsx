@@ -18,6 +18,7 @@ const UserTable = () => {
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false);
   const [filterCriteria, setFilterCriteria] = useState({});
   const [filteredUsersByCriteria, setFilteredUsersByCriteria] = useState([]);
+  const [isFiltered, setIsFiltered] = useState(false);
 
   const navigate = useNavigate();
 
@@ -138,8 +139,10 @@ const deleteSelectedUsers = async () => {
       );
 
       setFilteredUsersByCriteria(filtered.length > 0 ? filtered : []);
+      setIsFiltered(true);
     } else {
       setFilteredUsersByCriteria(users); // Dacă nu se aplică filtrul, afișăm toți utilizatorii
+      setIsFiltered(false);
     }
   };
 
@@ -183,9 +186,16 @@ const deleteSelectedUsers = async () => {
           <Button 
             auto 
             shadow 
-            onClick={() => setIsFilterPopupOpen(true)}
+            onClick={() => {
+              if (isFiltered) {
+                setFilteredUsersByCriteria(users); // Resetează utilizatorii la lista inițială
+                setIsFiltered(false); // Setează starea ca fiind nefiltrată
+              } else {
+                setIsFilterPopupOpen(true); // Deschide popup-ul de filtrare
+              }
+            }}
           >
-            Filter
+            {isFiltered ? "Unfilter" : "Filter"}
           </Button>
           <Button
             auto
