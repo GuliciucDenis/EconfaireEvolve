@@ -195,18 +195,33 @@ const deleteSelectedUsers = async () => {
           } else if (criteria.deadlineFilterType === "this-week") {
             const startOfWeek = new Date(today);
             const endOfWeek = new Date(today);
-            
-            const day = startOfWeek.getDay() || 7; // Get the day (1 for Monday, 7 for Sunday)
-            if (day !== 1) {
-              startOfWeek.setHours(-24 * (day - 1)); // Set to last Monday
-            }
-            endOfWeek.setDate(startOfWeek.getDate() + 6); // Set to next Sunday
-        
+
+            // Setăm începutul săptămânii la luni (1) și sfârșitul săptămânii la duminică (7)
+            const day = today.getDay();
+            const diffToMonday = day === 0 ? -6 : 1 - day; // Dacă e duminică, setăm la -6 pentru luni
+            startOfWeek.setDate(today.getDate() + diffToMonday);
+            startOfWeek.setHours(0, 0, 0, 0); // Resetăm ora la începutul zilei
+
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            endOfWeek.setHours(23, 59, 59, 999); // Setăm sfârșitul zilei la duminică
+
             filtered = users.filter(user =>
               user.objectives &&
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
                 return deadline >= startOfWeek && deadline <= endOfWeek &&
+                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+              })
+            );
+          } else if (criteria.deadlineFilterType === "this-month") {
+            const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1); // Prima zi a lunii curente
+            const endOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Ultima zi a lunii curente
+          
+            filtered = users.filter(user =>
+              user.objectives &&
+              user.objectives.some(objective => {
+                const deadline = new Date(objective.deadline);
+                return deadline >= startOfMonth && deadline <= endOfMonth &&
                        (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
               })
             );

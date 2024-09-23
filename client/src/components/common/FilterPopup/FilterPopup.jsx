@@ -129,60 +129,25 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
           {filterType === "Deadline" && (
             <div className="popup-field">
               <label>Deadline:</label>
-              <div>
-                <label>
-                  <input
-                    type="radio"
-                    value="set"
-                    checked={deadlineFilterType === "set"}
-                    onChange={() => setDeadlineFilterType("set")}
-                  />
-                  Set a deadline
-                </label>
-                <label style={{ marginLeft: "10px" }}>
-                  <input
-                    type="radio"
-                    value="next-day"
-                    checked={deadlineFilterType === "next-day"}
-                    onChange={() => setDeadlineFilterType("next-day")}
-                  />
-                  Next day
-                </label>
-                <label style={{ marginLeft: "10px" }}>
-                  <input
-                    type="radio"
-                    value="this-week"
-                    checked={deadlineFilterType === "this-week"}
-                    onChange={() => setDeadlineFilterType("this-week")}
-                  />
-                  This week
-                </label>
-                <label style={{ marginLeft: "10px" }}>
-                  <input
-                    type="radio"
-                    value="next-week"
-                    checked={deadlineFilterType === "next-week"}
-                    onChange={() => setDeadlineFilterType("next-week")}
-                  />
-                  Next week
-                </label>
-                <label style={{ marginLeft: "10px" }}>
-                  <input
-                    type="radio"
-                    value="next-month"
-                    checked={deadlineFilterType === "next-month"}
-                    onChange={() => setDeadlineFilterType("next-month")}
-                  />
-                  Next month
-                </label>
-              </div>
+              <select
+                value={deadlineFilterType}
+                onChange={(e) => setDeadlineFilterType(e.target.value)}
+                style={{ padding: "8px", fontSize: "1rem", borderRadius: "6px", border: "1px solid #ccc", width: "100%" }}
+              >
+                <option value="set">Set a deadline</option>
+                <option value="next-day">Next day</option>
+                <option value="this-week">This week</option>
+                <option value="this-month">This month</option>
+                <option value="next-week">Next week</option>
+                <option value="next-month">Next month</option>
+              </select>
 
               {deadlineFilterType === "set" && (
                 <input
                   type="date"
                   value={deadline}
                   onChange={(e) => setDeadline(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
+                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginTop: "10px" }}
                 />
               )}
             </div>
