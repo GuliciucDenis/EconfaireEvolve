@@ -114,7 +114,7 @@ const deleteSelectedUsers = async () => {
     setSearchObjective(e.target.value);
   };
 
-  const filteredUsers = users.filter(
+  const filteredUsersByName = users.filter(
     (user) =>
       user.firstName.toLowerCase().includes(searchName.toLowerCase()) ||
       user.lastName.toLowerCase().includes(searchName.toLowerCase())
@@ -277,7 +277,7 @@ const deleteSelectedUsers = async () => {
           )}
         </TableHeader>
         <TableBody
-          items={filteredUsersByCriteria} // Afișăm utilizatorii filtrați
+          items={searchName ? filteredUsersByName : filteredUsersByCriteria} // Afișăm utilizatorii filtrați
           loadingContent={
             <div className="text-center py-4">Loading users...</div>
           }
