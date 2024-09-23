@@ -40,13 +40,20 @@ const CreateUserForm = () => {
       const response = await createUser(newUser);
       console.log("User created:", response);
       setSuccessMessage("User successfully created!");
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
       setPasswordError(""); // Clear any existing error messages
       resetForm();
-    } catch (error) {
-      console.error("Error creating user:", error);
-      setSuccessMessage("");
-      setPasswordError("Failed to create user. Please try again.");
-    }
+      }catch (error) {
+        console.error("Error creating user:", error);
+        if (error.response && error.response.data && error.response.data.message) {
+            setPasswordError(`Failed to create user: ${error.response.data.message}`);
+        } else {
+            setPasswordError("Failed to create user. Please try again.");
+        }
+        setSuccessMessage("");
+    }  
   };
 
   const resetForm = () => {
@@ -54,7 +61,6 @@ const CreateUserForm = () => {
     setLastName("");
     setEmail("");
     setPassword("");
-    setRole("user");
   };
 
   const handleFirstNameChange = (e) => {
