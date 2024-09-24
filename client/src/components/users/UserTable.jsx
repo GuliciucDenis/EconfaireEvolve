@@ -19,6 +19,7 @@ const UserTable = () => {
   const [filterCriteria, setFilterCriteria] = useState({});
   const [filteredUsersByCriteria, setFilteredUsersByCriteria] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
+  const [isAllSelected, setIsAllSelected] = useState(false);
 
   const navigate = useNavigate();
 
@@ -75,37 +76,52 @@ const UserTable = () => {
   ];
 
   const handleSelectionChange = (keys) => {
-    // Convert keys to an array if it's not already an array
     const selectedKeysArray = Array.from(keys);
-    // Map the keys to corresponding user IDs
     const selectedIds = selectedKeysArray.map((key) =>
       users.find((user) => user.email === key)?.id
     );
-    setSelectedUsers(selectedIds.filter(Boolean)); // Set only valid IDs
+  
+    setSelectedUsers(selectedIds.filter(Boolean));
+  
+    // Dacă există utilizatori selectați, schimbăm butonul la "Deselect All Users"
+    if (selectedKeysArray.length > 0) {
+      setIsAllSelected(true); // Activează modul "Deselect All"
+    } else {
+      setIsAllSelected(false); // Dacă nu sunt selectați utilizatori, revenim la "Select All"
+    }
+  };  
+
+  const handleSelectAll = () => {
+    const allUserEmails = users.map(user => user.email);
+    setSelectedKeys(allUserEmails); // Selectează toate email-urile
+    setSelectedUsers(users.map(user => user.id)); // Selectează toate ID-urile utilizatorilor
   };
   
+  const handleDeselectAll = () => {
+    setSelectedKeys([]); // Golește selecția
+    setSelectedUsers([]); // Golește ID-urile selectate
+  };
 
   // Function to handle deletion of selected users
-const deleteSelectedUsers = async () => {
-  try {
-    await Promise.all(
-      selectedUsers.map(async (userId) => {
-        console.log("ID-ul este: ", userId);
-        await deleteUser(userId);
-      })
-    );
-    // Correctly use `selectedUsers` instead of `setSelectedUsers`
-    setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
-    setFilteredUsersByCriteria(filteredUsersByCriteria.filter((user) => !selectedUsers.includes(user.id)));
-    setSelectedUsers([]);
-    setSelectedKeys([]);
-    // alert("User(s) deleted successfully");
-  } catch (error) {
-    console.error("Error deleting users:", error);
-    alert("An error occurred while deleting user(s)");
-  }
-};
-
+  const deleteSelectedUsers = async () => {
+    try {
+      await Promise.all(
+        selectedUsers.map(async (userId) => {
+          console.log("ID-ul este: ", userId);
+          await deleteUser(userId);
+        })
+      );
+      // Correctly use `selectedUsers` instead of `setSelectedUsers`
+      setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
+      setFilteredUsersByCriteria(filteredUsersByCriteria.filter((user) => !selectedUsers.includes(user.id)));
+      setSelectedUsers([]);
+      setSelectedKeys([]);
+      // alert("User(s) deleted successfully");
+    } catch (error) {
+      console.error("Error deleting users:", error);
+      alert("An error occurred while deleting user(s)");
+    }
+  };
 
   const handleSearchNameChange = (e) => {
     setSearchName(e.target.value);
@@ -328,6 +344,21 @@ const deleteSelectedUsers = async () => {
           />
         </div>
         <div className="flex gap-2">
+          <Button
+            auto
+            shadow
+            color={isAllSelected ? "secondary" : "primary"}
+            onClick={() => {
+              if (isAllSelected) {
+                handleDeselectAll();
+              } else {
+                handleSelectAll();
+              }
+              setIsAllSelected(!isAllSelected);
+            }}
+          >
+            {isAllSelected ? "Deselect All Users" : "Select All Users"}
+          </Button>
           <Button 
             auto 
             shadow 
