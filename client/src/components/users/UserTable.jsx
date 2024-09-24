@@ -213,15 +213,19 @@ const UserTable = () => {
           let filtered = [];
         
           if (criteria.deadlineFilterType === "next-day") {
-            const nextDay = new Date(today);
-            nextDay.setDate(today.getDate() + 1);
-        
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0); // Resetăm ora la 00:00 pentru a compara doar ziua
+          
             filtered = users.filter(user =>
               user.objectives &&
-              user.objectives.some(objective =>
-                new Date(objective.deadline).toISOString().split('T')[0] === nextDay.toISOString().split('T')[0] &&
-                (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
-              )
+              user.objectives.some(objective => {
+                const objectiveDeadline = new Date(objective.deadline);
+                objectiveDeadline.setHours(0, 0, 0, 0); // Resetăm ora și pentru deadline
+          
+                return objectiveDeadline.getTime() === tomorrow.getTime() &&
+                       (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+              })
             );
           } else if (criteria.deadlineFilterType === "this-week") {
             const startOfWeek = new Date(today);
@@ -257,16 +261,28 @@ const UserTable = () => {
               })
             );
           } else if (criteria.deadlineFilterType === "next-week") {
-            const nextWeekStart = new Date(today);
-            const nextWeekEnd = new Date(today);
-            nextWeekStart.setDate(today.getDate() + 7);
-            nextWeekEnd.setDate(today.getDate() + 14); // Sfârșitul săptămânii viitoare
+            const dayOfWeek = today.getDay(); // 0 = duminică, 1 = luni, ..., 6 = sâmbătă
+
+            // Calculăm câte zile sunt până la următoarea zi de luni
+            const daysUntilNextMonday = dayOfWeek === 0 ? 1 : 8 - dayOfWeek;
+
+            // Creăm o variabilă care va avea valoarea zilei de luni din săptămâna viitoare
+            const nextMonday = new Date(today);
+            nextMonday.setDate(today.getDate() + daysUntilNextMonday);
+
+            // Setăm ora la începutul zilei pentru precizie
+            nextMonday.setHours(0, 0, 0, 0);
+
+            // Obținem ziua de duminică din săptămâna viitoare, adăugând 6 zile la luni
+            const nextSunday = new Date(nextMonday);
+            nextSunday.setDate(nextMonday.getDate() + 6);
+            nextSunday.setHours(23, 59, 59, 999); // Setăm ora la sfârșitul zilei
         
             filtered = users.filter(user =>
               user.objectives &&
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
-                return deadline >= nextWeekStart && deadline <= nextWeekEnd &&
+                return deadline >= nextMonday && deadline <= nextSunday &&
                       (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
               })
             );
@@ -278,7 +294,7 @@ const UserTable = () => {
             const nextMonthEnd = new Date(nextMonthStart);
             nextMonthEnd.setMonth(nextMonthEnd.getMonth() + 1);
             nextMonthEnd.setDate(0); // Ultima zi a lunii următoare
-        
+            
             filtered = users.filter(user =>
               user.objectives &&
               user.objectives.some(objective => {
