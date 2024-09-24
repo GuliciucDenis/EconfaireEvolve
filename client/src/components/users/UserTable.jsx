@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import DeleteUserPopup from "../common/DeleteUserPopup/DeleteUserPopup";
 import FilterPopup from "../common/FilterPopup/FilterPopup";
 import { getObjectiveById } from "../../services/objectiveService";
+import ConfirmDeletePopup from "../common/ConfirmDeletePopup/ConfirmDeletePopup";
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -20,6 +21,7 @@ const UserTable = () => {
   const [filteredUsersByCriteria, setFilteredUsersByCriteria] = useState([]);
   const [isFiltered, setIsFiltered] = useState(false);
   const [isAllSelected, setIsAllSelected] = useState(false);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -122,6 +124,19 @@ const UserTable = () => {
       alert("An error occurred while deleting user(s)");
     }
   };
+
+  const handleDeleteClick = () => {
+    setIsConfirmDeleteOpen(true); // Afișează popup-ul când se apasă butonul
+  };
+  
+  const handleClosePopup = () => {
+    setIsConfirmDeleteOpen(false); // Închide popup-ul
+  };
+  
+  const handleConfirmDelete = () => {
+    deleteSelectedUsers(); // Șterge utilizatorii selectați
+    setIsConfirmDeleteOpen(false); // Închide popup-ul după confirmare
+  };  
 
   const handleSearchNameChange = (e) => {
     setSearchName(e.target.value);
@@ -390,7 +405,7 @@ const UserTable = () => {
                 auto
                 shadow
                 color="danger"
-                onClick={deleteSelectedUsers}
+                onClick={handleDeleteClick}
                 onUserDeleted={handleUserDeleted}
               >
                 Delete User
@@ -400,7 +415,7 @@ const UserTable = () => {
                 auto
                 shadow
                 color="danger"
-                onClick={deleteSelectedUsers}
+                onClick={handleDeleteClick}
                 onUserDeleted={handleUserDeleted}
               >
                 Delete Users
@@ -519,6 +534,11 @@ const UserTable = () => {
           setIsFilterPopupOpen(false);
         }}
         onFilter={handleFilter}
+      />
+      <ConfirmDeletePopup
+        isOpen={isConfirmDeleteOpen}
+        onClose={handleClosePopup}
+        onConfirm={handleConfirmDelete}
       />
     </div>
   );
