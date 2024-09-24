@@ -47,6 +47,9 @@ const UserTable = () => {
   
       setUsers(usersWithObjectives);
       setFilteredUsersByCriteria(usersWithObjectives);
+      setSelectedKeys([]);
+      setSelectedUsers([]);
+      setIsAllSelected(false);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -113,11 +116,11 @@ const UserTable = () => {
           await deleteUser(userId);
         })
       );
-      // Correctly use `selectedUsers` instead of `setSelectedUsers`
       setUsers(users.filter((user) => !selectedUsers.includes(user.id)));
       setFilteredUsersByCriteria(filteredUsersByCriteria.filter((user) => !selectedUsers.includes(user.id)));
       setSelectedUsers([]);
       setSelectedKeys([]);
+      setIsAllSelected(false);
       // alert("User(s) deleted successfully");
     } catch (error) {
       console.error("Error deleting users:", error);
