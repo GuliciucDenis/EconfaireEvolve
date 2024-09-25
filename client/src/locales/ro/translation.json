@@ -7,6 +7,15 @@
       "error": "A apărut o eroare la autentificare.",
       "emailPlaceholder": "Email",
       "passwordPlaceholder": "Parola"
+    },
+    "home": {
+      "title": "Acasă"
+    },
+    "homeWelcome": {
+      "welcome": "Începe astăzi cu eVolve și transformă-ți potențialul în performanță!"
+    },
+    "progressMeter": {
+      "text": "Procentaj de performanta:"
     }
   }
   

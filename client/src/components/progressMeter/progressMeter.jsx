@@ -4,10 +4,12 @@ import './ProgressMeter.css';
 
 import { getAverageObjectiveGradeByUserId } from '../../services/objectiveService';
 import { getUser } from '../../services/userService';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../../components/language-selector';
 
 const ProgressMeter = ({ label = "Performance percentage" }) => {
   const [averageGrade, setAverageGrade] = useState(null); // Start with null to differentiate between loading state and actual 0 value
-
+  const {t}=useTranslation();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
