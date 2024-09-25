@@ -170,11 +170,11 @@ header {
   width: 100px;
   height: 50px;
   border-radius: 20px;
-  background-color: #00a000; /* Green background */
+  background-color: #00a000; 
   color: white;
   border: none;
   cursor: pointer;
-  margin-top: 20px; /* Add some space above the button */
+  margin-top: 20px;
 }
 
 .login-button:disabled {
@@ -185,4 +185,11 @@ header {
 .error-message {
   color: red;
   margin-top: 10px;
+}
+
+.change-language-container{
+  margin-top: 10px;
+  width: 200px;
+  height: 100px;
+  margin-left: 100px;
 }

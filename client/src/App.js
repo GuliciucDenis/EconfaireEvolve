@@ -24,9 +24,10 @@ import DeleteUserPopup from "./components/common/DeleteUserPopup/DeleteUserPopup
 import GradePopup from "./components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import EditSubobjectives from "./pages/EditSubobjectives/EditSubobjectives";
 import SeeObjectives from "./pages/SeeObjectives/SeeObjectives";
-
+import './i18n';
 
 function App() {
+
   return (
     <NextUIProvider>
       <Router>

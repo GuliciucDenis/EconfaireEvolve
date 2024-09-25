@@ -1,0 +1,12 @@
+{
+    "login": {
+      "email": "Email:",
+      "password": "Parola:",
+      "loginButton": "Autentificare",
+      "loggingIn": "Autentificare în curs...",
+      "error": "A apărut o eroare la autentificare.",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Parola"
+    }
+  }
+  

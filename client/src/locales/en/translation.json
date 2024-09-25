@@ -1,0 +1,12 @@
+{
+    "login": {
+      "email": "Email:",
+      "password": "Password:",
+      "loginButton": "Log In",
+      "loggingIn": "Logging in...",
+      "error": "There was an error logging in.",
+      "emailPlaceholder": "Email",
+      "passwordPlaceholder": "Password"
+    }
+  }
+  
