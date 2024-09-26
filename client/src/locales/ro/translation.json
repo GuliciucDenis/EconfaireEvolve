@@ -140,6 +140,13 @@
       "enableMultiSelect": "Activează Selecția Multiplă",
       "selectAll": "Selectează Toate",
       "unselectAll": "Deselectează Toate"
+    },
+    "editObjectivesPopup": {
+      "error1": "Vă rugăm să introduceți un titlu pentru obiectiv.",
+      "error2": "Titlul trebuie să aibă cel mult 30 de caractere.",
+      "error3": "Vă rugăm să introduceți o descriere pentru obiectiv.",
+      "error4": "Descrierea trebuie să aibă cel mult 250 de caractere.",
+      "error5": "Vă rugăm să selectați un termen limită."
     }
   }
   

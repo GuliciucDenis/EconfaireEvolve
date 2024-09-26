@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./AddObjectivesPopup.css";
 import { createObjective } from "../../../services/objectiveService";
+import { useTranslation } from "react-i18next";
 
 const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   const [title, setTitle] = useState("");
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
   const [description, setDescription] = useState("");
-  
+  const {t}=useTranslation();
+
   useEffect(() => {
     if (!isOpen) {
       resetForm();
@@ -23,23 +25,23 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
 
   const validateForm = () => {
     if (!title.trim()) {
-      setMessage({ type: "error", text: "Please enter an objective title." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error1') });
       return false;
     }
     if (!title.trim() > 30) {
-      setMessage({ type: "error", text: "Title must be 30 characters or less." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error2') });
       return false;
     }
     if (!description.trim()) {
-      setMessage({ type: "error", text: "Please enter an objective description." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error3') });
       return false;
     }
     if (description.length > 250) {
-      setMessage({ type: "error", text: "Description must be 250 characters or less." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error4') });
       return false;
     }
     if (!deadline) {
-      setMessage({ type: "error", text: "Please select a deadline." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error5') });
       return false;
     }
     return true;

@@ -140,6 +140,13 @@
       "enableMultiSelect": "Enable Multi-Select",
       "selectAll": "Select All",
       "unselectAll": "Unselect All"
+    },
+    "editObjectivesPopup": {
+      "error1": "Please enter an objective title.",
+      "error2": "Title must be 30 characters or less.",
+      "error3": "Please enter an objective description.",
+      "error4": "Description must be 250 characters or less.",
+      "error5": "Please select a deadline."
     }
   }
   
