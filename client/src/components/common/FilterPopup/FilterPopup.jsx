@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./FilterPopup.css";
+import { useTranslation } from "react-i18next";
 
 const FilterPopup = ({ isOpen, onClose, onFilter }) => {
+  const {t}=useTranslation();
   const [filterType, setFilterType] = useState("Objective Title");
   const [objectiveTitle, setObjectiveTitle] = useState("");
   const [numObjectives, setNumObjectives] = useState("");
@@ -45,35 +47,35 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
     <div className="popup-overlay">
       <div className="popup-content">
         <div className="popup-header">
-          <h3>Filter by</h3>
+          <h3>{t('filterPopup.filterBy')}</h3>
           <button onClick={onClose} className="close-button">&times;</button>
         </div>
         <div className="popup-body">
           {/* Dropdown pentru alegerea tipului de filtrare */}
           <div className="popup-field">
-            <label htmlFor="filterType" style={{ marginBottom: "10px", display: "block" }}>Choose a filter:</label>
+            <label htmlFor="filterType" style={{ marginBottom: "10px", display: "block" }}>{t('filterPopup.chooseFilter')}</label>
             <select
               id="filterType"
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
               style={{ padding: "8px", fontSize: "1rem", borderRadius: "6px", border: "1px solid #ccc", width: "100%" }}
             >
-              <option value="Objective Title">Objective Title</option>
-              <option value="Number of Objectives">Number of Objectives</option>
-              <option value="Deadline">Deadline</option>
-              <option value="Sort by Name">Sort by Name</option>
+              <option value="Objective Title">{t('filterPopup.objectiveTitle')}</option>
+              <option value="Number of Objectives">{t('filterPopup.nrOfObjectives')}</option>
+              <option value="Deadline">{t('filterPopup.deadline')}</option>
+              <option value="Sort by Name">{t('filterPopup.sortByName')}</option>
             </select>
           </div>
 
           {/* Afișare dinamică pe baza filtrului selectat */}
           {filterType === "Objective Title" && (
             <div className="popup-field">
-              <label>Objective Title:</label>
+              <label>{t('filterPopup.objectiveTitle')}:</label>
               <input
                 type="text"
                 value={objectiveTitle}
                 onChange={(e) => setObjectiveTitle(e.target.value)}
-                placeholder="Enter objective title"
+                placeholder={t('filterPopup.enterTitle')}
                 style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
               />
             </div>
@@ -81,7 +83,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
 
           {filterType === "Number of Objectives" && (
             <div className="popup-field">
-              <label>Filter by Number of Objectives:</label>
+              <label>{t('filterPopup.filterBynrOfObjectives')}</label>
               <div style={{ marginTop: "10px" }}>
                 <label>
                   <input
@@ -90,7 +92,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     checked={numFilterType === "exact"}
                     onChange={() => setNumFilterType("exact")}
                   />
-                  Exact
+                  {t('filterPopup.exact')}
                 </label>
                 <label style={{ marginLeft: "10px" }}>
                   <input
@@ -99,7 +101,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     checked={numFilterType === "ascending"}
                     onChange={() => setNumFilterType("ascending")}
                   />
-                  Ascending
+                  {t('filterPopup.ascending')}
                 </label>
                 <label style={{ marginLeft: "10px" }}>
                   <input
@@ -108,7 +110,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     checked={numFilterType === "descending"}
                     onChange={() => setNumFilterType("descending")}
                   />
-                  Descending
+                  {t('filterPopup.descending')}
                 </label>
               </div>
               
@@ -119,7 +121,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     type="number"
                     value={numObjectives}
                     onChange={(e) => setNumObjectives(e.target.value)}
-                    placeholder="Enter number"
+                    placeholder={t('filterPopup.enterNumber')}
                     style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc" }}
                   />
                 </div>
@@ -128,18 +130,18 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
           )}
           {filterType === "Deadline" && (
             <div className="popup-field">
-              <label>Deadline:</label>
+              <label>{t('filterPopup.deadline')}:</label>
               <select
                 value={deadlineFilterType}
                 onChange={(e) => setDeadlineFilterType(e.target.value)}
                 style={{ padding: "8px", fontSize: "1rem", borderRadius: "6px", border: "1px solid #ccc", width: "100%" }}
               >
-                <option value="set">Set a deadline</option>
-                <option value="next-day">Next day</option>
-                <option value="this-week">This week</option>
-                <option value="this-month">This month</option>
-                <option value="next-week">Next week</option>
-                <option value="next-month">Next month</option>
+                <option value="set">{t('filterPopup.setDeadline')}</option>
+                <option value="next-day">{t('filterPopup.nextDay')}</option>
+                <option value="this-week">{t('filterPopup.thisWeek')}</option>
+                <option value="this-month">{t('filterPopup.thisMonth')}</option>
+                <option value="next-week">{t('filterPopup.nextWeek')}</option>
+                <option value="next-month">{t('filterPopup.nextMonth')}</option>
               </select>
 
               {deadlineFilterType === "set" && (
@@ -154,7 +156,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
           )}
           {filterType === "Sort by Name" && (
             <div className="popup-field">
-              <label>Sort Order:</label>
+              <label>{t('filterPopup.sortOrder')}</label>
               <div>
                 <label>
                   <input
@@ -163,7 +165,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     checked={sortNameOrder === "asc"}
                     onChange={() => setSortNameOrder("asc")}
                   />
-                  Ascending
+                  {t('filterPopup.ascending')}
                 </label>
                 <label style={{ marginLeft: "10px" }}>
                   <input
@@ -172,7 +174,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
                     checked={sortNameOrder === "desc"}
                     onChange={() => setSortNameOrder("desc")}
                   />
-                  Descending
+                  {t('filterPopup.descending')}
                 </label>
               </div>
             </div>
@@ -180,10 +182,10 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
         </div>
         <div className="popup-footer">
           <button onClick={onClose} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#ccc", cursor: "pointer" }}>
-            Cancel
+          {t('filterPopup.cancel')}
           </button>
           <button onClick={handleFilter} style={{ padding: "8px 16px", borderRadius: "6px", backgroundColor: "#007bff", color: "white", cursor: "pointer" }}>
-            Apply Filter
+          {t('filterPopup.applyFilter')}
           </button>
         </div>
       </div>

@@ -66,7 +66,29 @@
       "noUsersFound": "Nu au fost găsiți utilizatori",
       "editObjectives": "Editează Obiectivele",
       "seeObjectives": "Vezi Obiectivele"
+    },
+    "filterPopup": {
+      "objectiveTitle": "Titlul Obiectivului",
+      "filterBy": "Filtrează după",
+      "chooseFilter": "Alege un filtru:",
+      "nrOfObjectives": "Număr de Obiective",
+      "deadline": "Termen limită",
+      "sortByName": "Sortează după Nume",
+      "enterTitle": "Introdu titlul obiectivului",
+      "filterBynrOfObjectives": "Filtrează după numărul de obiective:",
+      "exact": "Exact",
+      "ascending": "Crescător",
+      "descending": "Descrescător",
+      "enterNumber": "Introdu numărul",
+      "setDeadline": "Setează un termen limită",
+      "nextDay": "Ziua următoare",
+      "thisWeek": "Această săptămână",
+      "thisMonth": "Această lună",
+      "nextWeek": "Săptămâna viitoare",
+      "nextMonth": "Luna viitoare",
+      "sortOrder": "Ordinea sortării:",
+      "cancel": "Anulează",
+      "applyFilter": "Aplică Filtrul"
     }
-
   }
   

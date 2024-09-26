@@ -66,6 +66,29 @@
         "noUsersFound": "No users found",
         "editObjectives": "Edit Objectives",
         "seeObjectives": "See Objectives"
+    },
+    "filterPopup": {
+        "objectiveTitle": "Objective Title",
+        "filterBy": "Filter by",
+        "chooseFilter": "Choose a filter:",
+        "nrOfObjectives": "Number of Objectives",
+        "deadline": "Deadline",
+        "sortByName": "Sort by Name",
+        "enterTitle": "Enter objective title",
+        "filterBynrOfObjectives": "Filter by Number of Objectives:",
+        "exact": "Exact",
+        "ascending": "Ascending",
+        "descending": "Descending",
+        "enterNumber": "Enter number",
+        "setDeadline": "Set a deadline",
+        "nextDay": "Next day",
+        "thisWeek": "This week",
+        "thisMonth": "This month",
+        "nextWeek": "Next week",
+        "nextMonth": "Next month",
+        "sortOrder": "Sort Order:",
+        "cancel": "Cancel",
+        "applyFilter": "Apply Filter"
     }
   }
   
