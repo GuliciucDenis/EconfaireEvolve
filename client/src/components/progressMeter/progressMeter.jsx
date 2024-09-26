@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { CircularProgress, Card, CardBody, CardFooter, Chip } from "@nextui-org/react";
 import './ProgressMeter.css';
-
 import { getAverageObjectiveGradeByUserId } from '../../services/objectiveService';
 import { getUser } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
 import LanguageSelector from '../../components/language-selector';
 
-const ProgressMeter = ({ label = "Performance percentage" }) => {
-  const [averageGrade, setAverageGrade] = useState(null); // Start with null to differentiate between loading state and actual 0 value
-  const {t}=useTranslation();
+const ProgressMeter = () => {
+  const { t } = useTranslation(); 
+  const [averageGrade, setAverageGrade] = useState(null);
+  
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -60,9 +60,9 @@ const ProgressMeter = ({ label = "Performance percentage" }) => {
               content: "text-white/90 text-small font-semibold",
             }}
             variant="bordered"
-            aria-label={label} // Optional: enhance accessibility by providing an aria-label
+            aria-label={t('progressMeter.text')} // Optional: enhance accessibility by providing an aria-label
           >
-            {label}
+            {t('progressMeter.text')}
           </Chip>
         </CardFooter>
       </Card>
