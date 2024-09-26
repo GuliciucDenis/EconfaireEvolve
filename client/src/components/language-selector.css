@@ -2,9 +2,11 @@
     display: flex;
     justify-content: flex-end;
     position: absolute;
-    top: 10px;
+    top: 7px;
     right: 20px;
     z-index: 1;
+    width: 100px;
+    height: 50px;
 }
   
 .btn-container button {
@@ -20,8 +22,8 @@
     transition: all 0.3s ease;
     position: relative; 
     z-index: 10;
-    width: 90px;
-    height: 20px;
+    width: 100px;
+    height: 30px;
     
     display: flex;
     align-items: center;

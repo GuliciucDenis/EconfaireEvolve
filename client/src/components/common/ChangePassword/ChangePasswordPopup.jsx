@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./ChangePasswordPopup.css";
 import { updateUser } from "../../../services/userService";
+import LanguageSelector from "../../language-selector";
+import { useTranslation } from "react-i18next";
 
 const ChangePasswordPopup = ({ isOpen, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
@@ -10,7 +12,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const {t}=useTranslation();
   useEffect(() => {
     if (!isOpen) {
       resetForm();
@@ -41,13 +43,13 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
     if (!validatePassword(newPassword)) {
       setMessage({
         type: "error",
-        text: "Password must be at least 6 characters long, include an uppercase letter and a digit.",
+        text: t('changePasswordPopup.error-text1'),
       });
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      setMessage({ type: "error", text: "New passwords do not match." });
+      setMessage({ type: "error", text: t('changePasswordPopup.error-text2') });
       return;
     }
 
@@ -57,7 +59,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
         password: newPassword,
       };
       await updateUser(updatedUser);
-      setMessage({ type: "success", text: "Password changed successfully!" });
+      setMessage({ type: "success", text: t('changePasswordPopup.success') });
       setTimeout(() => {
         onClose();
         resetForm();
@@ -68,7 +70,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
         type: "error",
         text:
           err.response?.data?.message ||
-          "Failed to change password. Please try again.",
+          t('changePasswordPopup.error-text3'),
       });
     }
   };
@@ -78,7 +80,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
   return (
     <div className="change-password-popup-overlay">
       <div className="change-password-popup-container">
-        <h2 className="change-password-popup-title">Change Password</h2>
+        <h2 className="change-password-popup-title">{t('changePasswordPopup.title')}</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
@@ -86,7 +88,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
           <div className="password-input-container">
             <input
               type={showOldPassword ? "text" : "password"}
-              placeholder="Old Password"
+              placeholder={t('changePasswordPopup.oldPassword')}
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               required
@@ -96,13 +98,13 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               className="toggle-password-profile"
               onClick={() => setShowOldPassword(!showOldPassword)}
             >
-              {showOldPassword ? "Hide" : "Show"}
+              {showOldPassword ? t('changePasswordPopup.hide') : t('changePasswordPopup.show')}
             </button>
           </div>
           <div className="password-input-container">
             <input
               type={showNewPassword ? "text" : "password"}
-              placeholder="New Password (min 6 characters)"
+              placeholder={t('changePasswordPopup.newPassword')}
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
@@ -113,13 +115,13 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               className="toggle-password-profile"
               onClick={() => setShowNewPassword(!showNewPassword)}
             >
-              {showNewPassword ? "Hide" : "Show"}
+              {showNewPassword ? t('changePasswordPopup.hide') : t('changePasswordPopup.show')}
             </button>
           </div>
           <div className="password-input-container">
             <input
               type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm New Password"
+              placeholder={t('changePasswordPopup.confirmNewPassword')}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -129,7 +131,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               className="toggle-password-profile"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
-              {showConfirmPassword ? "Hide" : "Show"}
+              {showConfirmPassword ? t('changePasswordPopup.hide') : t('changePasswordPopup.show')}
             </button>
           </div>
           <div className="change-password-popup-buttons">
@@ -138,13 +140,13 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               className="change-password-popup-button cancel"
               onClick={onClose}
             >
-              Cancel
+              {t('changePasswordPopup.cancel')}
             </button>
             <button
               type="submit"
               className="change-password-popup-button confirm"
             >
-              Change Password
+              {t('changePasswordPopup.changePassword')}
             </button>
           </div>
         </form>

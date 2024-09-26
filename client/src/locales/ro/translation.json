@@ -16,6 +16,32 @@
     },
     "progressMeter": {
     "text": "Procentaj de performanță"
+    },
+    "profile": {
+      "title": "Profil",
+      "modify-password": "Modifică parola"
+    },
+    "profileTable": {
+      "personalInfo": "Informații personale",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "email": "Email",
+      "loading": "Se încarcă...",
+      "userData": "Nu sunt date disponibile despre utilizator"
+    },
+    "changePasswordPopup": {
+      "error-text1": "Parola trebuie să aibă cel puțin 6 caractere, să includă o literă majusculă și o cifră.",
+      "error-text2": "Noile parole nu se potrivesc.",
+      "success": "Parola a fost schimbată cu succes!",
+      "error-text3": "Nu s-a reușit schimbarea parolei. Vă rugăm să încercați din nou.",
+      "title": "Schimbă Parola",
+      "oldPassword": "Parola Veche",
+      "newPassword": "Parola Nouă (minim 6 caractere)",
+      "hide": "Ascunde",
+      "show": "Afișează",
+      "confirmNewPassword": "Confirmă Parola Nouă",
+      "cancel": "Anulează",
+      "changePassword": "Schimbă Parola"
     }
   }
   

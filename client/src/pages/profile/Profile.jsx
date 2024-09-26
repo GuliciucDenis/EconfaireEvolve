@@ -6,17 +6,21 @@ import ProfileTable from "../../components/profile/ProfileTable";
 import User from "../../components/common/user/User";
 import "./Profile.css";
 import ChangePasswordPopup from "../../components/common/ChangePassword/ChangePasswordPopup";
+import LanguageSelector from "../../components/language-selector.jsx";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const [isChangePasswordPopupOpen, setIsChangePasswordPopupOpen] =
     useState(false);
+  const {t}=useTranslation();
 
   return (
     <div className="profile-page">
       <Background />
       <User />
+      <LanguageSelector />
       <Navbar />
-      <h1 className="profile-title">Profile</h1>
+      <h1 className="profile-title">{t('profile.title')}</h1>
       <div className="profile-content">
         <div className="image-and-modify-container">
           <img className="profile-image" src={ProfilePic} alt="Profile Image" />
@@ -24,7 +28,7 @@ const Profile = () => {
             className="modify-password-button"
             onClick={() => setIsChangePasswordPopupOpen(true)}
           >
-            Modify password
+            {t('profile.modify-password')}
           </button>
         </div>
         <div className="profile-table-container">

@@ -16,6 +16,32 @@
     },
     "progressMeter": {
         "text": "Performance percentage"
+    },
+    "profile": {
+        "title": "Profile",
+        "modify-password": "Modify password"
+    },
+    "profileTable": {
+        "personalInfo": "Personal information",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "email": "Email",
+        "loading": "Loading...",
+        "userData": "No user data available"
+    },
+    "changePasswordPopup": {
+        "error-text1": "Password must be at least 6 characters long, include an uppercase letter and a digit.",
+        "error-text2": "New passwords do not match.",
+        "success": "Password changed successfully!",
+        "error-text3": "Failed to change password. Please try again.",
+        "title": "Change Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password (min 6 characters)",
+        "hide": "Hide",
+        "show": "Show",
+        "confirmNewPassword": "Confirm New Password",
+        "cancel": "Cancel",
+        "changePassword": "Change Password"
     }
   }
   
