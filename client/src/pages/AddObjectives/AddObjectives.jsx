@@ -11,6 +11,8 @@ import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddOb
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
 import { useNavigate } from "react-router-dom";
 import EditObjectivesPopup from "../../components/common/EditObjectivesPopup/EditObjectivesPopup";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/language-selector";
 
 const AddObjectives = () => {
   const [selectedRecommendedObjective, setSelectedRecommendedObjective] = useState(null);
@@ -28,7 +30,7 @@ const AddObjectives = () => {
   const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
   const [isEnabledMultiSelectButton,setIsEnabledMultiSelectButton] = useState(false);
   const [objectiveUpdated, setObjectiveUpdated] = useState(false);
-
+  const {t}=useTranslation();
 
   useEffect(() => {
     const fetchUserObjectives = async () => {
@@ -216,18 +218,19 @@ const AddObjectives = () => {
     <div className="add-objectives-container">
       <Background />
       <User />
+      <LanguageSelector />
       <div className="content-wrapper">
         <div className="add-objectives-user-info">
           {currentUser ? (
-            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
+            <>{t('editObjectives.selectedUser')} {currentUser.firstName} {currentUser.lastName}</>
           ) : (
-            <>Loading user information...</>
+            <>{t('editObjectives.loadingInformation')}</>
           )}
         </div>
         <div className="main-content">
           <div className="cards-container">
             <AddObjectivesCard 
-              title='Recommended Objectives' 
+              title={t('editObjectives.recommendedObjectives')} 
               content={objectivesData.map((objective, index) => (
                 <div 
                   key={index} 
@@ -239,7 +242,7 @@ const AddObjectives = () => {
               ))} 
             />
             <AddObjectivesCard 
-              title='Existing Objectives' 
+              title={t('editObjectives.existingObjectives')} 
               content={userObjectives.map((objective, index) => (
                 <div 
                   key={index} 
@@ -254,11 +257,11 @@ const AddObjectives = () => {
           <div className="decision-container">
             <div className="actions-container">
               {selectedRecommendedObjective !== null && (
-                <button className="action-button" onClick={handleAssignObjective}>Assign Objective</button>
+                <button className="action-button" onClick={handleAssignObjective}>{t('editObjectives.assign')}</button>
               )}
               {selectedExistingObjectives.length === 1 && (
                 <button className="action-button" onClick={handleEditObjective}>
-                  Edit Existing Objective
+                  {t('editObjectives.editObjective')}
                 </button>
               )}
               {selectedExistingObjectives.length === 1 && (
@@ -266,7 +269,7 @@ const AddObjectives = () => {
                   className="action-button"
                   onClick={() => navigate(`/edit-subobjectives/${userObjectives[selectedExistingObjectives[0]].id}`)}
                 >
-                  Edit Subobjectives
+                  {t('editObjectives.editSubobjectives')}
                 </button>
               )}
               {selectedExistingObjectives.length > 0 && (
@@ -274,23 +277,23 @@ const AddObjectives = () => {
                   className="action-button delete-button" 
                   onClick={handleDeleteObjective}
                 >
-                  {selectedExistingObjectives.length === 1 ? 'Delete Objective' : 'Delete Objectives'}
+                  {selectedExistingObjectives.length === 1 ? t('editObjectives.deleteObjective') : t('editObjectives.deleteObjectives')}
                 </button>
               )}
             </div>
             <div className="create-objective-container">
-              <h2>Add a new objective</h2>
-              <button onClick={handleCreateObjective}>Create Objective</button>
+              <h2>{t('editObjectives.addNewObjective')}</h2>
+              <button onClick={handleCreateObjective}>{t('editObjectives.createObjective')}</button>
             </div>
             <div className="select-objectives-container">
-              <h2>Select existing objectives</h2>
+              <h2>{t('editObjectives.selectObjectives')}</h2>
               <button onClick={handleSelectingObjectives}>
-                {isMultiSelectEnabled ? "Disable Multi-Select" : "Enable Multi-Select"}
+                {isMultiSelectEnabled ? t('editObjectives.disableMultiSelect') : t('editObjectives.enableMultiSelect')}
               </button>
               {isEnabledMultiSelectButton && (
                 <div className="multi-select-buttons">
-                  <button onClick={handleSelectAll}>Select All</button>
-                  <button onClick={handleUnselectAll}>Unselect All</button>
+                  <button onClick={handleSelectAll}>{t('editObjectives.selectAll')}</button>
+                  <button onClick={handleUnselectAll}>{t('editObjectives.unselectAll')}</button>
                 </div>
               )}
             </div>

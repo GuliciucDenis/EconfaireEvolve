@@ -122,6 +122,24 @@
       "message2": "This action cannot be undone.",
       "cancel": "Cancel",
       "confirm": "Confirm"
+    },
+    "editObjectives": {
+      "selectedUser": "Selected user:",
+      "loadingInformation": "Loading user information...",
+      "recommendedObjectives": "Recommended Objectives",
+      "existingObjectives": "Existing Objectives",
+      "assign": "Assign Objective",
+      "editObjective": "Edit Existing Objective",
+      "editSubobjectives": "Edit Subobjectives",
+      "deleteObjective": "Delete Objective",
+      "deleteObjectives": "Delete Objectives",
+      "addNewObjective": "Add a new objective",
+      "createObjective": "Create Objective",
+      "selectObjectives": "Select existing objectives",
+      "disableMultiSelect": "Disable Multi-Select",
+      "enableMultiSelect": "Enable Multi-Select",
+      "selectAll": "Select All",
+      "unselectAll": "Unselect All"
     }
   }
   

@@ -122,6 +122,24 @@
       "message2": "Această acțiune nu poate fi anulată.",
       "cancel": "Anulează",
       "confirm": "Confirmă"
+    },
+    "editObjectives": {
+      "selectedUser": "Utilizator selectat:",
+      "loadingInformation": "Se încarcă informațiile utilizatorului...",
+      "recommendedObjectives": "Obiective Recomandate",
+      "existingObjectives": "Obiective Existente",
+      "assign": "Atribuie Obiectiv",
+      "editObjective": "Editează Obiectivul Existent",
+      "editSubobjectives": "Editează Subobiectivele",
+      "deleteObjective": "Șterge Obiectivul",
+      "deleteObjectives": "Șterge Obiectivele",
+      "addNewObjective": "Adaugă un nou obiectiv",
+      "createObjective": "Creează Obiectiv",
+      "selectObjectives": "Selectează obiective existente",
+      "disableMultiSelect": "Dezactivează Selecția Multiplă",
+      "enableMultiSelect": "Activează Selecția Multiplă",
+      "selectAll": "Selectează Toate",
+      "unselectAll": "Deselectează Toate"
     }
   }
   

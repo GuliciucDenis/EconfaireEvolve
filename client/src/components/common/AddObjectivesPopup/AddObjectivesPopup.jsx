@@ -7,7 +7,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
   const [description, setDescription] = useState("");
-
+  
   useEffect(() => {
     if (!isOpen) {
       resetForm();
