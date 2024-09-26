@@ -7,6 +7,8 @@ import DeleteUserPopup from "../common/DeleteUserPopup/DeleteUserPopup";
 import FilterPopup from "../common/FilterPopup/FilterPopup";
 import { getObjectiveById } from "../../services/objectiveService";
 import ConfirmDeletePopup from "../common/ConfirmDeletePopup/ConfirmDeletePopup";
+import { useTranslation } from "react-i18next";
+import i18n from'../../i18n'
 
 const UserTable = () => {
   const [users, setUsers] = useState([]);
@@ -24,6 +26,7 @@ const UserTable = () => {
   const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
 
   const navigate = useNavigate();
+  const {t}=useTranslation();
 
   const fetchUsers = async () => {
     try {
@@ -60,7 +63,7 @@ const UserTable = () => {
 
   useEffect(() => {
     fetchUsers();
-  }, []);
+  },[i18n.language]);
 
   const fetchObjectiveDetails = async (objectiveId) => {
     try {
@@ -73,11 +76,11 @@ const UserTable = () => {
   };
 
   const columns = [
-    { key: "id", label: "Id", minWidth: "280px", maxWidth: "280px" },
-    { key: "firstName", label: "First Name", minWidth: "175px", maxWidth: "200px" },
-    { key: "lastName", label: "Last Name", minWidth: "175px", maxWidth: "200px" },
-    { key: "email", label: "Email", minWidth: "175px", maxWidth: "200px" },
-    { key: "actions", label: "Actions", minWidth: " px", maxWidth: "280px" },
+    { key: "id", label: t('userTable.id'), minWidth: "280px", maxWidth: "280px" },
+    { key: "firstName", label: t('userTable.firstName'), minWidth: "175px", maxWidth: "200px" },
+    { key: "lastName", label: t('userTable.lastName'), minWidth: "175px", maxWidth: "200px" },
+    { key: "email", label: t('userTable.email'), minWidth: "175px", maxWidth: "200px" },
+    { key: "actions", label: t('userTable.actions'), minWidth: " px", maxWidth: "280px" },
   ];
 
   const handleSelectionChange = (keys) => {
@@ -124,7 +127,7 @@ const UserTable = () => {
       // alert("User(s) deleted successfully");
     } catch (error) {
       console.error("Error deleting users:", error);
-      alert("An error occurred while deleting user(s)");
+      alert(t('userTable.alert'));
     }
   };
 
@@ -373,7 +376,7 @@ const UserTable = () => {
             labelPlaceholder="Search name"
             value={searchName}
             onChange={handleSearchNameChange}
-            placeholder="Search name"
+            placeholder={t('userTable.searchName')}
             className="w-[330px]" 
           />
         </div>
@@ -391,7 +394,7 @@ const UserTable = () => {
               setIsAllSelected(!isAllSelected);
             }}
           >
-            {isAllSelected ? "Deselect All Users" : "Select All Users"}
+            {isAllSelected ? t('userTable.deselectAllUsers') : t('userTable.selectAllUsers')}
           </Button>
           <Button 
             auto 
@@ -405,7 +408,7 @@ const UserTable = () => {
               }
             }}
           >
-            {isFiltered ? "Unfilter" : "Filter"}
+            {isFiltered ? t('userTable.unfilter') : t('userTable.filter')}
           </Button>
           <Button
             auto
@@ -415,7 +418,7 @@ const UserTable = () => {
               navigate("/create-user");
             }}
           >
-            Add New User
+            {t('userTable.addNewUser')}
           </Button>
           {selectedUsers.length > 0 ? (
             //Button to delete a selected user
@@ -427,7 +430,7 @@ const UserTable = () => {
                 onClick={handleDeleteClick}
                 onUserDeleted={handleUserDeleted}
               >
-                Delete User
+                {t('userTable.deleteUser')}
               </Button>
             ) : (
               <Button
@@ -437,7 +440,7 @@ const UserTable = () => {
                 onClick={handleDeleteClick}
                 onUserDeleted={handleUserDeleted}
               >
-                Delete Users
+                {t('userTable.deleteUsers')}
               </Button>
             )
           ) : (
@@ -447,7 +450,7 @@ const UserTable = () => {
             color="danger"
             onClick={() => setIsDeletePopupOpen(true)}
             >
-              Delete User By Id
+              {t('userTable.deleteUserById')}
             </Button>
           )}
         </div>
@@ -457,8 +460,8 @@ const UserTable = () => {
         aria-label="User table"
         selectionMode="multiple"
         items={filteredUsersByCriteria} // Folosim utilizatorii filtrați aici
-        loadingContent={<div>Loading users...</div>}
-        emptyContent={<div>No users found</div>}
+        loadingContent={<div>{t('userTable.loadingUsers')}</div>}
+        emptyContent={<div>{t('userTable.noUsersFound')}</div>}
         isLoading={loading}
         selectedKeys={selectedKeys} // Bind the selection state to control the selection visually
         onSelectionChange={(keys) => {
@@ -489,9 +492,9 @@ const UserTable = () => {
         <TableBody
           items={searchName ? filteredUsersByName : filteredUsersByCriteria} // Afișăm utilizatorii filtrați
           loadingContent={
-            <div className="text-center py-4">Loading users...</div>
+            <div className="text-center py-4">{t('userTable.loadingUsers')}</div>
           }
-          emptyContent={<div className="text-center py-4">No users found</div>}
+          emptyContent={<div className="text-center py-4">{t('userTable.noUsersFound')}</div>}
           isLoading={loading}
         >
           {(user) => (
@@ -521,7 +524,7 @@ const UserTable = () => {
                           navigate(`/edit-objectives/${user.id}`);
                         }}
                       >
-                        Edit Objectives
+                        {t('userTable.editObjectives')}
                       </Button>
                       <Button
                         auto
@@ -530,7 +533,7 @@ const UserTable = () => {
                         style={{ color: "white" }}
                         onClick={() => navigate(`/see-objectives/${user.id}`)}
                       >
-                        See Objectives
+                        {t('userTable.seeObjectives')}
                       </Button>
                     </div>
                   ) : (

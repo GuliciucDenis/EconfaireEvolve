@@ -42,6 +42,30 @@
         "confirmNewPassword": "Confirm New Password",
         "cancel": "Cancel",
         "changePassword": "Change Password"
+    },
+    "userDashboard": {
+        "title": "User management"
+    },
+    "userTable": {
+        "id": "Id",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "actions": "Actions",
+        "alert": "An error occurred while deleting user(s)",
+        "searchName": "Search name",
+        "deselectAllUsers": "Deselect All Users",
+        "selectAllUsers": "Select All Users",
+        "unfilter": "Unfilter",
+        "filter": "Filter",
+        "addNewUser": "Add New User",
+        "deleteUser": "Delete User",
+        "deleteUsers": "Delete Users",
+        "deleteUserById": "Delete User By Id",
+        "loadingUsers": "Loading users...",
+        "noUsersFound": "No users found",
+        "editObjectives": "Edit Objectives",
+        "seeObjectives": "See Objectives"
     }
   }
   

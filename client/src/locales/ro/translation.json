@@ -42,6 +42,31 @@
       "confirmNewPassword": "Confirmă Parola Nouă",
       "cancel": "Anulează",
       "changePassword": "Schimbă Parola"
+    },
+    "userDashboard": {
+      "title": "Administrarea utilizatorilor"
+    },
+    "userTable": {
+      "id": "Id",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "email": "Email",
+      "actions": "Acțiuni",
+      "alert": "A apărut o eroare la ștergerea utilizatorului/utilizatorilor",
+      "searchName": "Caută nume",
+      "deselectAllUsers": "Deselectează Toți Utilizatorii",
+      "selectAllUsers": "Selectează Toți Utilizatorii",
+      "unfilter": "Elimină filtrul",
+      "filter": "Filtrează",
+      "addNewUser": "Adaugă Utilizator Nou",
+      "deleteUser": "Șterge Utilizator",
+      "deleteUsers": "Șterge Utilizatori",
+      "deleteUserById": "Șterge Utilizator După Id",
+      "loadingUsers": "Se încarcă utilizatorii...",
+      "noUsersFound": "Nu au fost găsiți utilizatori",
+      "editObjectives": "Editează Obiectivele",
+      "seeObjectives": "Vezi Obiectivele"
     }
+
   }
   
