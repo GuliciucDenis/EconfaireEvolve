@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUser } from "../../services/userService";
 import "./CreateUserForm.css";
+import { useTranslation } from "react-i18next";
 
 const CreateUserForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -14,6 +15,7 @@ const CreateUserForm = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const navigate = useNavigate();
+  const {t}=useTranslation();
 
   const validatePassword = (password) => {
     const regex = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
@@ -24,7 +26,7 @@ const CreateUserForm = () => {
     e.preventDefault();
     if (!validatePassword(password)) {
       setPasswordError(
-        "Password must be at least 6 characters long, include an uppercase letter and a digit"
+        t('crateUser.error')
       );
       return;
     }
@@ -39,7 +41,7 @@ const CreateUserForm = () => {
       console.log(newUser);
       const response = await createUser(newUser);
       console.log("User created:", response);
-      setSuccessMessage("User successfully created!");
+      setSuccessMessage(t('createUser.sucess'));
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
@@ -50,7 +52,7 @@ const CreateUserForm = () => {
         if (error.response && error.response.data && error.response.data.message) {
             setPasswordError(`Failed to create user: ${error.response.data.message}`);
         } else {
-            setPasswordError("Failed to create user. Please try again.");
+            setPasswordError(t('createUser.error2'));
         }
         setSuccessMessage("");
     }  
@@ -80,15 +82,15 @@ const CreateUserForm = () => {
       )}
       {passwordError && <div className="message error">{passwordError}</div>}
       <div className="form-header">
-        <h2 className="title">User Role</h2>
+        <h2 className="title">{t('createUser.userRole')}</h2>
         <div className="role-select">
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
             required
           >
-            <option value="employee">Employee</option>
-            <option value="admin">Administrator</option>
+            <option value="employee">{t('createUser.employee')}</option>
+            <option value="admin">{t('createUser.administrator')}</option>
           </select>
         </div>
       </div>
@@ -100,7 +102,7 @@ const CreateUserForm = () => {
             value={lastName}
             onChange={handleLastNameChange}
             required
-            placeholder="Last Name"
+            placeholder={t('createUser.lastName')}
             maxLength={15}
           />
         </div>
@@ -111,7 +113,7 @@ const CreateUserForm = () => {
             value={firstName}
             onChange={handleFirstNameChange}
             required
-            placeholder="First Name"
+            placeholder={t('createUser.firstName')}
             maxLength={15}
           />
         </div>
@@ -122,7 +124,7 @@ const CreateUserForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            placeholder="Email"
+            placeholder={t('createUser.email')}
           />
         </div>
         <div className="form-row password-row">
@@ -135,24 +137,24 @@ const CreateUserForm = () => {
               setPasswordError("");
             }}
             required
-            placeholder="Password"
+            placeholder={t('createUser.password')}
           />
           <button
             type="button"
             className="toggle-password"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? "Hide" : "Show"}
+            {showPassword ? t('createUser.hide') : t('createUser.show')}
           </button>
         </div>
         <div className="form-row button-row">
           <button type="button" onClick={() => navigate("/user-dashboard")}>
-            Go back
+            {t('createUser.goBack')}
           </button>
           <button type="button" onClick={resetForm}>
-            Clear
+          {t('createUser.clear')}
           </button>
-          <button type="submit">Add</button>
+          <button type="submit">{t('createUser.add')}</button>
         </div>
       </form>
     </div>

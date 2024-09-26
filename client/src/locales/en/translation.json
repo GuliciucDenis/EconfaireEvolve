@@ -89,6 +89,39 @@
         "sortOrder": "Sort Order:",
         "cancel": "Cancel",
         "applyFilter": "Apply Filter"
+    },
+    "createUser": {
+      "error": "Password must be at least 6 characters long, include an uppercase letter and a digit",
+      "success": "User successfully created!",
+      "error2": "Failed to create user. Please try again.",
+      "userRole": "User Role",
+      "employee": "Employee",
+      "administrator": "Administrator",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "show": "Show",
+      "hide": "Hide",
+      "goBack": "Go back",
+      "clear": "Clear",
+      "add": "Add"
+    },
+    "deleteUserPopup": {
+      "error": "Failed to fetch users. Please try again.",
+      "success": "User deleted successfully.",
+      "error2": "Failed to delete user. Please try again.",
+      "title": "Delete User",
+      "searchId": "Search by Id",
+      "delete": "Delete Selected User",
+      "cancel": "Cancel"
+    },
+    "confirmDeletePopup": {
+      "title": "Confirm Delete",
+      "message1": "Are you sure you want to delete the selected user(s)?",
+      "message2": "This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Confirm"
     }
   }
   

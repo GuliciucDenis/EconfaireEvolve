@@ -89,6 +89,39 @@
       "sortOrder": "Ordinea sortării:",
       "cancel": "Anulează",
       "applyFilter": "Aplică Filtrul"
+    },
+    "createUser": {
+      "error": "Parola trebuie să aibă cel puțin 6 caractere, să includă o literă majusculă și o cifră",
+      "success": "Utilizator creat cu succes!",
+      "error2": "Crearea utilizatorului a eșuat. Vă rugăm să încercați din nou.",
+      "userRole": "Rolul Utilizatorului",
+      "employee": "Angajat",
+      "administrator": "Administrator",
+      "firstName": "Prenume",
+      "lastName": "Nume",
+      "email": "Email",
+      "password": "Parolă",
+      "show": "Afișează",
+      "hide": "Ascunde",
+      "goBack": "Înapoi",
+      "clear": "Șterge",
+      "add": "Adaugă"
+    },
+    "deleteUserPopup": {
+      "error": "Nu s-a reușit preluarea utilizatorilor. Vă rugăm să încercați din nou.",
+      "success": "Utilizatorul a fost șters cu succes.",
+      "error2": "Nu s-a reușit ștergerea utilizatorului. Vă rugăm să încercați din nou.",
+      "title": "Șterge Utilizator",
+      "searchId": "Caută după Id",
+      "delete": "Șterge utilizatorul selectat",
+      "cancel": "Anulează"
+    },
+    "confirmDeletePopup": {
+      "title": "Confirmă Ștergerea",
+      "message1": "Ești sigur că vrei să ștergi utilizatorul/utilizatorii selectați?",
+      "message2": "Această acțiune nu poate fi anulată.",
+      "cancel": "Anulează",
+      "confirm": "Confirmă"
     }
   }
   

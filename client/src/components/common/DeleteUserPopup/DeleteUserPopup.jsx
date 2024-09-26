@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getUsers, deleteUser } from "../../../services/userService";
 import "./DeleteUserPopup.css";
+import { useTranslation } from "react-i18next";
 
 const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchId, setSearchId] = useState("");
   const [message, setMessage] = useState(null);
+  const {t}=useTranslation();
 
   useEffect(() => {
     if (isOpen) {
@@ -26,7 +28,7 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
       console.error("Error fetching users:", error);
       setMessage({
         type: "error",
-        text: "Failed to fetch users. Please try again.",
+        text: t('deleteUserPopup.error'),
       });
     }
   };
@@ -38,7 +40,7 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
         setUsers(users.filter((user) => user.id !== selectedUser.id));
         setSelectedUser(null);
         onUserDeleted(selectedUser.id);
-        setMessage({ type: "success", text: "User deleted successfully." });
+        setMessage({ type: "success", text: t('deleteUserPopup.success') });
         setTimeout(() => {
           setMessage(null);
           onClose();
@@ -47,7 +49,7 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
         console.error("Error deleting user:", error);
         setMessage({
           type: "error",
-          text: "Failed to delete user. Please try again.",
+          text: t('deleteUserPopup.error2'),
         });
       }
     }
@@ -62,13 +64,13 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
   return (
     <div className="delete-user-popup">
       <div className="delete-user-popup-content">
-        <h2>Delete User</h2>
+        <h2>{t('deleteUserPopup.title')}</h2>
         {message && (
           <div className={`message ${message.type}`}>{message.text}</div>
         )}
         <input
           type="text"
-          placeholder="Search by ID"
+          placeholder={t('deleteUserPopup.searchId')}
           value={searchId}
           onChange={(e) => setSearchId(e.target.value)}
           className="search-input"
@@ -90,10 +92,10 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
             onClick={handleDeleteUser}
             disabled={!selectedUser}
           >
-            Delete Selected User
+            {t('deleteUserPopup.delete')}
           </button>
           <button className="cancel-button" onClick={onClose}>
-            Cancel
+          {t('deleteUserPopup.cancel')}
           </button>
         </div>
       </div>
