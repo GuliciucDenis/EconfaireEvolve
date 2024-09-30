@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./GradeSubobjectivePopup.css"; // New CSS file for grading popup styles
+import { useTranslation } from "react-i18next";
 
 const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => {
   const [grade, setGrade] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
+  const {t}=useTranslation();
 
   useEffect(() => {
     if (!isOpen) {
@@ -19,7 +21,7 @@ const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => 
   const validateForm = () => {
     const gradeValue = parseInt(grade, 10);
     if (isNaN(gradeValue) || gradeValue < 1 || gradeValue > 10) {
-      setMessage({ type: "error", text: "Please enter a grade between 1 and 10." });
+      setMessage({ type: "error", text: t('gradeSubobjectivePopup.error') });
       return false;
     }
     return true;

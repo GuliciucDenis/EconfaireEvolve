@@ -17,6 +17,8 @@ import EditSubobjectivePopup from "../../components/common/EditSubobjectivePopup
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import { getUserById, getUserIdFromToken } from "../../services/userService";
 import "./EditSubobjectives.css";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/language-selector";
 
 const EditSubobjectives = () => {
   const { id } = useParams(); // Objective ID from URL
@@ -31,6 +33,7 @@ const EditSubobjectives = () => {
   const [subobjectiveToEdit, setSubobjectiveToEdit] = useState(null);
   const [isMultiSelectEnabled, setIsMultiSelectEnabled] = useState(false);
   const [isEnabledMultiSelectButton, setIsEnabledMultiSelectButton] = useState(false);
+  const {t}=useTranslation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -165,17 +168,18 @@ const EditSubobjectives = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Display a loading indicator while data is being fetched
+    return <div>{t('editSubobjectives.loading')}</div>; // Display a loading indicator while data is being fetched
   }
 
   return (
     <div className="edit-subobjectives-container">
       <Background />
       <User />
+      <LanguageSelector />
       <div className="edit-subobjectives-content-wrapper">
         <div className="cardboard-container">
           <Cardboard
-            title="Subobjectives"
+            title={t('editSubobjectives.cardTitle')}
             content={subobjectives.map((sub, index) => (
               <div
                 key={index}
@@ -192,7 +196,7 @@ const EditSubobjectives = () => {
             onClick={() => setIsAddSubobjectivePopupOpen(true)}
             className="action-button add-button"
           >
-            Add subobjective
+            {t('editSubobjectives.addSubobjective')}
           </button>
           {selectedSubobjectives.length > 0 && (
           <>
@@ -201,7 +205,7 @@ const EditSubobjectives = () => {
                 onClick={handleRemoveSubobjective}
                 className="action-button delete-button"
               >
-                Remove subobjectives
+                {t('editSubobjectives.removeSubobjectives')}
               </button>
             ) : (
               <>
@@ -209,13 +213,13 @@ const EditSubobjectives = () => {
                   onClick={handleRemoveSubobjective}
                   className="action-button delete-button"
                 >
-                  Remove subobjective
+                  {t('editSubobjectives.removeSubobjective')}
                 </button>
                 <button
                   onClick={() => setIsGradeSubobjectivePopupOpen(true)}
                   className="action-button grade-button"
                 >
-                  Grade subobjective
+                  {t('editSubobjectives.gradeSubobjective')}
                 </button>
                 <button
                   onClick={() => {
@@ -224,21 +228,21 @@ const EditSubobjectives = () => {
                   }}
                   className="action-button edit-button"
                 >
-                  Edit Existing Subobjective
+                  {t('editSubobjectives.editExistingSubobjective')}
                 </button>
               </>
             )}
           </>
         )}
           <div className="select-subobjectives-container">
-            <h2>Select existing subobjectives</h2>
+            <h2>{t('editSubobjectives.selectExistingSubobjectives')}</h2>
             <button onClick={handleSelectingSubobjectives}>
-              {isMultiSelectEnabled ? "Disable Multi-Select" : "Enable Multi-Select"}
+              {isMultiSelectEnabled ? t('editSubobjectives.disableMultiSelect') : t('editSubobjectives.enableMultiSelect')}
             </button>
             {isEnabledMultiSelectButton && (
               <div className="multi-select-buttons">
-                <button onClick={handleSelectAll}>Select All</button>
-                <button onClick={handleUnselectAll}>Unselect All</button>
+                <button onClick={handleSelectAll}>{t('editSubobjectives.selectAll')}</button>
+                <button onClick={handleUnselectAll}>{t('editSubobjectives.unselectAll')}</button>
               </div>
             )}
           </div>

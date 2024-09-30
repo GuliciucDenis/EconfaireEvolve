@@ -182,6 +182,34 @@
       "objectiveDescription": "Descrierea Obiectivului",
       "cancel": "Anulează",
       "save": "Salvează"
+    },
+    "editSubobjectives": {
+      "loading": "Se încarcă...",
+      "cardTitle": "Subobiective",
+      "addSubobjective": "Adaugă subobiectiv",
+      "removeSubobjectives": "Elimină subobiectivele",
+      "removeSubobjective": "Elimină subobiectivul",
+      "gradeSubobjective": "Notează subobiectivul",
+      "editExistingSubobjective": "Editează Subobiectivul Existent",
+      "selectExistingSubobjectives": "Selectează subobiective existente",
+      "disableMultiSelect": "Dezactivează Selecția Multiplă",
+      "enableMultiSelect": "Activează Selecția Multiplă",
+      "selectAll": "Selectează Toate",
+      "unselectAll": "Deselectează Toate"
+    },
+    "addSubobjectivePopup": {
+      "error1": "Vă rugăm să introduceți un titlu pentru subobiectiv.",
+      "error2": "Titlul trebuie să aibă cel mult 30 de caractere.",
+      "error3": "Vă rugăm să introduceți o descriere pentru subobiectiv.",
+      "error4": "Descrierea trebuie să aibă cel mult 250 de caractere.",
+      "title": "Adaugă Subobiectiv Nou",
+      "subobjectiveTitle": "Titlul Subobiectivului",
+      "subobjectiveDescription": "Descrierea Subobiectivului",
+      "cancel": "Anulează",
+      "add": "Adaugă"
+    },
+    "gradeSubobjectivePopup": {
+      "error": "Vă rugăm să introduceți o notă între 1 și 10."
     }
   }
   

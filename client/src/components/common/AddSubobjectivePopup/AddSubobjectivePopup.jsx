@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AddSubobjectivePopup.css";
+import { useTranslation } from "react-i18next";
 
 const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
   const [description, setDescription] = useState("");
+  const {t}=useTranslation();
 
   useEffect(() => {
     if (!isOpen) {
@@ -20,19 +22,19 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
 
   const validateForm = () => {
     if (!title.trim()) {
-      setMessage({ type: "error", text: "Please enter a subobjective title." });
+      setMessage({ type: "error", text: t('addSubobjectivePopup.error1') });
       return false;
     }
     if (!title.trim() > 30) {
-      setMessage({ type: "error", text: "Title must be 30 characters or less." });
+      setMessage({ type: "error", text: t('addSubobjectivePopup.error2') });
       return false;
     }
     if (!description.trim()) {
-      setMessage({ type: "error", text: "Please enter an objective description." });
+      setMessage({ type: "error", text: t('addSubobjectivePopup.error3') });
       return false;
     }
     if (description.length > 250) {
-      setMessage({ type: "error", text: "Description must be 250 characters or less." });
+      setMessage({ type: "error", text: t('addSubobjectivePopup.error4') });
       return false;
     }
     return true;
@@ -55,7 +57,7 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
   return (
     <div className="add-subobjective-popup-overlay">
       <div className="add-subobjective-popup-container">
-        <h2 className="add-subobjective-popup-title">Add New Subobjective</h2>
+        <h2 className="add-subobjective-popup-title">{t('addSubobjectivePopup.title')}</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
@@ -64,7 +66,7 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Subobjective Title"
+            placeholder={t('addSubobjectivePopup.subobjectiveTitle')}
             maxLength="30"
             required
           />
@@ -72,7 +74,7 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Subobjective Description"
+            placeholder={t('addSubobjectivePopup.subobjectiveDescription')}
             maxLength="250" // Limit to 50 characters
             required
           />
@@ -82,13 +84,13 @@ const AddSubobjectivePopup = ({ isOpen, onClose, onSubmit, objectiveId }) => {
               className="add-subobjective-popup-button cancel"
               onClick={onClose}
             >
-              Cancel
+              {t('addSubobjectivePopup.cancel')}
             </button>
             <button
               type="submit"
               className="add-subobjective-popup-button confirm"
             >
-              Add
+              {t('addSubobjectivePopup.add')}
             </button>
           </div>
         </form>

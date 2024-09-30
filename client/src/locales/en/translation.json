@@ -182,6 +182,34 @@
       "objectiveDescription": "Objective Description",
       "cancel": "Cancel",
       "save": "Save"
+    },
+    "editSubobjectives": {
+      "loading": "Loading...",
+      "cardTitle": "Subobjectives",
+      "addSubobjective": "Add subobjective",
+      "removeSubobjectives": "Remove subobjectives",
+      "removeSubobjective": "Remove subobjective",
+      "gradeSubobjective": "Grade subobjective",
+      "editExistingSubobjective": "Edit Existing Subobjective",
+      "selectExistingSubobjectives": "Select existing subobjectives",
+      "disableMultiSelect": "Disable Multi-Select",
+      "enableMultiSelect": "Enable Multi-Select",
+      "selectAll": "Select All",
+      "unselectAll": "Unselect All"
+    },
+    "addSubobjectivePopup": {
+      "error1": "Please enter a subobjective title.",
+      "error2": "Title must be 30 characters or less.",
+      "error3": "Please enter an objective description.",
+      "error4": "Description must be 250 characters or less.",
+      "title": "Add New Subobjective",
+      "subobjectiveTitle": "Subobjective Title",
+      "subobjectiveDescription": "Subobjective Description",
+      "cancel": "Cancel",
+      "add": "Add"
+    },
+    "gradeSubobjectivePopup": {
+      "error": "Please enter a grade between 1 and 10."
     }
   }
   
