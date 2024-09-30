@@ -155,6 +155,33 @@
       "objectiveDescription": "Objective Description",
       "cancel": "Cancel",
       "create": "Create"
+    },
+    "setDeadlinePopup": {
+      "error1": "Please enter an objective description.",
+      "error2": "Description must be 250 characters or less.",
+      "error3": "Please select a deadline.",
+      "success": "Objective assigned successfully!",
+      "error4": "Failed to assign objective. Please try again.",
+      "error5": "Please select a future date.",
+      "title": "Set a description and a deadline for this objective",
+      "objectiveDescription": "Objective Description",
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "editObjectivesPopup2": {
+      "error1": "Please enter an objective title.",
+      "error2": "Title must be 30 characters or less.",
+      "error3": "Please enter an objective description.",
+      "error4": "Description must be 250 characters or less.",
+      "error5": "Please select a deadline.",
+      "success": "Objective updated successfully!",
+      "error6": "Failed to update objective. Please try again.",
+      "error7": "Please select a future date.",
+      "title": "Edit Objective",
+      "objectiveTitle": "Objective Title",
+      "objectiveDescription": "Objective Description",
+      "cancel": "Cancel",
+      "save": "Save"
     }
   }
   

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import './SetDeadlinePopup.css';
 import { createObjective } from "../../../services/objectiveService";
+import { useTranslation } from "react-i18next";
 
 const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
   const [deadline, setDeadline] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
   const [description, setDescription] = useState("");
+  const {t}=useTranslation();
 
   useEffect(() => {
     if (!isOpen) {
@@ -21,15 +23,15 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
 
   const validateForm = () => {
     if (!description.trim()) {
-      setMessage({ type: "error", text: "Please enter an objective description." });
+      setMessage({ type: "error", text: t('setDeadlinePopup.error1') });
       return false;
     }
     if (description.length > 250) {
-      setMessage({ type: "error", text: "Description must be 250 characters or less." });
+      setMessage({ type: "error", text: t('setDeadlinePopup.error2') });
       return false;
     }
     if (!deadline) {
-      setMessage({ type: "error", text: "Please select a deadline." });
+      setMessage({ type: "error", text: t('setDeadlinePopup.error3') });
       return false;
     }
     return true;
@@ -57,7 +59,7 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
       const response = await createObjective(newObjective);
       onSubmit(response);
 
-      setMessage({ type: "success", text: "Objective assigned successfully!" });
+      setMessage({ type: "success", text: t('setDeadlinePopup.success') });
       setTimeout(() => {
         onClose();
         resetForm();
@@ -66,7 +68,7 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
       console.error("Error assigning objective:", err);
       setMessage({
         type: "error",
-        text: err.message || "Failed to assign objective. Please try again.",
+        text: err.message || t('setDeadlinePopup.error4'),
       });
     }
   };
@@ -77,7 +79,7 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
     today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
 
     if (selectedDate < today) {
-      setMessage({ type: "error", text: "Please select a future date." });
+      setMessage({ type: "error", text: t('setDeadlinePopup.error5') });
       setDeadline("");
     } else {
       setMessage({ type: "", text: "" });
@@ -93,7 +95,7 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
   return (
     <div className="set-deadline-popup-overlay">
       <div className="set-deadline-popup-container">
-        <h2 className="set-deadline-popup-title">Set a description and a deadline for this objective</h2>
+        <h2 className="set-deadline-popup-title">{t('setDeadlinePopup.title')}</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
@@ -102,7 +104,7 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Objective Description"
+            placeholder={t('setDeadlinePopup.objectiveDescription')}
             maxLength="250" // Limit to 50 characters
             required
           />
@@ -119,13 +121,13 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
               className="set-deadline-popup-button cancel"
               onClick={onClose}
             >
-              Cancel
+              {t('setDeadlinePopup.cancel')}
             </button>
             <button
               type="submit"
               className="set-deadline-popup-button confirm"
             >
-              Create
+              {t('setDeadlinePopup.create')}
             </button>
           </div>
         </form>
