@@ -2,6 +2,8 @@
   "dependencies": {
     "@nextui-org/react": "^2.4.6",
     "axios": "^1.7.5",
-    "framer-motion": "^11.3.29"
+    "date-fns": "^4.1.0",
+    "framer-motion": "^11.3.29",
+    "react-datepicker": "^7.4.0"
   }
 }

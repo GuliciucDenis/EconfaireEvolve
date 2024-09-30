@@ -146,7 +146,15 @@
       "error2": "Titlul trebuie să aibă cel mult 30 de caractere.",
       "error3": "Vă rugăm să introduceți o descriere pentru obiectiv.",
       "error4": "Descrierea trebuie să aibă cel mult 250 de caractere.",
-      "error5": "Vă rugăm să selectați un termen limită."
+      "error5": "Vă rugăm să selectați un termen limită.",
+      "success": "Obiectiv creat cu succes!",
+      "error6": "Crearea obiectivului a eșuat. Vă rugăm să încercați din nou.",
+      "error7": "Vă rugăm să selectați o dată viitoare.",
+      "title": "Creează Obiectiv Nou",
+      "objectiveTitle": "Titlul Obiectivului",
+      "objectiveDescription": "Descrierea Obiectivului",
+      "cancel": "Anulează",
+      "create": "Creează"
     }
   }
   

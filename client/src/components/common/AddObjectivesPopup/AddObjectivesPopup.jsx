@@ -69,7 +69,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
       const response = await createObjective(newObjective);
       onSubmit(response);
 
-      setMessage({ type: "success", text: "Objective created successfully!" });
+      setMessage({ type: "success", text: t('editObjectivesPopup.success') });
       setTimeout(() => {
         onClose();
         resetForm();
@@ -78,7 +78,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
       console.error("Error creating objective:", err);
       setMessage({
         type: "error",
-        text: err.message || "Failed to create objective. Please try again.",
+        text: err.message || t('editObjectivesPopup.error6'),
       });
     }
   };
@@ -89,7 +89,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
     today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
 
     if (selectedDate < today) {
-      setMessage({ type: "error", text: "Please select a future date." });
+      setMessage({ type: "error", text: t('editObjectivesPopup.error7') });
       setDeadline("");
     } else {
       setMessage({ type: "", text: "" });
@@ -105,7 +105,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
   return (
     <div className="add-objectives-popup-overlay">
       <div className="add-objectives-popup-container">
-        <h2 className="add-objectives-popup-title">Create New Objective</h2>
+        <h2 className="add-objectives-popup-title">{t('editObjectivesPopup.title')}</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
@@ -114,7 +114,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Objective Title"
+            placeholder={t('editObjectivesPopup.objectiveTitle')}
             maxLength="30"
             required
           />
@@ -122,7 +122,7 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Objective Description"
+            placeholder={t('editObjectivesPopup.objectiveDescription')}
             maxLength="250" // Limit to 50 characters
             required
           />
@@ -139,13 +139,13 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
               className="add-objectives-popup-button cancel"
               onClick={onClose}
             >
-              Cancel
+              {t('editObjectivesPopup.cancel')}
             </button>
             <button
               type="submit"
               className="add-objectives-popup-button confirm"
             >
-              Create
+              {t('editObjectivesPopup.create')}
             </button>
           </div>
         </form>

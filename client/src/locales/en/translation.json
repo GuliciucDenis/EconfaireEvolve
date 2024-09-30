@@ -146,7 +146,15 @@
       "error2": "Title must be 30 characters or less.",
       "error3": "Please enter an objective description.",
       "error4": "Description must be 250 characters or less.",
-      "error5": "Please select a deadline."
+      "error5": "Please select a deadline.",
+      "success": "Objective created successfully!",
+      "error6": "Failed to create objective. Please try again.",
+      "error7": "Please select a future date.",
+      "title": "Create New Objective",
+      "objectiveTitle": "Objective Title",
+      "objectiveDescription": "Objective Description",
+      "cancel": "Cancel",
+      "create": "Create"
     }
   }
   
