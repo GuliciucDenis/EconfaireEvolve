@@ -73,7 +73,7 @@ const AddObjectives = () => {
 
   const objectivesData = [
     {
-      "title": "Perseverance",
+      "title": t('editObjectives.perseverance'),
       "description": "Maintain a consistent effort towards achieving long-term goals despite challenges.",
       "deadline": "2024-08-28",
       "assignedTo": "0",
@@ -82,7 +82,7 @@ const AddObjectives = () => {
       "subObjectives": []
     },
     {
-      "title": "Creativity",
+      "title": t('editObjectives.creativity'),
       "description": "Encourage innovative thinking and the generation of new ideas.",
       "deadline": "2024-08-28",
       "assignedTo": "0",
@@ -91,7 +91,7 @@ const AddObjectives = () => {
       "subObjectives": []
     },
     {
-      "title": "Time Management",
+      "title": t('editObjectives.timeManagement'),
       "description": "Effectively prioritize tasks to make the best use of available time.",
       "deadline": "2024-08-28",
       "assignedTo": "0",
@@ -100,7 +100,7 @@ const AddObjectives = () => {
       "subObjectives": []
     },
     {
-      "title": "Adaptability",
+      "title": t('editObjectives.adaptability'),
       "description": "Demonstrate flexibility and the ability to adjust to new situations and changes.",
       "deadline": "2024-08-28",
       "assignedTo": "0",
@@ -109,7 +109,7 @@ const AddObjectives = () => {
       "subObjectives": []
     },
     {
-      "title": "Continuous Learning",
+      "title": t('editObjectives.continuousLearning'),
       "description": "Engage in ongoing education and skill development to stay current and improve.",
       "deadline": "2024-08-28",
       "assignedTo": "0",

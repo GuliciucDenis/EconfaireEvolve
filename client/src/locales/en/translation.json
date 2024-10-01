@@ -139,7 +139,12 @@
       "disableMultiSelect": "Disable Multi-Select",
       "enableMultiSelect": "Enable Multi-Select",
       "selectAll": "Select All",
-      "unselectAll": "Unselect All"
+      "unselectAll": "Unselect All",
+      "perseverance": "Perseverance",
+      "creativity": "Creativity",
+      "timeManagement": "Time Management",
+      "adaptability": "Adaptability",
+      "continuousLearning": "Continuous Learning"
     },
     "editObjectivesPopup": {
       "error1": "Please enter an objective title.",
@@ -242,6 +247,23 @@
       "currentObjectives": "Current Objectives",
       "currentSubobjectives": "Current Subobjectives",
       "objectiveStatus": "Objective Status"
+    },
+    "objectives": {
+      "adminGrade": "Admin grade",
+      "employeeGrade": "Employee grade",
+      "selectObjectiveToViewStatus": "Select an objective to view status",
+      "description": "Description",
+      "noDescription": "No description available",
+      "deadline": "Deadline",
+      "noDeadline": "No deadline set",
+      "subobjectiveStatus": "Subobjective status",
+      "selectedUser": "Selected user",
+      "loadingUserInformation": "Loading user information...",
+      "currentObjectives": "Current Objectives",
+      "currentSubobjectives": "Current Subobjectives",
+      "objectiveStatus": "Objective Status",
+      "title": "My objectives",
+      "gradeSubobjective": "Grade Subobjective"
     }
   }
   

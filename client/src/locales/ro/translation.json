@@ -139,7 +139,12 @@
       "disableMultiSelect": "Dezactivează Selecția Multiplă",
       "enableMultiSelect": "Activează Selecția Multiplă",
       "selectAll": "Selectează Toate",
-      "unselectAll": "Deselectează Toate"
+      "unselectAll": "Deselectează Toate",
+      "perseverance": "Perseverență",
+      "creativity": "Creativitate",
+      "timeManagement": "Gestionarea Timpului",
+      "adaptability": "Adaptabilitate",
+      "continuousLearning": "Învățare Continuă"
     },
     "editObjectivesPopup": {
       "error1": "Vă rugăm să introduceți un titlu pentru obiectiv.",
@@ -242,6 +247,23 @@
       "currentObjectives": "Obiective Curente",
       "currentSubobjectives": "Subobiective Curente",
       "objectiveStatus": "Starea Obiectivului"
+    },
+    "objectives": {
+      "adminGrade": "Notă Admin",
+      "employeeGrade": "Notă Angajat",
+      "selectObjectiveToViewStatus": "Selectează un obiectiv pentru a vizualiza starea",
+      "description": "Descriere",
+      "noDescription": "Nu există o descriere disponibilă",
+      "deadline": "Termen limită",
+      "noDeadline": "Nu a fost setat un termen limită",
+      "subobjectiveStatus": "Starea Subobiectivului",
+      "selectedUser": "Utilizator selectat",
+      "loadingUserInformation": "Se încarcă informațiile utilizatorului...",
+      "currentObjectives": "Obiective Curente",
+      "currentSubobjectives": "Subobiective Curente",
+      "objectiveStatus": "Starea Obiectivului",
+      "title": "Obiectivele mele",
+      "gradeSubobjective": "Notează Subobiectivul"
     }
   }
   

@@ -9,6 +9,8 @@ import { getObjectiveById, updateObjectiveStatus, updateObjective } from "../../
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/language-selector";
 
 const Objectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
@@ -20,6 +22,7 @@ const Objectives = () => {
   const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
+  const {t}=useTranslation();
 
   // Fetch user data and objectives
   useEffect(() => {
@@ -159,38 +162,38 @@ const Objectives = () => {
 
   // Render the status content of objectives
   const getStatusContent = () => {
-    if (selectedObjective === null) return "Select an objective to view status";
+    if (selectedObjective === null) return t('objectives.selectObjectiveToViewStatus');
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
 
     const renderObjectiveGrades = () => {
       const adminGrade = calculateAverageGrade('gradeAdmin');
-      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+      const content = [<p key="admin">{t('objectives.adminGrade')}: {formatGrade(adminGrade)}</p>];
       if (userRole === 'employee') {
         const employeeGrade = calculateAverageGrade('gradeEmployee');
-        content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+        content.push(<p key="employee">{t('objectives.employeeGrade')}: {formatGrade(employeeGrade)}</p>);
       }
       return content;
     };
 
     const renderSubobjectiveGrades = () => {
       if (!subobjective) return null;
-      const content = [<p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>];
+      const content = [<p key="admin">{t('objectives.adminGrade')}: {formatGrade(subobjective.gradeAdmin)}</p>];
       if (userRole === 'employee') {
-        content.push(<p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>);
+        content.push(<p key="employee">{t('objectives.employeeGrade')}: {formatGrade(subobjective.gradeEmployee)}</p>);
       }
       return content;
     };
 
     return (
       <div className="objective-status">
-        <p className="objective-status-container">Description: {objective.description}</p>
-        <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        <p className="objective-status-container">{t('objectives.description')}: {objective.description}</p>
+        <p>{t('objectives.deadline')}: {new Date(objective.deadline).toLocaleDateString()}</p>
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && (
           <>
-            <h2 className="subobjective-status-title">Subobjective status</h2>
-            <p className="subobjective-description-container">Description: {subobjective.description}</p>
+            <h2 className="subobjective-status-title">{t('objectives.subobjectiveStatus')}</h2>
+            <p className="subobjective-description-container">{t('objectives.description')}: {subobjective.description}</p>
             {renderSubobjectiveGrades()}
           </>
         )}
@@ -203,22 +206,23 @@ const Objectives = () => {
     <div className="objectives-container">
       <Background />
       <User />
+      <LanguageSelector />
       <div className="content-wrapper">
         <div className="objectives-title-container">
-          <h1 className="objectives-title">My objectives</h1>
+          <h1 className="objectives-title">{t('objectives.title')}</h1>
         </div>
         <div className="user-info">
           {currentUser ? (
             <>
-              Selected user: {currentUser.firstName} {currentUser.lastName}
+              {t('objectives.selectedUser')}: {currentUser.firstName} {currentUser.lastName}
             </>
           ) : (
-            <>Loading user information...</>
+            <>{t('objectives.loadingUserInformation')}</>
           )}
         </div>
         <div className="cardboard-container">
           <Cardboard
-            title="Current Objectives"
+            title={t('objectives.currentObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
                 key={index}
@@ -232,7 +236,7 @@ const Objectives = () => {
             ))}
           />
           <Cardboard
-            title="Current SubObjectives"
+            title={t('objectives.currentSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
                 key={index}
@@ -245,7 +249,7 @@ const Objectives = () => {
               </div>
             ))}
           />
-          <Cardboard title="Objective Status" content={getStatusContent()} />
+          <Cardboard title={t('objectives.objectiveStatus')} content={getStatusContent()} />
         </div>
         <div className="action-buttons-container">
           <button 
@@ -253,7 +257,7 @@ const Objectives = () => {
             className="grade-button"
             disabled={selectedSubobjective === null}
           >
-            Grade Subobjective
+            {t('objectives.gradeSubobjective')}
           </button>
         </div>
       </div>
