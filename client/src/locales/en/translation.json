@@ -264,6 +264,12 @@
       "objectiveStatus": "Objective Status",
       "title": "My objectives",
       "gradeSubobjective": "Grade Subobjective"
+    },
+    "logoutPopup": {
+      "title": "Confirm Logout",
+      "areYouSure": "Are you sure you want to log out?",
+      "cancel": "Cancel",
+      "logout": "Logout"
     }
   }
   

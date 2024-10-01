@@ -264,6 +264,12 @@
       "objectiveStatus": "Starea Obiectivului",
       "title": "Obiectivele mele",
       "gradeSubobjective": "Notează Subobiectivul"
+    },
+    "logoutPopup": {
+      "title": "Confirmă Deconectarea",
+      "areYouSure": "Ești sigur că vrei să te deconectezi?",
+      "cancel": "Anulează",
+      "logout": "Deconectează-te"
     }
   }
   
