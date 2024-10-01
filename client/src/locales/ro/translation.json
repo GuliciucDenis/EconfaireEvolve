@@ -227,6 +227,21 @@
       "subobjectiveDescription": "Descrierea Subobiectivului",
       "cancel": "Anulează",
       "save": "Salvează"
+    },
+    "seeObjectives": {
+      "adminGrade": "Notă Admin",
+      "employeeGrade": "Notă Angajat",
+      "selectObjectiveToViewStatus": "Selectează un obiectiv pentru a vizualiza starea",
+      "description": "Descriere",
+      "noDescription": "Nu există o descriere disponibilă",
+      "deadline": "Termen limită",
+      "noDeadline": "Nu a fost setat un termen limită",
+      "subobjectiveStatus": "Starea Subobiectivului",
+      "selectedUser": "Utilizator selectat",
+      "loadingUserInformation": "Se încarcă informațiile utilizatorului...",
+      "currentObjectives": "Obiective Curente",
+      "currentSubobjectives": "Subobiective Curente",
+      "objectiveStatus": "Starea Obiectivului"
     }
   }
   

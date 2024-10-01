@@ -9,6 +9,8 @@ import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./SeeObjectives.css";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/language-selector";
 
 const SeeObjectives = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
@@ -20,6 +22,7 @@ const SeeObjectives = () => {
   const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
+  const {t}=useTranslation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -115,33 +118,33 @@ const SeeObjectives = () => {
 
   const renderObjectiveGrades = () => {
     const adminGrade = calculateAverageGrade('gradeAdmin');
-    const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+    const content = [<p key="admin">{t('seeObjectives.adminGrade')}: {formatGrade(adminGrade)}</p>];
     if (userRole === 'employee') {
       const employeeGrade = calculateAverageGrade('gradeEmployee');
-      content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+      content.push(<p key="employee">{t('seeObjectives.employeeGrade')}: {formatGrade(employeeGrade)}</p>);
     }
     return content;
   };
 
   const getStatusContent = () => {
     if (selectedObjective === null || !userObjectives[selectedObjective]) {
-      return "Select an objective to view status";
+      return t('seeObjectives.selectObjectiveToViewStatus');
     }
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
 
     return (
       <div className="objective-status">
-        <p className="objective-status-container">Description: {objective.description || 'No description available'}</p>
-        <p>Deadline: {objective.deadline ? new Date(objective.deadline).toLocaleDateString() : 'No deadline set'}</p>
+        <p className="objective-status-container">{t('seeObjectives.description')}: {objective.description || t('seeObjectives.noDescription')}</p>
+        <p>{t('seeObjectives.deadline')}: {objective.deadline ? new Date(objective.deadline).toLocaleDateString() : t('seeObjectives.noDeadline')}</p>
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && subobjective && (
           <>
-            <h2 className="subobjective-status-title">Subobjective status</h2>
-            <p className="subobjective-description-container">Description: {subobjective.description || 'No description available'}</p>
-            <p>Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>
+            <h2 className="subobjective-status-title">{t('seeObjectives.subobjectiveStatus')}</h2>
+            <p className="subobjective-description-container">{t('seeObjectives.description')}: {subobjective.description || t('seeObjectives.noDescription')}</p>
+            <p>{t('seeObjectives.adminGrade')}: {formatGrade(subobjective.gradeAdmin)}</p>
             {userRole === 'employee' && (
-              <p>Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>
+              <p>{t('seeObjectives.employeeGrade')}: {formatGrade(subobjective.gradeEmployee)}</p>
             )}
           </>
         )}
@@ -153,17 +156,18 @@ const SeeObjectives = () => {
     <div className="objectives-container">
       <Background />
       <User />
+      <LanguageSelector />
       <div className="content-wrapper">
         <div className="user-info-seeobjectives">
           {currentUser ? (
-            <>Selected user: {currentUser.firstName} {currentUser.lastName}</>
+            <>{t('seeObjectives.selectedUser')}: {currentUser.firstName} {currentUser.lastName}</>
           ) : (
-            <>Loading user information...</>
+            <>{t('seeObjectives.loadingUserInformation')}</>
           )}
         </div>
         <div className="cardboard-container">
           <Cardboard
-            title="Current Objectives"
+            title={t('seeObjectives.currentObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
                 key={index}
@@ -177,7 +181,7 @@ const SeeObjectives = () => {
             ))}
           />
           <Cardboard
-            title="Current SubObjectives"
+            title={t('seeObjectives.currentSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
                 key={index}
@@ -190,7 +194,7 @@ const SeeObjectives = () => {
               </div>
             ))}
           />
-          <Cardboard title="Objective Status" content={getStatusContent()} />
+          <Cardboard title={t('seeObjectives.objectiveStatus')} content={getStatusContent()} />
         </div>
       </div>
       <Navbar />
