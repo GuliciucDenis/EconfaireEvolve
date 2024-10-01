@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./GradeSubobjectivePopup.css"; // New CSS file for grading popup styles
 import { useTranslation } from "react-i18next";
+import i18n from "../../../i18n";
 
 const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => {
   const [grade, setGrade] = useState("");
@@ -44,7 +45,7 @@ const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => 
   return (
     <div className="grade-subobjective-popup-overlay">
       <div className="grade-subobjective-popup-container">
-        <h2 className="grade-subobjective-popup-title">Grade Subobjective: {subobjective}</h2>
+        <h2 className="grade-subobjective-popup-title">{t('gradeSubobjectivePopup.title')}: {subobjective}</h2>
         <form onSubmit={handleSubmit}>
           {message.text && (
             <div className={`message ${message.type}`}>{message.text}</div>
@@ -53,10 +54,12 @@ const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => 
             type="number"
             value={grade}
             onChange={(e) => setGrade(e.target.value)}
-            placeholder="Enter grade (1-10)"
+            placeholder={t('gradeSubobjectivePopup.placeholder')}
             min="1"
             max="10"
             required
+            onInvalid={(e) => e.target.setCustomValidity((i18n.language==="ro") ? 'Introduceți un număr între 1 și 10': 'Enter a number between 1 and 10')}
+            onInput={(e) => e.target.setCustomValidity('')}
           />
           <div className="grade-subobjective-popup-buttons">
             <button
@@ -64,13 +67,13 @@ const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => 
               className="grade-subobjective-popup-button cancel"
               onClick={onClose}
             >
-              Cancel
+              {t('gradeSubobjectivePopup.cancel')}
             </button>
             <button
               type="submit"
               className="grade-subobjective-popup-button confirm"
             >
-              Submit
+              {t('gradeSubobjectivePopup.submit')}
             </button>
           </div>
         </form>

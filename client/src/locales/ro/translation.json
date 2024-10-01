@@ -209,7 +209,24 @@
       "add": "Adaugă"
     },
     "gradeSubobjectivePopup": {
-      "error": "Vă rugăm să introduceți o notă între 1 și 10."
+      "error": "Vă rugăm să introduceți o notă între 1 și 10.",
+      "title": "Notează Subobiectivul",
+      "placeholder": "Introduceți nota (1-10)",
+      "cancel": "Anulează",
+      "submit": "Trimite"
+    },
+    "editSubobjectivePopup": {
+      "error1": "Vă rugăm să introduceți un titlu pentru subobiectiv.",
+      "error2": "Titlul trebuie să aibă cel mult 30 de caractere.",
+      "error3": "Vă rugăm să introduceți o descriere pentru subobiectiv.",
+      "error4": "Descrierea trebuie să aibă cel mult 250 de caractere.",
+      "success": "Subobiectiv actualizat cu succes!",
+      "error5": "Actualizarea subobiectivului a eșuat. Vă rugăm să încercați din nou.",
+      "title": "Editează Subobiectivul",
+      "subobjectiveTitle": "Titlul Subobiectivului",
+      "subobjectiveDescription": "Descrierea Subobiectivului",
+      "cancel": "Anulează",
+      "save": "Salvează"
     }
   }
   

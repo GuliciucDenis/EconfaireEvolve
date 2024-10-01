@@ -209,7 +209,24 @@
       "add": "Add"
     },
     "gradeSubobjectivePopup": {
-      "error": "Please enter a grade between 1 and 10."
+      "error": "Please enter a grade between 1 and 10.",
+      "title": "Grade Subobjective",
+      "placeholder": "Enter grade (1-10)",
+      "cancel": "Cancel",
+      "submit": "Submit"
+    },
+    "editSubobjectivePopup": {
+      "error1": "Please enter a subobjective title.",
+      "error2": "Title must be 30 characters or less.",
+      "error3": "Please enter a subobjective description.",
+      "error4": "Description must be 250 characters or less.",
+      "success": "Subobjective updated successfully!",
+      "error5": "Failed to update subobjective. Please try again.",
+      "title": "Edit Subobjective",
+      "subobjectiveTitle": "Subobjective Title",
+      "subobjectiveDescription": "Subobjective Description",
+      "cancel": "Cancel",
+      "save": "Save"
     }
   }
   
