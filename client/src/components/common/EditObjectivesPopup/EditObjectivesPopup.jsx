@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./EditObjectivesPopup.css";
 import { updateObjective } from "../../../services/objectiveService";
 import { useTranslation } from "react-i18next";
+import CustomCalendar from "../../CustomCalendar/CustomCalendar";
+import i18n from "../../../i18n";
 
 const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
   const [title, setTitle] = useState("");
@@ -129,12 +131,17 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
             maxLength="250" // Limit to 50 characters
             required
           />
-          <input
-            type="date"
-            value={deadline}
-            onChange={handleDeadlineChange}
+          <CustomCalendar
+            selectedDate={deadline}
+            onChange={(date) => {
+              setDeadline(date);
+              handleDeadlineChange({ target: { value: date } });
+            }}
             min={today}
             required
+            className="custom-datepicker"
+            locale={(i18n.language === "ro")?("ro"):("en")}
+            placeholderText={(i18n.language === "ro")?("Selectează o dată"):("Select a date")}
           />
           <div className="add-objectives-popup-buttons">
             <button

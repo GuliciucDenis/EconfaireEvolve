@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import './SetDeadlinePopup.css';
 import { createObjective } from "../../../services/objectiveService";
 import { useTranslation } from "react-i18next";
+import CustomCalendar from "../../CustomCalendar/CustomCalendar";
+import i18n from "../../../i18n";
 
 const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
   const [deadline, setDeadline] = useState("");
@@ -108,12 +110,17 @@ const SetDeadlinePopup = ({ isOpen, onClose, onSubmit, title, userId }) => {
             maxLength="250" // Limit to 50 characters
             required
           />
-          <input
-            type="date"
-            value={deadline}
-            onChange={handleDeadlineChange}
+          <CustomCalendar
+            selectedDate={deadline}
+            onChange={(date) => {
+              setDeadline(date);
+              handleDeadlineChange({ target: { value: date } });
+            }}
             min={today}
             required
+            className="custom-datepicker"
+            locale={(i18n.language === "ro")?("ro"):("en")}
+            placeholderText={(i18n.language === "ro")?("Selectează o dată"):("Select a date")}
           />
           <div className="set-deadline-popup-buttons">
             <button
