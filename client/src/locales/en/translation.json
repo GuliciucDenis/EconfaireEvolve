@@ -286,6 +286,23 @@
       "pastSubobjectives": "Past Subobjectives",
       "objectiveStatus": "Objective Status",
       "title": "History"
+    },
+    "faqs": {
+      "question1": "What is Econfaire eVolve™?",
+      "answer1": "Econfaire eVolve™ is an application that helps employees develop their skills.",
+      "question2": "How do I create an account?",
+      "answer2": "To create an account, contact an Admin.",
+      "question3": "Is Econfaire eVolve™ free?",
+      "answer3": "Yes! Econfaire eVolve™ offers both basic and advanced features for free.",
+      "question4": "Is there a mobile app available?",
+      "answer4": "Not at the moment, but Econfaire eVolve™ promises mobile apps for iOS and Android, allowing you to manage your goals on the go.",
+      "question5": "How can I contact technical support?",
+      "answer5": "You can contact one of the Admins. However, we encourage you to check the FAQs page before contacting an Admin. Time is precious! :)",
+      "question6": "Who created Econfaire eVolve™?",
+      "answer6": "Econfaire eVolve™ was created by Bold Iustina, Burca Flavian, Brebenel Leonard-Cristian, Guliciuc Denis, Hertanu Razvan and Postolache Stefan-Darius."
+    },
+    "searchbar": {
+      "searchFAQs": "Search FAQs..."
     }
   }
   

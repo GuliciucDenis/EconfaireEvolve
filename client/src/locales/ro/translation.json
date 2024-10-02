@@ -286,6 +286,23 @@
       "pastSubobjectives": "Subobiective Anterioare",
       "objectiveStatus": "Starea Obiectivului",
       "title": "Istoric"
+    },
+    "faqs": {
+      "question1": "Ce este Econfaire eVolve™?",
+      "answer1": "Econfaire eVolve™ este o aplicație care ajută angajații să-și dezvolte abilitățile.",
+      "question2": "Cum îmi creez un cont?",
+      "answer2": "Pentru a crea un cont, contactează un administrator.",
+      "question3": "Econfaire eVolve™ este gratuit?",
+      "answer3": "Da! Econfaire eVolve™ oferă atât funcții de bază, cât și avansate, gratuit.",
+      "question4": "Există o aplicație mobilă disponibilă?",
+      "answer4": "Nu momentan, dar Econfaire eVolve™ promite aplicații mobile pentru iOS și Android, permițându-vă să vă gestionați obiectivele din mers.",
+      "question5": "Cum pot contacta suportul tehnic?",
+      "answer5": "Poți contacta unul dintre administratori. Totuși, te încurajăm să verifici pagina de întrebări frecvente (FAQ) înainte de a contacta un administrator. Timpul este prețios! :)",
+      "question6": "Cine a creat Econfaire eVolve™?",
+      "answer6": "Econfaire eVolve™ a fost creat de Bold Iustina, Burca Flavian, Brebenel Leonard-Cristian, Guliciuc Denis, Hertanu Razvan și Postolache Stefan-Darius."
+    },
+    "searchbar": {
+      "searchFAQs": "Caută întrebări frecvente..."
     }
   }
   

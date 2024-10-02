@@ -5,9 +5,12 @@ import Background from '../../components/background/Background';
 import FAQCard from '../../components/common/faqcard/faqcard';
 import User from '../../components/common/user/User';
 import './FAQs.css';
+import LanguageSelector from '../../components/language-selector';
+import { useTranslation } from 'react-i18next';
 
 function FAQs() {
     const [searchTerm, setSearchTerm] = useState('');
+    const {t}=useTranslation();
 
     const handleSearch = (term) => {
         setSearchTerm(term.toLowerCase());
@@ -15,28 +18,28 @@ function FAQs() {
 
     const faqList = [
         {
-            question: "What is Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ is an application that helps employees develop their skills."
+            question: t('faqs.question1'),
+            answer: t('faqs.answer1')
         },
         {
-            question: "How do I create an account?",
-            answer: "To create an account, contact an Admin."
+            question: t('faqs.question2'),
+            answer: t('faqs.answer2')
         },
         {
-            question: "Is Econfaire eVolve™ free?",
-            answer: "Yes! Econfaire eVolve™ offers both basic and advanced features for free."
+            question: t('faqs.question3'),
+            answer: t('faqs.answer3')
         },
         {
-            question: "Is there a mobile app available?",
-            answer: "Not at the moment, but Econfaire eVolve™ promises mobile apps for iOS and Android, allowing you to manage your goals on the go."
+            question: t('faqs.question4'),
+            answer: t('faqs.answer4')
         },
         {
-            question: "How can I contact technical support?",
-            answer: "You can contact one of the Admins. However, we encourage you to check the FAQs page before contacting an Admin. Time is precious! :)"
+            question: t('faqs.question5'),
+            answer: t('faqs.answer5')
         },
         {
-            question: "Who created Econfaire eVolve™?",
-            answer: "Econfaire eVolve™ was created by Bold Iustina, Burca Flavian, Brebenel Leonard-Cristian, Guliciuc Denis, Hertanu Razvan and Postolache Stefan-Darius."
+            question: t('faqs.question6'),
+            answer: t('faqs.answer6')
         },
     ];
 
@@ -52,6 +55,7 @@ function FAQs() {
         <div className="faqs-page">
             <Background />
             <User />
+            <LanguageSelector />
             <div className="content">
                 <Navbar />
                 <div className="faqs-container">
