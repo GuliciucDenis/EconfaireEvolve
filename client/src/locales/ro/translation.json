@@ -270,6 +270,22 @@
       "areYouSure": "Ești sigur că vrei să te deconectezi?",
       "cancel": "Anulează",
       "logout": "Deconectează-te"
+    },
+    "history": {
+      "adminGrade": "Notă Admin",
+      "employeeGrade": "Notă Angajat",
+      "selectObjectiveToViewStatus": "Selectează un obiectiv pentru a vizualiza starea",
+      "description": "Descriere",
+      "noDescription": "Nu există o descriere disponibilă",
+      "deadline": "Termen limită",
+      "noDeadline": "Nu a fost setat un termen limită",
+      "subobjectiveStatus": "Starea Subobiectivului",
+      "selectedUser": "Utilizator selectat",
+      "loadingUserInformation": "Se încarcă informațiile utilizatorului...",
+      "pastObjectives": "Obiective Anterioare",
+      "pastSubobjectives": "Subobiective Anterioare",
+      "objectiveStatus": "Starea Obiectivului",
+      "title": "Istoric"
     }
   }
   

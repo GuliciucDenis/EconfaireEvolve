@@ -270,6 +270,22 @@
       "areYouSure": "Are you sure you want to log out?",
       "cancel": "Cancel",
       "logout": "Logout"
+    },
+    "history": {
+      "adminGrade": "Admin grade",
+      "employeeGrade": "Employee grade",
+      "selectObjectiveToViewStatus": "Select an objective to view status",
+      "description": "Description",
+      "noDescription": "No description available",
+      "deadline": "Deadline",
+      "noDeadline": "No deadline set",
+      "subobjectiveStatus": "Subobjective status",
+      "selectedUser": "Selected user",
+      "loadingUserInformation": "Loading user information...",
+      "pastObjectives": "Past Objectives",
+      "pastSubobjectives": "Past Subobjectives",
+      "objectiveStatus": "Objective Status",
+      "title": "History"
     }
   }
   

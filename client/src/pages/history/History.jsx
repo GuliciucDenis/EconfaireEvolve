@@ -9,6 +9,8 @@ import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
 import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./History.css";
+import { useTranslation } from "react-i18next";
+import LanguageSelector from "../../components/language-selector";
 
 const History = () => {
   const [selectedObjective, setSelectedObjective] = useState(null);
@@ -20,6 +22,7 @@ const History = () => {
   const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
+  const {t}=useTranslation();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -98,38 +101,38 @@ const History = () => {
   };
 
   const getStatusContent = () => {
-    if (selectedObjective === null) return "Select an objective to view status";
+    if (selectedObjective === null) return t('history.selectObjectiveToViewStatus');
     const objective = userObjectives[selectedObjective];
     const subobjective = subobjectives[selectedSubobjective];
 
     const renderObjectiveGrades = () => {
       const adminGrade = calculateAverageGrade('gradeAdmin');
-      const content = [<p key="admin">Admin grade: {formatGrade(adminGrade)}</p>];
+      const content = [<p key="admin">{t('history.adminGrade')}: {formatGrade(adminGrade)}</p>];
       if (userRole !== 'admin') {
         const employeeGrade = calculateAverageGrade('gradeEmployee');
-        content.push(<p key="employee">Employee grade: {formatGrade(employeeGrade)}</p>);
+        content.push(<p key="employee">{t('history.employeeGrade')}: {formatGrade(employeeGrade)}</p>);
       }
       return content;
     };
 
     const renderSubobjectiveGrades = () => {
       if (!subobjective) return null;
-      const content = [<p key="admin">Admin grade: {formatGrade(subobjective.gradeAdmin)}</p>];
+      const content = [<p key="admin">{t('history.adminGrade')}: {formatGrade(subobjective.gradeAdmin)}</p>];
       if (userRole !== 'admin') {
-        content.push(<p key="employee">Employee grade: {formatGrade(subobjective.gradeEmployee)}</p>);
+        content.push(<p key="employee">{t('history.employeeGrade')}: {formatGrade(subobjective.gradeEmployee)}</p>);
       }
       return content;
     };
 
     return (
       <div className="objective-status-container">
-        <p>Description: {objective.description}</p>
-        <p>Deadline: {new Date(objective.deadline).toLocaleDateString()}</p>
+        <p>{t('history.description')}: {objective.description}</p>
+        <p>{t('history.deadline')}: {new Date(objective.deadline).toLocaleDateString()}</p>
         {renderObjectiveGrades()}
         {selectedSubobjective !== null && (
           <>
-            <h2 className="subobjective-status-title">Subobjective status</h2>
-            <p>Description: {subobjective.description}</p>
+            <h2 className="subobjective-status-title">{t('history.subobjectiveStatus')}</h2>
+            <p>{t('history.description')}: {subobjective.description}</p>
             {renderSubobjectiveGrades()}
           </>
         )}
@@ -141,22 +144,23 @@ const History = () => {
     <div className="objectives-container">
       <Background />
       <User />
+      <LanguageSelector />
       <div className="content-wrapper">
         <div className="objectives-title-container">
-          <h1 className="objectives-title">History</h1>
+          <h1 className="objectives-title">{t('history.title')}</h1>
         </div>
         <div className="user-info">
           {currentUser ? (
             <>
-              Selected user: {currentUser.firstName} {currentUser.lastName}
+              {t('history.selectedUser')}: {currentUser.firstName} {currentUser.lastName}
             </>
           ) : (
-            <>Loading user information...</>
+            <>{t('history.loadingUserInformation')}</>
           )}
         </div>
         <div className="cardboard-container">
           <Cardboard
-            title="Past Objectives"
+            title={t('history.pastObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
                 key={index}
@@ -170,7 +174,7 @@ const History = () => {
             ))}
           />
           <Cardboard
-            title="Past SubObjectives"
+            title={t('history.pastSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
                 key={index}
@@ -183,7 +187,7 @@ const History = () => {
               </div>
             ))}
           />
-          <Cardboard title="Objective Status" content={getStatusContent()} />
+          <Cardboard title={t('history.objectiveStatus')} content={getStatusContent()} />
         </div>
       </div>
       <Navbar />
