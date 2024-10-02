@@ -41,7 +41,8 @@
         "show": "Show",
         "confirmNewPassword": "Confirm New Password",
         "cancel": "Cancel",
-        "changePassword": "Change Password"
+        "changePassword": "Change Password",
+        "error-textOldPasswordInvalid": "The old password you entered is incorrect."
     },
     "userDashboard": {
         "title": "User management"

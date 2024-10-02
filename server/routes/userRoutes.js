@@ -285,5 +285,6 @@ router.get('', authenticate, adminOnly, userController.getAllUsers);
 router.get('/:id', authenticate, verifyProfileAccess, userController.getUserById);
 router.put('/:id', authenticate, verifyProfileAccess, verifyUpdateAccess, userController.updateUserById);
 router.delete('/:id', authenticate, adminOnly, userController.deleteUserById);
+router.post('/validate-password', authenticate, userController.validateOldPassword);
 
 module.exports = router;

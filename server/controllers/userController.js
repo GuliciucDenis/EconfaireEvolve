@@ -1,4 +1,5 @@
 const userService = require('../services/userService');
+const bcrypt = require('bcrypt');
 
 const getAllUsers = async (req, res) => {
     try {
@@ -37,5 +38,25 @@ const updateUserById = async (req, res) => {
     }
 };
 
+const validateOldPassword = async (req, res) => {
+    try {
+        const { oldPassword } = req.body;
+        const user = await userService.getUserById(req.user.id);
 
-module.exports = {getAllUsers, getUserById, deleteUserById, updateUserById};
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ isValid: false, message: 'Incorrect old password' });
+        }
+
+        res.status(200).json({ isValid: true });
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
+module.exports = {getAllUsers, getUserById, deleteUserById, updateUserById, validateOldPassword};

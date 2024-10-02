@@ -41,7 +41,8 @@
       "show": "Afișează",
       "confirmNewPassword": "Confirmă Parola Nouă",
       "cancel": "Anulează",
-      "changePassword": "Schimbă Parola"
+      "changePassword": "Schimbă Parola",
+      "error-textOldPasswordInvalid": "Parola veche introdusă este incorectă."
     },
     "userDashboard": {
       "title": "Administrarea utilizatorilor"

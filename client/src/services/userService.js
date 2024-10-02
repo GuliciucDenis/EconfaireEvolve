@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getJwt } from "./jwtService";
 import { jwtDecode } from "jwt-decode";
+import i18n from "../i18n";
 
 export const getUsers = async () => {
   const token = getJwt();
@@ -159,6 +160,31 @@ export const getUserObjectives = async (userId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching user objectives:", error);
+    throw error;
+  }
+};
+
+export const validateOldPassword = async (oldPassword) => {
+  const token = getJwt();
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/users/validate-password`,
+      { oldPassword },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data.isValid;
+  } catch (error) {
+    console.error('Error validating old password:', error.response?.data?.message || error.message);
+
+    // În cazul în care serverul returnează un mesaj de eroare personalizat
+    if (error.response && error.response.status === 400) {
+      return false; // Întoarce false dacă parola veche nu este validă
+    }
+
     throw error;
   }
 };

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./ChangePasswordPopup.css";
-import { updateUser } from "../../../services/userService";
+import { updateUser, validateOldPassword } from "../../../services/userService";
 import LanguageSelector from "../../language-selector";
 import { useTranslation } from "react-i18next";
+import i18n from "../../../i18n";
 
 const ChangePasswordPopup = ({ isOpen, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
@@ -40,20 +41,35 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
     e.preventDefault();
     setMessage({ type: "", text: "" });
 
-    if (!validatePassword(newPassword)) {
-      setMessage({
-        type: "error",
-        text: t('changePasswordPopup.error-text1'),
-      });
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setMessage({ type: "error", text: t('changePasswordPopup.error-text2') });
-      return;
-    }
-
     try {
+      // 1. Verifică dacă parola veche este corectă
+      const isValidOldPassword = await validateOldPassword(oldPassword);
+      console.log(isValidOldPassword); // Vezi dacă primești boolean sau altceva
+
+      // Dacă parola veche nu este validă, setează mesajul de eroare
+      if (!isValidOldPassword) {
+        setMessage({
+          type: "error",
+          text: t('changePasswordPopup.error-textOldPasswordInvalid'),
+        });
+        return;
+      }
+  
+      // 2. Validare parolă nouă
+      if (!validatePassword(newPassword)) {
+        setMessage({
+          type: "error",
+          text: t('changePasswordPopup.error-text1'),
+        });
+        return;
+      }
+  
+      if (newPassword !== confirmPassword) {
+        setMessage({ type: "error", text: t('changePasswordPopup.error-text2') });
+        return;
+      }
+  
+      // 3. Actualizare parolă
       const updatedUser = {
         oldPassword: oldPassword,
         password: newPassword,
@@ -68,12 +84,11 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
       console.error("Error updating password:", err);
       setMessage({
         type: "error",
-        text:
-          err.response?.data?.message ||
-          t('changePasswordPopup.error-text3'),
+        text: err.response?.data?.message || t('changePasswordPopup.error-text3'),
       });
     }
   };
+  
 
   if (!isOpen) return null;
 
@@ -92,6 +107,12 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
               required
+              onInvalid={(e) => e.target.setCustomValidity(
+                i18n.language === 'ro'
+                  ? 'Vă rugăm să introduceți parola veche'
+                  : 'Please enter your old password'
+              )}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
             <button
               type="button"
@@ -109,6 +130,36 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               onChange={(e) => setNewPassword(e.target.value)}
               required
               minLength="6"
+              onInvalid={(e) => {
+                if (e.target.validity.valueMissing) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Vă rugăm completați acest câmp'
+                      : 'Please fill in this field'
+                  );
+                } else if (e.target.validity.tooShort) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? `Vă rugăm să introduceți o parolă de cel puțin 6 caractere (în prezent folosiți ${e.target.value.length} caractere).`
+                      : `Please enter a password of at least 6 characters (you are currently using ${e.target.value.length} characters).`
+                  );
+                } else if (e.target.validity.tooLong) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? `Parola nu poate depăși 20 de caractere.`
+                      : `Password cannot exceed 20 characters.`
+                  );
+                } else if (e.target.validity.patternMismatch) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? `Parola trebuie să conțină cel puțin o literă mare, o cifră și un caracter special.`
+                      : `Password must contain at least one uppercase letter, one number, and one special character.`
+                  );
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
             <button
               type="button"
@@ -125,6 +176,12 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
+              onInvalid={(e) => e.target.setCustomValidity(
+                i18n.language === 'ro'
+                  ? 'Vă rugăm să confirmați parola nouă'
+                  : 'Please confirm your new password'
+              )}
+              onInput={(e) => e.target.setCustomValidity('')}
             />
             <button
               type="button"
