@@ -44,8 +44,7 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
     try {
       // 1. Verifică dacă parola veche este corectă
       const isValidOldPassword = await validateOldPassword(oldPassword);
-      console.log(isValidOldPassword); // Vezi dacă primești boolean sau altceva
-
+      
       // Dacă parola veche nu este validă, setează mesajul de eroare
       if (!isValidOldPassword) {
         setMessage({

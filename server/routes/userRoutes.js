@@ -280,6 +280,46 @@ const { verifyProfileAccess, verifyUpdateAccess } = require('../middlewares/user
  *                   type: string
  *                   description: Error message
  */
+/**
+ * @swagger
+ * /users/validate-password:
+ *   post:
+ *     summary: Validate old password
+ *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []  # Token JWT dacă este necesar pentru autentificare
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *                 description: The old password to validate
+ *     responses:
+ *       200:
+ *         description: Old password validated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 isValid:
+ *                   type: boolean
+ *                   description: Indicates if the old password is valid
+ *       400:
+ *         description: Invalid old password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message indicating invalid old password
+ */
 
 router.get('', authenticate, adminOnly, userController.getAllUsers);
 router.get('/:id', authenticate, verifyProfileAccess, userController.getUserById);
