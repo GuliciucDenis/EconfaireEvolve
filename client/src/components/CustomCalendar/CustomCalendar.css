@@ -12,10 +12,15 @@
     outline: none;
     box-shadow: none;
     border-color: #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: visible;
 }
 .react-datepicker {
     font-family: Arial, sans-serif;
     border: 1px solid #ccc;
+    width: 100%;
+    max-width: 1500px;
 }
 
 .react-datepicker__header {

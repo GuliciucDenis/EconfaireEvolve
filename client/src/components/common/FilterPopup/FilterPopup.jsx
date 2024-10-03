@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./FilterPopup.css";
 import { useTranslation } from "react-i18next";
+import CustomCalendar from "../../CustomCalendar/CustomCalendar";
+import i18n from "../../../i18n";
 
 const FilterPopup = ({ isOpen, onClose, onFilter }) => {
   const {t}=useTranslation();
@@ -134,7 +136,7 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
               <select
                 value={deadlineFilterType}
                 onChange={(e) => setDeadlineFilterType(e.target.value)}
-                style={{ padding: "8px", fontSize: "1rem", borderRadius: "6px", border: "1px solid #ccc", width: "100%" }}
+                style={{ padding: "8px", fontSize: "1rem", borderRadius: "6px", border: "1px solid #ccc", width: "100%", marginBottom: "10px" }}
               >
                 <option value="set">{t('filterPopup.setDeadline')}</option>
                 <option value="next-day">{t('filterPopup.nextDay')}</option>
@@ -145,12 +147,20 @@ const FilterPopup = ({ isOpen, onClose, onFilter }) => {
               </select>
 
               {deadlineFilterType === "set" && (
-                <input
-                  type="date"
-                  value={deadline}
-                  onChange={(e) => setDeadline(e.target.value)}
-                  style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginTop: "10px" }}
+                <CustomCalendar 
+                  selectedDate={deadline}
+                  onChange={(newDate) => setDeadline(newDate)}
+                  locale={i18n.language === 'ro' ? 'ro' : 'en'}
+                  placeholderText={i18n.language === 'ro' ? 'Selectează o dată' : 'Select a date'}
+                  style={{ width: "100%", maxWidth: "350px" }}
+                  className="custom-datepicker"
                 />
+                // <input
+                //   type="date"
+                //   value={deadline}
+                //   onChange={(e) => setDeadline(e.target.value)}
+                //   style={{ width: "100%", padding: "8px", borderRadius: "6px", border: "1px solid #ccc", marginTop: "10px" }}
+                // />
               )}
             </div>
           )}
