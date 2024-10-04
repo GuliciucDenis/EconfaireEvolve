@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUser } from "../../services/userService";
 import "./CreateUserForm.css";
 import { useTranslation } from "react-i18next";
+import i18n from "../../i18n";
 
 const CreateUserForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -104,6 +105,12 @@ const CreateUserForm = () => {
             required
             placeholder={t('createUser.lastName')}
             maxLength={15}
+            onInvalid={(e) => e.target.setCustomValidity(
+              i18n.language === 'ro'
+                ? 'Vă rugăm să introduceți numele de familie'
+                : 'Please enter the last name'
+            )}
+            onInput={(e) => e.target.setCustomValidity('')}
           />
         </div>
         <div className="form-row">
@@ -115,6 +122,12 @@ const CreateUserForm = () => {
             required
             placeholder={t('createUser.firstName')}
             maxLength={15}
+            onInvalid={(e) => e.target.setCustomValidity(
+              i18n.language === 'ro'
+                ? 'Vă rugăm să introduceți prenumele'
+                : 'Please enter the first name'
+            )}
+            onInput={(e) => e.target.setCustomValidity('')}
           />
         </div>
         <div className="form-row">
@@ -122,9 +135,58 @@ const CreateUserForm = () => {
             id="email"
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              
+              if (!e.target.value.includes("@")) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Adresa de email trebuie să conțină un @'
+                    : 'Please include an @ in the email address'
+                );
+              } else {
+                const emailParts = e.target.value.split("@");
+                if (emailParts.length > 1 && emailParts[1].trim() === "") {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Vă rugăm să completați partea de după "@"'
+                      : 'Please enter a part following "@"'
+                  );
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }
+            }}
             required
             placeholder={t('createUser.email')}
+            onInvalid={(e) => {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Vă rugăm să introduceți emailul'
+                    : 'Please enter the email'
+                );
+            }}
+            onBlur={(e) => {
+              if (!email.includes("@")) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Adresa de email trebuie să conțină un @'
+                    : 'Please include an @ in the email address'
+                );
+              } else {
+                const emailParts = e.target.value.split("@");
+                if (emailParts.length > 1 && emailParts[1].trim() === "") {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Vă rugăm să completați partea de după "@"'
+                      : 'Please enter a part following "@"'
+                  );
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }
+            }}
+            onInput={(e) => e.target.setCustomValidity('')}
           />
         </div>
         <div className="form-row password-row">
@@ -133,9 +195,44 @@ const CreateUserForm = () => {
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => {
-              setPassword(e.target.value);
-              setPasswordError("");
+              const passwordValue = e.target.value;
+              setPassword(passwordValue);
+              setPasswordError('');
+        
+              if (!validatePassword(passwordValue)) {
+                if (passwordValue.length < 6) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Parola trebuie să aibă cel puțin 6 caractere'
+                      : 'Password must be at least 6 characters long'
+                  );
+                }
+                else if (!/[A-Z]/.test(passwordValue)) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Parola trebuie să conțină cel puțin o literă mare'
+                      : 'Password must contain at least one uppercase letter'
+                  );
+                }
+                else if (!/\d/.test(passwordValue)) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? 'Parola trebuie să conțină cel puțin o cifră'
+                      : 'Password must contain at least one digit'
+                  );
+                }
+              } else {
+                e.target.setCustomValidity('');
+              }
             }}
+            onInvalid={(e) => {
+              e.target.setCustomValidity(
+                i18n.language === 'ro'
+                  ? 'Vă rugăm să introduceți o parolă validă'
+                  : 'Please enter a valid password'
+              );
+            }}
+            onInput={(e) => e.target.setCustomValidity('')}
             required
             placeholder={t('createUser.password')}
           />
