@@ -115,7 +115,45 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => {
+              setTitle(e.target.value);
+              if(e.target.value.length<=30){
+                e.target.setCustomValidity(''); 
+                setMessage({ type: "", text: "" });
+              }
+            }}
+            onBlur={(e) => {
+              if(!e.target.value.trim()){
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Titlul obiectivului este obligatoriu'
+                    : 'The objective title is required'
+                );
+              } else if (e.target.value.length > 30) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Titlul trebuie să aibă cel mult 30 de caractere'
+                    : 'The title must be no more than 30 characters'
+                );
+              } else {
+                e.target.setCustomValidity('');
+              }
+            }}
+            onInvalid={(e) => {
+              if(!e.target.value.trim()){
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Titlul obiectivului este obligatoriu'
+                    : 'The objective title is required'
+                );
+              } else if (e.target.value.length > 30) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Titlul trebuie să aibă cel mult 30 de caractere'
+                    : 'The title must be no more than 30 characters'
+                );
+              }
+            }}
             placeholder={t('editObjectivesPopup.objectiveTitle')}
             maxLength="30"
             required
@@ -123,9 +161,47 @@ const AddObjectivesPopup = ({ isOpen, onClose, onSubmit, userId }) => {
           <input
             type="text"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => {
+              setDescription(e.target.value);
+              if (e.target.value.length <= 250) {
+                e.target.setCustomValidity(''); 
+                setMessage({ type: "", text: "" });
+              }
+            }}
+            onBlur={(e) => {
+              if (!e.target.value.trim()) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Descrierea obiectivului este obligatorie'
+                    : 'The objective description is required'
+                );
+              } else if (e.target.value.length > 250) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Descrierea trebuie să aibă cel mult 250 de caractere'
+                    : 'The description must be no more than 250 characters'
+                );
+              } else {
+                e.target.setCustomValidity('');
+              }
+            }}
+            onInvalid={(e) => {
+              if (!e.target.value.trim()) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Descrierea obiectivului este obligatorie'
+                    : 'The objective description is required'
+                );
+              } else if (e.target.value.length > 250) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Descrierea trebuie să aibă cel mult 250 de caractere'
+                    : 'The description must be no more than 250 characters'
+                );
+              }
+            }}
             placeholder={t('editObjectivesPopup.objectiveDescription')}
-            maxLength="250" // Limit to 50 characters
+            maxLength="250"
             required
           />
           <CustomCalendar

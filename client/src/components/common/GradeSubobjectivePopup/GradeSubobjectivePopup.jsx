@@ -53,12 +53,58 @@ const GradeSubobjectivePopup = ({ isOpen, onClose, onSubmit, subobjective }) => 
           <input
             type="number"
             value={grade}
-            onChange={(e) => setGrade(e.target.value)}
+            onChange={(e) => {
+              let inputValue = e.target.value;
+              
+              if (inputValue.startsWith("0") && inputValue.length > 1) {
+                inputValue = inputValue.replace(/^0+/, '');
+              }
+          
+              setGrade(inputValue);
+          
+              const gradeValue = parseInt(inputValue, 10);
+              if (gradeValue >= 1 && gradeValue <= 10) {
+                e.target.setCustomValidity('');
+                setMessage({ type: "", text: "" });
+              } else {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Introduceți un număr între 1 și 10'
+                    : 'Enter a number between 1 and 10'
+                );
+              }
+            }}
+            onBlur={(e) => {
+              const gradeValue = parseInt(e.target.value, 10);
+              if (isNaN(gradeValue) || gradeValue < 1 || gradeValue > 10) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Introduceți un număr între 1 și 10'
+                    : 'Enter a number between 1 and 10'
+                );
+              } else {
+                e.target.setCustomValidity('');
+              }
+            }}
             placeholder={t('gradeSubobjectivePopup.placeholder')}
             min="1"
             max="10"
             required
-            onInvalid={(e) => e.target.setCustomValidity((i18n.language==="ro") ? 'Introduceți un număr între 1 și 10': 'Enter a number between 1 and 10')}
+            onInvalid={(e) => {
+              if (e.target.value < 1 || e.target.value > 10) {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Introduceți un număr între 1 și 10'
+                    : 'Enter a number between 1 and 10'
+                );
+              } else {
+                e.target.setCustomValidity(
+                  i18n.language === 'ro'
+                    ? 'Introduceți un număr valid'
+                    : 'Please enter a valid number'
+                );
+              }
+            }}
             onInput={(e) => e.target.setCustomValidity('')}
           />
           <div className="grade-subobjective-popup-buttons">
