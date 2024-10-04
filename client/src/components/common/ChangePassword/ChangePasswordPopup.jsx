@@ -126,7 +126,30 @@ const ChangePasswordPopup = ({ isOpen, onClose }) => {
               type={showNewPassword ? "text" : "password"}
               placeholder={t('changePasswordPopup.newPassword')}
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+                
+                if (e.target.value.length < 6) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? `Vă rugăm să introduceți o parolă de cel puțin 6 caractere (în prezent folosiți ${e.target.value.length} caractere).`
+                      : `Please enter a password of at least 6 characters (you are currently using ${e.target.value.length} characters).`
+                  );
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }}
+              onBlur={(e) => {
+                if (e.target.value.length < 6) {
+                  e.target.setCustomValidity(
+                    i18n.language === 'ro'
+                      ? `Vă rugăm să introduceți o parolă de cel puțin 6 caractere (în prezent folosiți ${e.target.value.length} caractere).`
+                      : `Please enter a password of at least 6 characters (you are currently using ${e.target.value.length} characters).`
+                  );
+                } else {
+                  e.target.setCustomValidity('');
+                }
+              }}
               required
               minLength="6"
               onInvalid={(e) => {
