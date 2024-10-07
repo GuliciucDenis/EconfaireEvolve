@@ -42,7 +42,7 @@ const CreateUserForm = () => {
       console.log(newUser);
       const response = await createUser(newUser);
       console.log("User created:", response);
-      setSuccessMessage(t('createUser.sucess'));
+      setSuccessMessage(t('createUser.success'));
       setTimeout(() => {
         setSuccessMessage("");
       }, 3000);
