@@ -52,7 +52,7 @@ export const gradeSubobjectiveByObjectiveId = async (objectiveId, subobjectiveTo
     }
     return subobjective;
   });
-  console.log("FIRST:", objective.subObjectives);
+  console.log("Subobjectives:", objective.subObjectives);
   // Check if all subobjectives are graded by both admin and employee
   const allGraded = objective.subObjectives.every(sub =>
     sub.gradeAdmin > 1 && sub.gradeEmployee > 1
