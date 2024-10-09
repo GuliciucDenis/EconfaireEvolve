@@ -172,7 +172,7 @@ const UserTable = () => {
           (objective) =>
             objective.title.toLowerCase() === criteria.objectiveTitle.toLowerCase() && // Verificăm titlul obiectivului
             // Verificăm dacă gradeAdmin sau gradeEmployee sunt 1
-            (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
+            ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new")
         )
       );
 
@@ -188,7 +188,7 @@ const UserTable = () => {
         const usersWithActiveObjectivesCount = users.map((user) => ({
           ...user,
           activeObjectivesCount: user.objectives
-            ? user.objectives.filter((objective) => objective.gradeAdmin === 1 || objective.gradeEmployee === 1).length
+            ? user.objectives.filter((objective) => ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new")).length
             : 0,
         }));
 
@@ -230,7 +230,7 @@ const UserTable = () => {
                 objectiveDeadline.setHours(0, 0, 0, 0); // Resetăm ora și pentru deadline
           
                 return objectiveDeadline.getTime() === tomorrow.getTime() &&
-                       (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+                  ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new");
               })
             );
           } else if (criteria.deadlineFilterType === "this-week") {
@@ -251,7 +251,7 @@ const UserTable = () => {
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
                 return deadline >= startOfWeek && deadline <= endOfWeek &&
-                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+                  ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new");
               })
             );
           } else if (criteria.deadlineFilterType === "this-month") {
@@ -263,7 +263,7 @@ const UserTable = () => {
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
                 return deadline >= startOfMonth && deadline <= endOfMonth &&
-                       (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+                  ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new");
               })
             );
           } else if (criteria.deadlineFilterType === "next-week") {
@@ -283,13 +283,13 @@ const UserTable = () => {
             const nextSunday = new Date(nextMonday);
             nextSunday.setDate(nextMonday.getDate() + 6);
             nextSunday.setHours(23, 59, 59, 999); // Setăm ora la sfârșitul zilei
-        
+            
             filtered = users.filter(user =>
               user.objectives &&
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
                 return deadline >= nextMonday && deadline <= nextSunday &&
-                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+                      ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new");
               })
             );
           } else if (criteria.deadlineFilterType === "next-month") {
@@ -306,7 +306,7 @@ const UserTable = () => {
               user.objectives.some(objective => {
                 const deadline = new Date(objective.deadline);
                 return deadline >= nextMonthStart && deadline <= nextMonthEnd &&
-                      (objective.gradeAdmin === 1 || objective.gradeEmployee === 1);
+                  ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new");
               })
             );
           } else if (criteria.deadline) {
@@ -315,7 +315,7 @@ const UserTable = () => {
               user.objectives &&
               user.objectives.some(objective =>
                 new Date(objective.deadline).toISOString().split('T')[0] === new Date(criteria.deadline).toISOString().split('T')[0] &&
-                (objective.gradeAdmin === 1 || objective.gradeEmployee === 1)
+                ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new")
               )
             );
           }
@@ -360,7 +360,7 @@ const UserTable = () => {
       ? user.deadline === filterCriteria.deadline
       : true;
     const matchesGrades = user.objectives.some(
-      (objective) => objective.gradeAdmin === 1 || objective.gradeEmployee === 1
+      (objective) => ((objective.gradeAdmin === 1 || objective.gradeEmployee === 1) || objective.status ==="new")
     );
 
     return matchesObjectiveTitle && matchesNumObjectives && matchesDeadline && matchesGrades;
