@@ -1,0 +1,7 @@
+projectKey=Econfaire-Evolve
+serverUrl=https://sonarqube.econfaire.build
+serverVersion=10.3.0.82913
+branch=Test
+dashboardUrl=https://sonarqube.econfaire.build/dashboard?id=Econfaire-Evolve&branch=Test
+ceTaskId=AZJ2yBbdy7E1VreuNm5L
+ceTaskUrl=https://sonarqube.econfaire.build/api/ce/task?id=AZJ2yBbdy7E1VreuNm5L

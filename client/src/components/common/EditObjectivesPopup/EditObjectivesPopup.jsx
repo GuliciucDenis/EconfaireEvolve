@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback } from "react";
 import "./EditObjectivesPopup.css";
 import { updateObjective } from "../../../services/objectiveService";
 import { useTranslation } from "react-i18next";
@@ -35,7 +35,8 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
       setMessage({ type: "error", text: t('editObjectivesPopup2.error1') });
       return false;
     }
-    if (!title.trim() > 30) {
+    if (title.trim().length > 30)
+    {
       setMessage({ type: "error", text: t('editObjectivesPopup2.error2') });
       return false;
     }
@@ -70,7 +71,7 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
         deadline,
       };
 
-      console.log("Updated Objective: ", updatedObjective);
+      // console.log("Updated Objective: ", updatedObjective);
       const response = await updateObjective(updatedObjective);
       onSubmit(response);
 
@@ -80,7 +81,7 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
         resetForm();
       }, 2000);
     } catch (err) {
-      console.error("Error updating objective:", err);
+      // console.error("Error updating objective:", err);
       setMessage({
         type: "error",
         text: err.message || t('editObjectivesPopup2.error6'),
@@ -90,10 +91,10 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
 
   const handleDeadlineChange = (e) => {
     const selectedDate = new Date(e.target.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set time to midnight for accurate comparison
 
-    if (selectedDate < today) {
+    if (selectedDate < currentDate) {
       setMessage({ type: "error", text: t('editObjectivesPopup2.error7') });
       setDeadline("");
     } else {
@@ -101,6 +102,11 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
       setDeadline(e.target.value);
     }
   };
+
+  const handleDateChange = useCallback((date) => {
+    setDeadline(date);
+    handleDeadlineChange({ target: { value: date } });
+  }, []);
 
   // Get today's date in YYYY-MM-DD format for the min attribute
   const today = new Date().toISOString().split("T")[0];
@@ -138,8 +144,8 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
                     ? 'Titlul trebuie să aibă cel mult 30 de caractere'
                     : 'The title must be no more than 30 characters'
                 );
-              } else {
-                e.target.setCustomValidity('');
+              } else { 
+                e.target.setCustomValidity(''); // Clear custom validity
               }
             }}
             onInvalid={(e) => {
@@ -155,6 +161,8 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
                     ? 'Titlul trebuie să aibă cel mult 30 de caractere'
                     : 'The title must be no more than 30 characters'
                 );
+              } else { 
+                e.target.setCustomValidity(''); // Clear custom validity
               }
             }}
             placeholder={t('editObjectivesPopup2.objectiveTitle')}
@@ -201,6 +209,8 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
                     ? 'Descrierea trebuie să aibă cel mult 250 de caractere'
                     : 'The description must be no more than 250 characters'
                 );
+              } else { 
+                e.target.setCustomValidity('');
               }
             }}
             placeholder={t('editObjectivesPopup2.objectiveDescription')}
@@ -209,10 +219,7 @@ const EditObjectivesPopup = ({ isOpen, onClose, onSubmit, objective }) => {
           />
           <CustomCalendar
             selectedDate={deadline}
-            onChange={(date) => {
-              setDeadline(date);
-              handleDeadlineChange({ target: { value: date } });
-            }}
+            onChange={handleDateChange}
             min={today}
             required
             className="custom-datepicker"

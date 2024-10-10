@@ -27,7 +27,6 @@ const User = () => {
                     localStorage.setItem('userData', JSON.stringify(user));
                 }
             } catch (error) {
-                console.error('Error fetching user data:', error);
             } finally {
                 setIsLoading(false);
             }
@@ -44,8 +43,19 @@ const User = () => {
     const isProfileOrModifyPassword = ['/profile', '/modifypassword'].includes(location.pathname);
     const profilePicture = isProfileOrModifyPassword ? ProfilePicHeader : ProfilePictureHeader;
 
+    const usernameDisplay = userData ? (
+        <h3 className="user-username">{`${userData.firstName} ${userData.lastName}`}</h3>
+    ) : (
+        <div className="username-error">Error loading user data</div>
+    );
+
     return (
-        <div className="user-container" onClick={handleClick}>
+        <div 
+            className="user-container" 
+            onClick={handleClick} 
+            onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleClick(); }} 
+            tabIndex={0}
+        >
             <img 
                 src={profilePicture} 
                 alt="Profile Pic Header" 
@@ -54,11 +64,7 @@ const User = () => {
             <div className="user-username-container">
                 {isLoading ? (
                     <div className="username-skeleton"></div>
-                ) : userData ? (
-                    <h3 className="user-username">{`${userData.firstName} ${userData.lastName}`}</h3>
-                ) : (
-                    <div className="username-error">Error loading user data</div>
-                )}
+                ) : usernameDisplay}
             </div>
         </div>
     );

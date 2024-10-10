@@ -5,7 +5,7 @@ import Background from "../../components/background/Background";
 import Cardboard from "../../components/cardboard/Cardboard";
 import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
-import { getObjectiveById, updateObjectiveStatus, updateObjective } from "../../services/objectiveService";
+import { getObjectiveById, updateObjectiveStatus} from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId, gradeSubobjectiveByObjectiveId } from "../../services/subobjectiveService";
 import GradeSubobjectivePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./Objectives.css";
@@ -28,12 +28,12 @@ const Objectives = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        console.log("Fetching user data..."); // Add log to check fetching starts
+        // console.log("Fetching user data...");
         const user = await getUserById(userId);
         if (user) {
           setCurrentUser(user);
           setUserRole(user.role);
-          console.log("User fetched:", user); // Log user data to ensure it's correct
+          // console.log("User fetched:", user);
         }
         const userObjectiveIds = user.objectiveList;
         const objectives = await Promise.all(userObjectiveIds.map(getObjectiveById));
@@ -47,7 +47,7 @@ const Objectives = () => {
 
         setUserObjectives(activeObjectives);
       } catch (error) {
-        console.error("Failed to fetch user or objectives:", error);
+        // console.error("Failed to fetch user or objectives:", error);
       }
     };
 
@@ -68,10 +68,10 @@ const Objectives = () => {
     setSelectedSubobjective(null);
     try {
       const subobjectivesData = await getSubobjectivesByObjectiveId(userObjectives[index].id);
-      console.log("Fetched Subobjectives: ",subobjectivesData);
+      // console.log("Fetched Subobjectives: ",subobjectivesData);
       setSubobjectives(subobjectivesData);
     } catch (error) {
-      console.error("Failed to fetch subobjectives:", error);
+      // console.error("Failed to fetch subobjectives:", error);
     }
   };
 
@@ -85,14 +85,14 @@ const Objectives = () => {
     if (selectedSubobjective === null) return;
 
     // Ensure currentUser is properly set before using
-    if (!currentUser || !currentUser.id) {
-      console.error("Current user not set correctly:", currentUser);
+    if (!currentUser?.id) {
+      // console.error("Current user not set correctly:", currentUser);
       return;
     }
 
     try {
       const subobjectiveToGrade = subobjectives[selectedSubobjective];
-      console.log("Grading subobjective with current user ID:", currentUser.id);
+      // console.log("Grading subobjective with current user ID:", currentUser.id);
       
       const updatedObjective = await gradeSubobjectiveByObjectiveId(
         userObjectives[selectedObjective]?.id,
@@ -110,13 +110,20 @@ const Objectives = () => {
         )
       );
 
-      // Check if all subobjectives are graded by both admin and employee
-      const allSubobjectivesGraded = updatedObjective.subObjectives.every(
-        sub => (userRole === "admin" && sub.gradeAdmin > 1 && sub.gradeEmployee !== 1) ||
-               (userRole === "employee" && sub.gradeAdmin > 1 && sub.gradeEmployee > 1)
-      );
+      const isAdmin = userRole === "admin";
+      const isEmployee = userRole === "employee";
 
-      console.log(updatedObjective);
+      const allSubobjectivesGraded = updatedObjective.subObjectives.every(sub => {
+        if (isAdmin) {
+          return sub.gradeAdmin > 1 && sub.gradeEmployee !== 1;
+        } else if (isEmployee) {
+          return sub.gradeAdmin > 1 && sub.gradeEmployee > 1;
+        } else {
+          return false;
+        }
+      });
+
+      // console.log(updatedObjective);
       // If all subobjectives are graded, then update the objective's status
       if (allSubobjectivesGraded) {
         await updateObjectiveStatus(updatedObjective.id, 'completed');
@@ -133,7 +140,7 @@ const Objectives = () => {
         await updateObjectiveStatus(updatedObjective.id, "new");
       }
     } catch (error) {
-      console.error("Failed to grade subobjective:", error);
+      // console.error("Failed to grade subobjective:", error);
     }
     setSelectedSubobjective(null);
     setIsGradeSubobjectivePopupOpen(false);
@@ -225,8 +232,10 @@ const Objectives = () => {
             title={t('objectives.currentObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
-                key={index}
+                key={objective.id}
                 onClick={() => handleObjectiveClick(index)}
+                onKeyDown={(e) => e.key === 'Enter' && handleObjectiveClick(index)}
+                tabIndex={0}
                 className={`objective-item ${
                   index === selectedObjective ? "selected" : ""
                 }`}
@@ -239,11 +248,17 @@ const Objectives = () => {
             title={t('objectives.currentSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
-                key={index}
-                onClick={() => handleSubobjectiveClick(index)}
+                key={subobjective.id}
                 className={`subobjective-item ${
                   index === selectedSubobjective ? "selected" : ""
                 }`}
+                onClick={() => handleSubobjectiveClick(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleSubobjectiveClick(index);
+                  }
+                }}
+                tabIndex={0}
               >
                 {subobjective.title}
               </div>

@@ -7,7 +7,6 @@ import User from "../../components/common/user/User";
 import { getUserById } from "../../services/userService";
 import { getObjectiveById } from "../../services/objectiveService";
 import { getSubobjectivesByObjectiveId } from "../../services/subobjectiveService";
-import GradePopup from "../../components/common/GradeSubobjectivePopup/GradeSubobjectivePopup";
 import "./History.css";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/language-selector";
@@ -18,7 +17,7 @@ const History = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userObjectives, setUserObjectives] = useState([]);
   const [subobjectives, setSubobjectives] = useState([]);
-  const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
+  // const [isGradePopupOpen, setIsGradePopupOpen] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const { id } = useParams();
   const userId = id;
@@ -40,7 +39,7 @@ const History = () => {
         );
         setUserObjectives(completedObjectives);
       } catch (error) {
-        console.error("Failed to fetch user or objectives:", error);
+        // console.error("Failed to fetch user or objectives:", error);
       }
     };
 
@@ -59,7 +58,7 @@ const History = () => {
           );
           setSubobjectives(subobjectivesData);
         } catch (error) {
-          console.error("Failed to fetch subobjectives:", error);
+          // console.error("Failed to fetch subobjectives:", error);
         }
       }
     };
@@ -76,11 +75,11 @@ const History = () => {
     setSelectedSubobjective(index);
   };
 
-  const handleGradeSubobjective = () => {
-    if (selectedObjective !== null && selectedSubobjective !== null) {
-      setIsGradePopupOpen(true);
-    }
-  };
+  // const handleGradeSubobjective = () => {
+  //   if (selectedObjective !== null && selectedSubobjective !== null) {
+  //     setIsGradePopupOpen(true);
+  //   }
+  // };
 
   const formatGrade = (grade) => {
     const numericGrade = Number(grade); // Convertim la număr pentru siguranță
@@ -163,11 +162,17 @@ const History = () => {
             title={t('history.pastObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
-                key={index}
-                onClick={() => handleObjectiveClick(index)}
+                key={objective.id}
                 className={`objective-item ${
                   index === selectedObjective ? "selected" : ""
                 }`}
+                onClick={() => handleObjectiveClick(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleObjectiveClick(index);
+                  }
+                }}
+                tabIndex={0}
               >
                 {objective.title}
               </div>
@@ -177,11 +182,17 @@ const History = () => {
             title={t('history.pastSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
-                key={index}
-                onClick={() => handleSubobjectiveClick(index)}
+                key={subobjective.id}
                 className={`subobjective-item ${
                   index === selectedSubobjective ? "selected" : ""
                 }`}
+                onClick={() => handleSubobjectiveClick(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleSubobjectiveClick(index);
+                  }
+                }}
+                tabIndex={0}
               >
                 {subobjective.title}
               </div>

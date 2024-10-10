@@ -25,7 +25,6 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
       const fetchedUsers = await getUsers();
       setUsers(fetchedUsers);
     } catch (error) {
-      console.error("Error fetching users:", error);
       setMessage({
         type: "error",
         text: t('deleteUserPopup.error'),
@@ -46,7 +45,6 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
           onClose();
         }, 2000);
       } catch (error) {
-        console.error("Error deleting user:", error);
         setMessage({
           type: "error",
           text: t('deleteUserPopup.error2'),
@@ -81,6 +79,12 @@ const DeleteUserPopup = ({ isOpen, onClose, onUserDeleted }) => {
               key={user.id}
               className={selectedUser?.id === user.id ? "selected" : ""}
               onClick={() => setSelectedUser(user)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  setSelectedUser(user);
+                }
+              }}
+              tabIndex={0}
             >
               {user.firstName} {user.lastName} (ID: {user.id})
             </li>

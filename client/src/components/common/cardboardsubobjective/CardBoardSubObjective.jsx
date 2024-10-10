@@ -5,7 +5,7 @@ const CardBoardSubObjective = ({ title, objectiveDescription, objectiveDeadline,
   return (
     <div className="card">
       <h2 className="card-title">
-        {title ? title : 'Loading...'}
+        {title || 'Loading...'}
       </h2>
       <div className="objective-info">
         <p><strong>Objective Description:</strong> {objectiveDescription}</p>
@@ -16,9 +16,11 @@ const CardBoardSubObjective = ({ title, objectiveDescription, objectiveDeadline,
         <ul className="subobjectives-list">
           {subobjectives.map((subobjective, index) => (
             <li 
-              key={index} 
+              key={subobjective.id}
               className={`subobjective-item ${selectedSubobjective && selectedSubobjective.id === subobjective.id ? 'selected' : ''}`}
               onClick={() => onItemClick(index)}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onItemClick(index); }}
+              tabIndex={0}
             >
               {subobjective.title ? (
                 <span>{subobjective.title}</span>

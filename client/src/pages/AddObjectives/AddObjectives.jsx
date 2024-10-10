@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../../components/common/navbar/Navbar';
 import Background from '../../components/background/Background';
 import AddObjectivesCard from '../../components/AddObjectives/AddObjectivesCard';
@@ -9,7 +9,6 @@ import { getObjectivesByUserId, getObjectiveById, deleteObjectiveById, updateObj
 import { getUserById } from "../../services/userService";
 import AddObjectivesPopup from "../../components/common/AddObjectivesPopup/AddObjectivesPopup";
 import SetDeadlinePopup from "../../components/common/SetDeadlinePopup/SetDeadlinePopup";
-import { useNavigate } from "react-router-dom";
 import EditObjectivesPopup from "../../components/common/EditObjectivesPopup/EditObjectivesPopup";
 import { useTranslation } from "react-i18next";
 import LanguageSelector from "../../components/language-selector";
@@ -36,9 +35,8 @@ const AddObjectives = () => {
     const fetchUserObjectives = async () => {
       try {
         const userObjectiveIds = await getObjectivesByUserId(userId);
-        const objectives = await Promise.all(userObjectiveIds.map(async (id) => {
-          const objective = await getObjectiveById(id);
-          return objective;
+        const objectives = await Promise.all(userObjectiveIds.map(async (objectiveId) => { 
+          return getObjectiveById(objectiveId);
         }));
 
         // Filter objectives to include only active ones
@@ -59,7 +57,7 @@ const AddObjectives = () => {
         }
         setUserObjectives(activeObjectives);
       } catch (error) {
-        console.error("Failed to fetch user objectives:", error);
+        throw new Error("Failed to fetch user objectives: " + error.message);
       }
     };
     const fetchCurrentUser = async () => {
@@ -233,8 +231,14 @@ const AddObjectives = () => {
               title={t('editObjectives.recommendedObjectives')} 
               content={objectivesData.map((objective, index) => (
                 <div 
-                  key={index} 
-                  onClick={() => handleRecommendedObjectiveClick(index)}
+                  key={objective.id}
+                  onClick={() => handleRecommendedObjectiveClick(objective.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleRecommendedObjectiveClick(objective.id);
+                    }
+                  }}
+                  tabIndex={0}
                   className={`objective-item ${index === selectedRecommendedObjective ? 'selected' : ''}`}
                 >
                   {objective.title}
@@ -245,8 +249,14 @@ const AddObjectives = () => {
               title={t('editObjectives.existingObjectives')} 
               content={userObjectives.map((objective, index) => (
                 <div 
-                  key={index} 
+                  key={objective.id}
                   onClick={() => handleExistingObjectiveClick(index)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleExistingObjectiveClick(index);
+                    }
+                  }}
+                  tabIndex={0}
                   className={`objective-item ${selectedExistingObjectives.includes(index) ? 'selected' : ''}`}
                 >
                   {objective.title}

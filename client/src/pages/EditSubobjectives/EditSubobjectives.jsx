@@ -40,21 +40,18 @@ const EditSubobjectives = () => {
       try {
         const userId = await getUserIdFromToken(); // Obține ID-ul utilizatorului din token
         if (!userId) {
-          console.error("User ID is null or undefined.");
-          return;
+          throw new Error("User ID is null or undefined.");
         }
-
-        console.log("Fetching user with ID:", userId); // Log pentru a verifica ID-ul corect
+        
         const user = await getUserById(userId);
 
         if (!user) {
-          console.error("User not found or response is null.");
-          return;
+          throw new Error("User not found or response is null.");
         }
 
         setCurrentUser(user);
       } catch (error) {
-        console.error("Failed to fetch user:", error);
+        throw new Error("Failed to fetch user: " + error.message);
       }
     };
 
@@ -71,7 +68,6 @@ const EditSubobjectives = () => {
         const subobjectivesData = await getSubobjectivesByObjectiveId(id);
         setSubobjectives(subobjectivesData);
       } catch (error) {
-        console.error("Failed to fetch objective or subobjectives:", error);
       } finally {
         setLoading(false);
       }
@@ -85,7 +81,7 @@ const EditSubobjectives = () => {
       const subobjectivesData = await getSubobjectivesByObjectiveId(id);
       setSubobjectives(subobjectivesData);
     } catch (error) {
-      console.error("Failed to fetch subobjectives:", error);
+      alert("An error occurred while fetching subobjectives.");
     }
   };
 
@@ -96,7 +92,6 @@ const EditSubobjectives = () => {
       await addSubobjectiveByObjectiveId(id, newSubobjective);
       await fetchSubobjectives(); // Reîncarcă lista de subobiective
     } catch (error) {
-      console.error("Failed to add subobjective:", error);
     }
   };
 
@@ -110,7 +105,6 @@ const EditSubobjectives = () => {
       await fetchSubobjectives(); // Refetch the subobjectives list
       setSelectedSubobjectives([]); // Reset selected subobjective after removal
     } catch (error) {
-      console.error("Failed to remove subobjective:", error);
     }
   };
 
@@ -123,7 +117,6 @@ const EditSubobjectives = () => {
       await fetchSubobjectives(); // Refresh the subobjectives after grading
       setSelectedSubobjectives([]); // Clear the selection after grading
     } catch (error) {
-      console.error("Failed to grade subobjective:", error);
     }
   };
 
@@ -149,7 +142,6 @@ const EditSubobjectives = () => {
       await fetchSubobjectives();
       setSelectedSubobjectives([]); // Clear selection after editing
     } catch (error) {
-      console.error("Failed to edit subobjective:", error);
     }
   };
 
@@ -180,13 +172,15 @@ const EditSubobjectives = () => {
         <div className="cardboard-container">
           <Cardboard
             title={t('editSubobjectives.cardTitle')}
-            content={subobjectives.map((sub, index) => (
+            content={subobjectives.map(subobjective => (
               <div
-                key={index}
-                className={`subobjective-item ${selectedSubobjectives.includes(index) ? "selected" : ""}`} // Highlight if selected
-                onClick={() => handleSubobjectiveClick(index)}
+                key={subobjective.id}
+                className={`subobjective-item ${selectedSubobjectives.includes(subobjective.id) ? "selected" : ""}`}
+                onClick={() => handleSubobjectiveClick(subobjective.id)}
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSubobjectiveClick(subobjective.id); }}
               >
-                {sub?.title} &rarr; {sub?.gradeAdmin}/10
+                {subobjective?.title} &rarr; {subobjective?.gradeAdmin}/10
               </div>
             ))}
           />
@@ -273,7 +267,7 @@ const EditSubobjectives = () => {
         onClose={() => setIsEditSubobjectivePopupOpen(false)}
         onSubmit={(updatedSubobjective) => {
           handleEditSubobjective(updatedSubobjective);
-          setIsEditSubobjectivePopupOpen(false); // Close popup after saving
+          setIsEditSubobjectivePopupOpen(false);
         }}
         subobjective={subobjectiveToEdit}
       />

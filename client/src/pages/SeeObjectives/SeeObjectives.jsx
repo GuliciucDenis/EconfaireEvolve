@@ -41,7 +41,7 @@ const SeeObjectives = () => {
         );
         setUserObjectives(activeObjectives);
       } catch (error) {
-        console.error("Failed to fetch user or objectives:", error);
+        // console.error("Failed to fetch user or objectives:", error);
       }
     };
 
@@ -58,7 +58,7 @@ const SeeObjectives = () => {
           const subobjectivesData = await getSubobjectivesByObjectiveId(selectedObjectiveId);
           setSubobjectives(subobjectivesData);
         } catch (error) {
-          console.error("Failed to fetch subobjectives:", error);
+          // console.error("Failed to fetch subobjectives:", error);
         }
       } else {
         setSubobjectives([]);
@@ -93,7 +93,7 @@ const SeeObjectives = () => {
         prevObjectives.map(obj => obj.id === updatedObjective.id ? updatedObjective : obj)
       );
     } catch (error) {
-      console.error("Failed to grade subobjective:", error);
+      // console.error("Failed to grade subobjective:", error);
     }
     setSelectedSubobjective(null);
     setIsGradeSubobjectivePopupOpen(false);
@@ -170,8 +170,10 @@ const SeeObjectives = () => {
             title={t('seeObjectives.currentObjectives')}
             content={userObjectives.map((objective, index) => (
               <div
-                key={index}
-                onClick={() => handleObjectiveClick(index)}
+                key={objective.id}
+                onClick={() => handleObjectiveClick(objective.id)}
+                onKeyDown={(e) => e.key === 'Enter' && handleObjectiveClick(objective.id)}
+                tabIndex={0}
                 className={`objective-item ${
                   index === selectedObjective ? "selected" : ""
                 }`}
@@ -184,8 +186,14 @@ const SeeObjectives = () => {
             title={t('seeObjectives.currentSubobjectives')}
             content={subobjectives.map((subobjective, index) => (
               <div
-                key={index}
+                key={subobjective.id}
                 onClick={() => handleSubobjectiveClick(index)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleSubobjectiveClick(index);
+                  }
+                }}
+                tabIndex={0}
                 className={`subobjective-item ${
                   index === selectedSubobjective ? "selected" : ""
                 }`}

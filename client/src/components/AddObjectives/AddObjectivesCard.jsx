@@ -7,8 +7,13 @@ const Cardboard = ({ title, content, onItemClick }) => {
       <h2>{title}</h2>
       {Array.isArray(content) ? (
         <ul className="objectives-list">
-          {content.map((item, index) => (
-            <li key={index} onClick={() => onItemClick && onItemClick(index)}>
+          {content.map((item) => (
+            <li 
+              key={item.id}
+              onClick={() => onItemClick?.(item.id)}
+              onKeyDown={(e) => e.key === 'Enter' && onItemClick?.(item.id)}
+              tabIndex={0}
+            >
               {item}
             </li>
           ))}

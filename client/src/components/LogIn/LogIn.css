@@ -3,7 +3,6 @@
   height: 100%;
   overflow: hidden;
   box-sizing: unset;
-  /*overflow-clip-margin: initial;*/
 }
 
 .login-background {
@@ -77,7 +76,6 @@ header {
 .first-blob {
   width: 500px;
   height: 200px;
-  background-color: #aed948; 
   border-radius: 46% 14% 38% 62% / 58% 17% 68% 42%;
   background: linear-gradient(100deg,
                         rgba(0, 0, 0, 0.8) 10%,    
